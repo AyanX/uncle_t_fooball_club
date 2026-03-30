@@ -1,0 +1,204 @@
+.page { background: $color-off-white; }
+.container { @include container; }
+
+// ── Back button ───────────────────────────────────────────
+.backWrap {
+  background: $color-primary-dark;
+  padding: $space-4 0;
+  padding-top: calc(#{$navbar-height} + #{$space-4});
+}
+
+.backBtn {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); text-decoration: none;
+  transition: color $transition-fast;
+  &:hover { color: $color-gold; }
+}
+
+// ── Hero ──────────────────────────────────────────────────
+.hero {
+  position: relative; background: $color-primary; overflow: hidden;
+  padding: $space-16 0 $space-20;
+  @include md { padding: $space-10 0 $space-12; }
+}
+
+.heroBg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 75% 50%, rgba($color-secondary, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.heroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, $color-primary 30%, transparent 100%);
+  pointer-events: none;
+  @include md { background: linear-gradient(to bottom, rgba($color-primary, 0.6) 0%, $color-primary 100%); }
+}
+
+.heroInner {
+  display: grid; grid-template-columns: 300px 1fr; gap: $space-12; align-items: center;
+  position: relative; z-index: $z-above;
+  @include lg { grid-template-columns: 240px 1fr; gap: $space-8; }
+  @include md { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+}
+
+.playerImg {
+  position: relative; border-radius: $radius-xl; overflow: hidden; aspect-ratio: 3/4;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5); border: 2px solid rgba($color-secondary, 0.3);
+  @include md { max-width: 220px; width: 100%; }
+}
+
+.jerseyBadge {
+  position: absolute; bottom: $space-4; right: $space-4;
+  width: 52px; height: 52px; border-radius: $radius-lg;
+  background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  span { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; color: $color-white; line-height: 1; }
+}
+
+.playerInfo {
+  display: flex; flex-direction: column; gap: $space-5;
+  @include md { align-items: center; }
+}
+
+.position {
+  display: inline-flex; align-self: flex-start;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.18em; text-transform: uppercase; color: $color-gold;
+  padding: $space-1 $space-4; border: 1px solid rgba($color-gold, 0.35); border-radius: $radius-full;
+  @include md { align-self: center; }
+}
+
+.name {
+  font-family: $font-display; font-size: clamp(#{$font-size-2xl}, 5vw, 4rem);
+  font-weight: $font-weight-black; text-transform: uppercase; color: $color-white;
+  line-height: $line-height-tight; letter-spacing: -0.02em;
+}
+
+.meta {
+  display: flex; align-items: center; gap: $space-4; flex-wrap: wrap;
+  @include md { justify-content: center; }
+}
+
+.metaItem { display: flex; align-items: center; gap: $space-2; font-family: $font-body; font-size: $font-size-sm; color: rgba(255,255,255,0.55); }
+
+.firstTeamTag {
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: rgba($color-gold, 0.15); color: $color-gold;
+  border: 1px solid rgba($color-gold, 0.3); border-radius: $radius-full;
+  padding: 2px $space-3;
+}
+
+.statsRow {
+  display: flex; flex-wrap: wrap; gap: $space-2;
+  @include md { justify-content: center; }
+}
+
+.statBox {
+  display: flex; flex-direction: column; align-items: center; gap: $space-1;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: $radius-lg; padding: $space-4 $space-5; min-width: 72px;
+  transition: border-color $transition-base;
+  &:hover { border-color: rgba($color-secondary, 0.4); }
+}
+
+.statValue { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; color: $color-gold; line-height: 1; }
+.statLabel { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.socials {
+  display: flex; gap: $space-3; flex-wrap: wrap;
+  @include md { justify-content: center; }
+}
+
+.socialLink {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-body; font-size: $font-size-sm; color: rgba(255,255,255,0.55);
+  text-decoration: none; padding: $space-2 $space-4;
+  border: 1px solid rgba(255,255,255,0.12); border-radius: $radius-full;
+  transition: all $transition-base;
+  &:hover { color: $color-gold; border-color: rgba($color-gold, 0.4); background: rgba($color-gold, 0.06); }
+}
+
+// ── Bio section ───────────────────────────────────────────
+.bioSection {
+  @include section-padding;
+  .container { display: grid; grid-template-columns: 1fr 1fr; gap: $space-8; align-items: start; @include lg { grid-template-columns: 1fr; } }
+}
+
+.bioCard { background: $color-white; border-radius: $radius-xl; padding: $space-10; box-shadow: $shadow-md; border-top: 3px solid $color-secondary; }
+.bioTitle { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; }
+.bioAccent { width: 44px; height: 3px; background: $color-secondary; border-radius: $radius-full; margin: $space-4 0; }
+.bioText { font-family: $font-body; font-size: $font-size-base; color: $color-text-secondary; line-height: $line-height-loose; }
+
+.seasonStats { background: $color-white; border-radius: $radius-xl; padding: $space-10; box-shadow: $shadow-md; display: flex; flex-direction: column; gap: $space-6; border-top: 3px solid $color-primary; }
+.seasonTitle { font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; }
+.statBars { display: flex; flex-direction: column; gap: $space-6; }
+.barItem { display: flex; flex-direction: column; gap: $space-3; }
+.barHeader { display: flex; justify-content: space-between; align-items: center; }
+.barLabel { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; letter-spacing: 0.06em; text-transform: uppercase; color: $color-text-secondary; }
+.barValue { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; color: $color-secondary; }
+.barTrack { height: 8px; background: rgba($color-primary, 0.08); border-radius: $radius-full; overflow: hidden; }
+.barFill { height: 100%; background: linear-gradient(90deg, $color-secondary, $color-gold); border-radius: $radius-full; }
+
+// ── Related players ───────────────────────────────────────
+.relatedSection {
+  background: $color-white;
+  padding: $space-12 0 $space-16;
+  border-top: 1px solid rgba($color-primary, 0.07);
+}
+
+.relatedHeading {
+  font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em;
+  margin-bottom: $space-8;
+  padding-bottom: $space-4; border-bottom: 2px solid $color-secondary; display: inline-block;
+}
+
+.relatedGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: $space-5;
+  @include md { grid-template-columns: 1fr; }
+}
+
+.relCard {
+  display: flex; align-items: center; gap: $space-4;
+  background: $color-off-white; border-radius: $radius-xl;
+  border: 1px solid rgba($color-primary, 0.07); padding: $space-4;
+  text-decoration: none; color: inherit; transition: all $transition-base;
+  &:hover .relArrow { opacity: 1; transform: translateX(4px); }
+  &:hover { border-color: rgba($color-secondary, 0.3); background: $color-white; }
+}
+
+.relImg {
+  position: relative; width: 72px; height: 88px; flex-shrink: 0;
+  border-radius: $radius-lg; overflow: hidden; background: $color-primary;
+}
+
+.relNumber {
+  position: absolute; bottom: $space-1; right: $space-1;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-black;
+  color: $color-gold; background: rgba($color-primary-dark, 0.7);
+  padding: 0 $space-1; border-radius: $radius-sm; line-height: 1.4;
+}
+
+.relBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+
+.relPos {
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
+}
+
+.relName {
+  font-family: $font-display; font-size: $font-size-base; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; @include truncate(1);
+}
+
+.relNat { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; }
+
+.relArrow {
+  color: $color-secondary; opacity: 0; flex-shrink: 0;
+  transition: opacity $transition-fast, transform $transition-fast;
+}

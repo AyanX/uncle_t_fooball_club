@@ -1,0 +1,152 @@
+.page { display: flex; flex-direction: column; gap: $space-6; }
+
+.topBar {
+  @include flex-between; flex-wrap: wrap; gap: $space-4;
+  background: $color-white; border-radius: $radius-xl;
+  padding: $space-4 $space-6; box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.07);
+}
+
+.backBtn {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.08em; text-transform: uppercase;
+  color: $color-text-secondary; text-decoration: none; transition: color $transition-fast;
+  &:hover { color: $color-secondary; }
+}
+
+.layout {
+  display: grid; grid-template-columns: 1fr 300px; gap: $space-6; align-items: start;
+  @include lg { grid-template-columns: 1fr; }
+}
+
+.main {
+  display: flex; flex-direction: column; gap: $space-5;
+}
+
+// Hero preview — matches frontend article page
+.heroPreview {
+  position: relative; border-radius: $radius-xl; overflow: hidden;
+  height: 280px; background: $color-primary-dark;
+  @include md { height: 200px; }
+}
+
+.heroImg { width: 100%; height: 100%; object-fit: cover; }
+
+.heroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba($color-primary-dark, 0.88) 0%, rgba($color-primary-dark, 0.3) 100%);
+}
+
+.heroCat {
+  position: absolute; top: $space-4; left: $space-5;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: $color-secondary; color: $color-white;
+  padding: $space-1 $space-4; border-radius: $radius-full;
+}
+
+.heroTitleWrap {
+  position: absolute; bottom: $space-6; left: $space-6; right: $space-6;
+}
+
+.heroTitle {
+  font-family: $font-display; font-size: clamp(#{$font-size-lg}, 3vw, #{$font-size-2xl});
+  font-weight: $font-weight-black; text-transform: uppercase;
+  color: $color-white; line-height: $line-height-snug; letter-spacing: -0.02em;
+}
+
+// Article body
+.articleBody {
+  background: $color-white; border-radius: $radius-xl; padding: $space-8;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  display: flex; flex-direction: column; gap: $space-6;
+}
+
+// Inline editable field
+.inlineField { display: flex; flex-direction: column; gap: $space-2; }
+
+.inlineLabel {
+  display: flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.editIcon {
+  width: 22px; height: 22px; border-radius: $radius-sm; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-secondary, 0.08); color: $color-secondary;
+  transition: all $transition-fast; opacity: 0;
+  .inlineField:hover & { opacity: 1; }
+  &:hover { background: $color-secondary; color: $color-white; }
+}
+
+.inlineValue {
+  font-family: $font-body; font-size: $font-size-base; color: $color-primary;
+  line-height: $line-height-loose; cursor: pointer; padding: $space-2 0;
+  border-bottom: 1px dashed transparent;
+  transition: border-color $transition-fast;
+  white-space: pre-wrap;
+  &:hover { border-color: rgba($color-secondary, 0.3); }
+}
+
+.empty { color: $color-text-muted; font-style: italic; }
+
+.inlineEdit { display: flex; flex-direction: column; gap: $space-2; }
+
+.inlineInput, .inlineTextarea {
+  width: 100%; padding: $space-3 $space-4;
+  background: $color-off-white; border: 2px solid $color-secondary;
+  border-radius: $radius-md; font-family: $font-body; font-size: $font-size-base;
+  color: $color-primary; outline: none; resize: vertical;
+  box-shadow: 0 0 0 3px rgba($color-secondary, 0.1);
+}
+
+.inlineActions {
+  display: flex; gap: $space-2; justify-content: flex-end;
+}
+
+.saveBtn, .cancelBtn {
+  width: 32px; height: 32px; border-radius: $radius-md; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all $transition-fast;
+}
+
+.saveBtn { background: #16a34a; color: $color-white; &:hover { background: #15803d; } }
+.cancelBtn { background: rgba($color-primary, 0.08); color: $color-text-secondary; &:hover { background: rgba($color-primary, 0.15); } }
+
+// Image preview inside article
+.imgPreview {
+  border-radius: $radius-lg; overflow: hidden; aspect-ratio: 16/9;
+  background: $color-primary-dark; border: 1px solid rgba($color-primary, 0.1);
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+// Sidebar
+.sidebar { display: flex; flex-direction: column; gap: $space-5; }
+
+.sideCard {
+  background: $color-white; border-radius: $radius-xl; padding: $space-6;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  display: flex; flex-direction: column; gap: $space-4;
+}
+
+.sideTitle {
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold;
+  text-transform: uppercase; color: $color-primary; letter-spacing: 0.06em;
+  padding-bottom: $space-3; border-bottom: 1px solid rgba($color-primary, 0.07);
+}
+
+.metaRow {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: $space-3; border-top: 1px solid rgba($color-primary, 0.07);
+}
+
+.metaKey { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; text-transform: uppercase; letter-spacing: 0.08em; }
+.metaVal { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; color: $color-primary; }
+
+.thumbPreview {
+  border-radius: $radius-lg; overflow: hidden; aspect-ratio: 16/9;
+  img { width: 100%; height: 100%; object-fit: cover; }
+}

@@ -1,0 +1,193 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+// Background
+.bg { position: absolute; inset: 0; }
+
+.bgImg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  animation: slowZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1.03); }
+  to   { transform: scale(1.10); }
+}
+
+// Hero overlay: navy left → transparent right (matches reference image)
+.bgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba($color-primary-dark, 0.93) 0%,
+    rgba($color-primary-dark, 0.75) 45%,
+    rgba($color-primary-dark, 0.3)  100%
+  );
+}
+
+.bgGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba($color-primary-dark, 0.6) 0%, transparent 50%);
+}
+
+// Pitch decoration
+.pitchDeco {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: hidden; opacity: 0.05;
+}
+
+.halfCircle {
+  position: absolute;
+  bottom: -100px; left: 58%;
+  width: 480px; height: 480px;
+  border: 1.5px solid $color-white;
+  border-radius: 50%;
+}
+
+// Content
+.container {
+  @include container;
+  position: relative; z-index: $z-above;
+  padding-top: calc(#{$navbar-height} + #{$space-20});
+  padding-bottom: $space-20;
+  @include md {
+    padding-top: calc(#{$navbar-height} + #{$space-12});
+    padding-bottom: $space-12;
+  }
+}
+
+.content {
+  max-width: 660px;
+  display: flex; flex-direction: column; gap: $space-6;
+}
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: $space-3;
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+
+  &::before {
+    content: '';
+    width: 28px; height: 2px;
+    background: $color-secondary;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+  }
+}
+
+.headline {
+  display: flex; flex-direction: column; gap: $space-1;
+}
+
+.headlineWhite {
+  font-family: $font-display;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: $font-weight-black;
+  color: $color-white;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: $line-height-tight;
+}
+
+.headlineRed {
+  font-family: $font-display;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: $font-weight-black;
+  color: $color-gold;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: $line-height-tight;
+}
+
+.subheading {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: rgba(255,255,255,0.68);
+  line-height: $line-height-loose;
+  max-width: 520px;
+}
+
+// Match strip
+.matchStrip {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-left: 3px solid $color-secondary;
+  border-radius: $radius-md;
+  padding: $space-4 $space-5;
+  width: fit-content;
+}
+
+.matchLabel {
+  display: flex; align-items: center; gap: $space-2;
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  color: $color-gold;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.06em;
+}
+
+.matchInfo {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.matchTeams {
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-white;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.matchMeta {
+  display: flex; align-items: center; gap: $space-1;
+  font-size: $font-size-xs;
+  color: rgba(255,255,255,0.5);
+}
+
+// CTAs
+.ctas { display: flex; flex-wrap: wrap; gap: $space-4; align-items: center; }
+
+.btnPrimary {
+  @include btn-primary;
+  font-size: $font-size-sm;
+  padding: $space-4 $space-7;
+}
+
+.btnGold {
+  @include btn-gold;
+  font-size: $font-size-sm;
+  padding: $space-4 $space-6;
+}
+
+// Scroll hint
+.scrollHint {
+  position: absolute; bottom: $space-8; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: $space-2;
+  font-family: $font-body; font-size: $font-size-xs;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.32); z-index: $z-above;
+  @include md { display: none; }
+}
+
+.scrollLine {
+  width: 1px; height: 36px;
+  background: linear-gradient(to bottom, $color-secondary, transparent);
+}

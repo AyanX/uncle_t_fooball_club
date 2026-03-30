@@ -1,0 +1,146 @@
+.page { display: flex; flex-direction: column; gap: $space-6; }
+
+.pageTitle { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
+
+.layout {
+  display: grid; grid-template-columns: 220px 1fr; gap: $space-6; align-items: start;
+  @include lg { grid-template-columns: 1fr; }
+}
+
+.settingsNav {
+  background: $color-white; border-radius: $radius-xl; padding: $space-3;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  display: flex; flex-direction: column; gap: $space-1;
+  position: sticky; top: calc(60px + #{$space-6});
+  @include lg { position: static; flex-direction: row; flex-wrap: wrap; }
+}
+
+.navItem {
+  display: flex; align-items: center; gap: $space-3; padding: $space-3 $space-4;
+  border-radius: $radius-md; border: none; cursor: pointer;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.06em; text-transform: uppercase; color: $color-text-secondary;
+  background: transparent; transition: all $transition-fast; text-align: left;
+  &:hover { background: rgba($color-secondary, 0.06); color: $color-secondary; }
+  @include lg { flex: 1; min-width: 140px; justify-content: center; }
+}
+
+.navActive { background: rgba($color-secondary, 0.1) !important; color: $color-secondary !important; }
+
+.settingsContent { display: flex; flex-direction: column; gap: $space-6; }
+
+// Panel
+.panel {
+  background: $color-white; border-radius: $radius-xl; padding: $space-8;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+}
+
+.panelHeader { @include flex-between; margin-bottom: $space-6; flex-wrap: wrap; gap: $space-3; }
+
+.panelTitle {
+  font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em;
+  margin-bottom: $space-6;
+}
+
+.panelFooter { display: flex; justify-content: flex-end; margin-top: $space-6; padding-top: $space-5; border-top: 1px solid rgba($color-primary, 0.07); }
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
+
+// Stats grid
+.statGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: $space-3; }
+
+.statCard {
+  background: $color-primary-dark; border-radius: $radius-lg; padding: $space-5 $space-4;
+  display: flex; flex-direction: column; align-items: center; gap: $space-2; text-align: center;
+  position: relative;
+  &:hover .statActions { opacity: 1; }
+}
+
+.statVal { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; color: $color-gold; line-height: 1; }
+.statLbl { font-family: $font-body; font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.statActions {
+  position: absolute; top: $space-2; right: $space-2;
+  display: flex; gap: $space-1; opacity: 0; transition: opacity $transition-fast;
+}
+
+.statAddSlot {
+  border: 2px dashed rgba($color-secondary, 0.3); border-radius: $radius-lg;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  color: rgba($color-secondary, 0.5); min-height: 90px;
+  transition: all $transition-fast;
+  &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.04); }
+}
+
+// List items (mission/vision + milestones)
+.listItems { display: flex; flex-direction: column; gap: $space-3; }
+
+.listItem {
+  display: flex; align-items: flex-start; gap: $space-4;
+  background: $color-off-white; border-radius: $radius-lg; padding: $space-5;
+  border: 1px solid rgba($color-primary, 0.07);
+}
+
+.milestoneYear {
+  font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black;
+  color: rgba($color-secondary, 0.3); line-height: 1; flex-shrink: 0; min-width: 52px;
+}
+
+.listBody { flex: 1; min-width: 0; }
+.listTitle { font-family: $font-display; font-size: $font-size-base; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-primary; margin-bottom: $space-2; letter-spacing: -0.01em; }
+.listText { font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; }
+.listActions { display: flex; gap: $space-2; flex-shrink: 0; }
+
+.addListSlot {
+  display: flex; align-items: center; justify-content: center; gap: $space-3;
+  border: 2px dashed rgba($color-secondary, 0.3); border-radius: $radius-lg;
+  padding: $space-5; cursor: pointer; color: rgba($color-secondary, 0.6);
+  transition: all $transition-fast;
+  span { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; }
+  &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.04); }
+}
+
+// Management grid
+.managementGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: $space-4; }
+
+.mgmtCard {
+  display: flex; flex-direction: column; align-items: center; gap: $space-3;
+  background: $color-off-white; border-radius: $radius-xl; padding: $space-5 $space-4;
+  border: 1px solid rgba($color-primary, 0.07); text-align: center;
+  position: relative;
+  &:hover .mgmtActions { opacity: 1; }
+}
+
+.mgmtImg {
+  width: 72px; height: 72px; border-radius: 50%; overflow: hidden;
+  border: 3px solid $color-secondary; box-shadow: 0 4px 16px rgba($color-secondary, 0.2);
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.mgmtName { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em; }
+.mgmtRole { font-family: $font-body; font-size: $font-size-xs; color: $color-secondary; font-weight: $font-weight-semibold; }
+
+.mgmtActions {
+  position: absolute; top: $space-2; right: $space-2;
+  display: flex; gap: $space-1; opacity: 0; transition: opacity $transition-fast;
+}
+
+.mgmtAddSlot {
+  border: 2px dashed rgba($color-secondary, 0.3); border-radius: $radius-xl;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: $space-3; cursor: pointer; color: rgba($color-secondary, 0.6);
+  min-height: 160px; transition: all $transition-fast;
+  span { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; }
+  &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.04); }
+}
+
+// Shared icon button
+.iconBtn {
+  width: 26px; height: 26px; border-radius: $radius-sm; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.8); color: $color-primary;
+  transition: all $transition-fast;
+  &:hover { background: $color-primary; color: $color-white; }
+  &.danger:hover { background: $color-secondary; color: $color-white; }
+}

@@ -1,0 +1,89 @@
+.page { display: flex; flex-direction: column; gap: $space-6; }
+.pageHeader { @include flex-between; flex-wrap: wrap; gap: $space-4; }
+.pageTitle { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
+.pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
+
+.skeleton { height: 200px; border-radius: $radius-xl; background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.tierSection { display: flex; flex-direction: column; gap: $space-4; }
+
+.tierHeader {
+  display: flex; align-items: center; gap: $space-3;
+  padding-bottom: $space-3; border-bottom: 2px solid rgba($color-primary, 0.08);
+}
+
+.tierName {
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: 0.04em; flex: 1;
+}
+
+.tierCount {
+  width: 24px; height: 24px; border-radius: 50%; background: $color-secondary; color: $color-white;
+  @include flex-center; font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+}
+
+.tierEditBtn {
+  width: 26px; height: 26px; border-radius: $radius-sm; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-primary, 0.06); color: $color-primary; transition: all $transition-fast;
+  &:hover { background: $color-primary; color: $color-white; }
+  &.danger:hover { background: $color-secondary; color: $color-white; }
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: $space-4; }
+
+.addSlot {
+  border: 2px dashed rgba($color-secondary, 0.3); border-radius: $radius-xl;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: $space-2; padding: $space-8; cursor: pointer; color: rgba($color-secondary, 0.6);
+  background: rgba($color-secondary, 0.02); transition: all $transition-base; min-height: 140px;
+  span { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; }
+  &:hover { background: rgba($color-secondary, 0.06); border-color: $color-secondary; color: $color-secondary; }
+}
+
+.card {
+  background: $color-white; border-radius: $radius-xl; padding: $space-5;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  display: flex; flex-direction: column; gap: $space-3;
+  position: relative; transition: all $transition-base;
+  &:hover { box-shadow: $shadow-md; border-color: rgba($color-secondary, 0.2); }
+  &:hover .cardActions { opacity: 1; }
+}
+
+.cardHeader { display: flex; align-items: center; gap: $space-3; }
+
+.logoArea {
+  width: 52px; height: 52px; border-radius: $radius-md; overflow: hidden;
+  background: rgba($color-primary, 0.06); border: 1px solid rgba($color-primary, 0.08);
+  @include flex-center; flex-shrink: 0;
+}
+
+.logoImg { width: 100%; height: 100%; object-fit: cover; }
+.logoFallback { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black; color: $color-primary; }
+
+.cardMeta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: $space-2; }
+.partnerName { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; @include truncate(1); letter-spacing: -0.01em; }
+
+.desc { font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; @include truncate(3); flex: 1; }
+
+.website {
+  display: inline-flex; align-items: center; gap: $space-1;
+  font-family: $font-body; font-size: $font-size-xs; color: $color-secondary;
+  text-decoration: none; @include truncate(1);
+  &:hover { text-decoration: underline; }
+}
+
+.cardActions {
+  position: absolute; top: $space-3; right: $space-3;
+  display: flex; gap: $space-1; opacity: 0; transition: opacity $transition-fast;
+}
+
+.editBtn, .deleteBtn { width: 28px; height: 28px; border-radius: $radius-md; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all $transition-fast; }
+.editBtn { background: rgba($color-primary, 0.08); color: $color-primary; &:hover { background: $color-primary; color: $color-white; } }
+.deleteBtn { background: rgba($color-secondary, 0.1); color: $color-secondary; &:hover { background: $color-secondary; color: $color-white; } }
+
+.emptyState { display: flex; flex-direction: column; align-items: center; gap: $space-4; padding: $space-16; background: $color-white; border-radius: $radius-xl; border: 1px dashed rgba($color-primary, 0.15); text-align: center; p { font-family: $font-body; color: $color-text-muted; } }
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
+.modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary, 0.08); }

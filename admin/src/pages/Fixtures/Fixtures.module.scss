@@ -1,0 +1,60 @@
+.page { display: flex; flex-direction: column; gap: $space-6; }
+.pageHeader { @include flex-between; flex-wrap: wrap; gap: $space-4; }
+.pageTitle { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
+.pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
+
+.tabs { display: flex; gap: $space-2; flex-wrap: wrap; }
+.tab {
+  @include btn-base; background: $color-white; color: $color-text-secondary;
+  border: 2px solid rgba($color-primary, 0.1); font-size: $font-size-xs;
+  padding: $space-2 $space-5; border-radius: $radius-full;
+  &:hover { border-color: $color-secondary; color: $color-secondary; }
+  &.active { background: $color-secondary; color: $color-white; border-color: $color-secondary; }
+}
+
+.skeleton { height: 200px; border-radius: $radius-xl; background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.list { display: flex; flex-direction: column; gap: $space-3; }
+
+.row {
+  background: $color-white; border-radius: $radius-xl; padding: $space-5 $space-6;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  display: flex; flex-direction: column; gap: $space-3;
+  transition: box-shadow $transition-base, border-color $transition-base;
+  position: relative;
+  &:hover { box-shadow: $shadow-md; border-color: rgba($color-secondary, 0.2); }
+}
+
+.rowTop { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: $space-2; }
+.comp { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; letter-spacing: 0.12em; text-transform: uppercase; color: $color-text-muted; }
+
+.matchup { display: flex; align-items: center; gap: $space-4; flex-wrap: wrap; }
+.team { font-family: $font-display; font-size: $font-size-base; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-text-secondary; flex: 1; &.us { color: $color-primary; font-weight: $font-weight-black; } &.right { text-align: right; } }
+.scoreArea { display: flex; align-items: center; gap: $space-2; flex-shrink: 0; }
+.score { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; color: $color-primary; }
+.vs { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black; color: $color-secondary; letter-spacing: 0.08em; }
+.result {
+  width: 24px; height: 24px; border-radius: $radius-sm; @include flex-center;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-black;
+  &.win  { background: rgba(22,163,74,0.1); color: #16a34a; }
+  &.draw { background: rgba(241,196,15,0.15); color: #ca8a04; }
+  &.loss { background: rgba($color-secondary, 0.1); color: $color-secondary; }
+}
+
+.rowMeta { display: flex; flex-wrap: wrap; gap: $space-5; }
+.metaItem { display: flex; align-items: center; gap: $space-1; font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; &.fans { color: #ca8a04; font-weight: $font-weight-semibold; } }
+
+.rowActions {
+  position: absolute; top: $space-4; right: $space-4;
+  display: flex; gap: $space-2; opacity: 0; transition: opacity $transition-fast;
+  .row:hover & { opacity: 1; }
+}
+.editBtn, .deleteBtn { width: 32px; height: 32px; border-radius: $radius-md; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all $transition-fast; }
+.editBtn { background: rgba($color-primary, 0.08); color: $color-primary; &:hover { background: $color-primary; color: $color-white; } }
+.deleteBtn { background: rgba($color-secondary, 0.08); color: $color-secondary; &:hover { background: $color-secondary; color: $color-white; } }
+
+.empty { border: 2px dashed rgba($color-secondary, 0.3); border-radius: $radius-xl; padding: $space-16; display: flex; flex-direction: column; align-items: center; gap: $space-3; cursor: pointer; color: rgba($color-secondary, 0.6); transition: all $transition-fast; span { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; } &:hover { background: rgba($color-secondary, 0.04); border-color: $color-secondary; color: $color-secondary; } }
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
+.modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary, 0.08); }

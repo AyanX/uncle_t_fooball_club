@@ -1,0 +1,159 @@
+.page { display: flex; flex-direction: column; gap: $space-6; }
+
+.pageHeader {
+  @include flex-between; flex-wrap: wrap; gap: $space-4;
+}
+
+.pageTitle {
+  font-family: $font-display; font-size: $font-size-2xl;
+  font-weight: $font-weight-black; text-transform: uppercase;
+  color: $color-primary; letter-spacing: -0.02em;
+}
+
+.pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
+
+// Filters
+.filters { display: flex; flex-wrap: wrap; gap: $space-2; }
+
+.filterBtn {
+  @include btn-base;
+  background: $color-white; color: $color-text-secondary;
+  border: 2px solid rgba($color-primary, 0.1); font-size: $font-size-xs;
+  padding: $space-2 $space-4; border-radius: $radius-full;
+  &:hover { border-color: $color-secondary; color: $color-secondary; }
+  &.active { background: $color-secondary; color: $color-white; border-color: $color-secondary; }
+}
+
+// Add card (empty slot)
+.addCard {
+  border: 2px dashed rgba($color-secondary, 0.35); border-radius: $radius-xl;
+  background: rgba($color-secondary, 0.03);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: $space-3; padding: $space-8; cursor: pointer;
+  transition: all $transition-base; min-height: 120px;
+  &:hover { border-color: $color-secondary; background: rgba($color-secondary, 0.06); }
+}
+
+.addIcon { color: $color-secondary; }
+.addLabel {
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold;
+  text-transform: uppercase; letter-spacing: 0.08em; color: $color-secondary;
+}
+
+// Grid — same as frontend
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-5;
+}
+
+.skeleton {
+  height: 340px; border-radius: $radius-xl;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+// Player card
+.card {
+  background: $color-white; border-radius: $radius-xl; overflow: hidden;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  transition: box-shadow $transition-base, transform $transition-spring;
+  &:hover { transform: translateY(-4px); box-shadow: $shadow-xl; }
+}
+
+.imgWrap {
+  position: relative; height: 240px; overflow: hidden; background: $color-primary;
+  img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.5s ease; }
+  &:hover img { transform: scale(1.04); }
+  &:hover .imgActions { opacity: 1; }
+}
+
+.numberBadge {
+  position: absolute; top: $space-3; left: $space-3;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: $radius-md;
+  padding: $space-1 $space-3;
+  font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black;
+  color: $color-white; line-height: 1;
+}
+
+.posBadge {
+  position: absolute; bottom: $space-3; right: $space-3;
+  font-family: $font-display; font-size: 10px; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: $color-secondary; color: $color-white;
+  padding: 2px $space-3; border-radius: $radius-full;
+}
+
+.firstTeamBadge {
+  position: absolute; top: $space-3; right: $space-3;
+  display: flex; align-items: center; gap: 3px;
+  font-family: $font-display; font-size: 10px; font-weight: $font-weight-bold;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: $color-gold; color: $color-primary-dark;
+  padding: 2px $space-2; border-radius: $radius-full;
+}
+
+.imgActions {
+  position: absolute; inset: 0;
+  background: rgba($color-primary-dark, 0.55);
+  display: flex; align-items: center; justify-content: center; gap: $space-3;
+  opacity: 0; transition: opacity $transition-base;
+}
+
+.editBtn, .deleteBtn {
+  width: 38px; height: 38px; border-radius: $radius-md; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: $font-size-base; transition: all $transition-fast;
+}
+
+.editBtn {
+  background: $color-white; color: $color-primary;
+  &:hover { background: $color-primary; color: $color-white; }
+}
+
+.deleteBtn {
+  background: rgba($color-secondary, 0.9); color: $color-white;
+  &:hover { background: $color-secondary; }
+}
+
+// Card info
+.info { padding: $space-4 $space-5 $space-5; }
+
+.nameRow { @include flex-between; gap: $space-2; margin-bottom: 2px; }
+
+.name {
+  font-family: $font-display; font-size: $font-size-base; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; @include truncate(1); letter-spacing: -0.01em;
+}
+
+.flag { color: $color-text-muted; flex-shrink: 0; }
+
+.nat {
+  font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted;
+  letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-bottom: $space-3;
+}
+
+.statsRow {
+  display: flex; gap: $space-4; padding-top: $space-3;
+  border-top: 1px solid rgba($color-primary, 0.07);
+}
+
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.statVal { font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black; color: $color-secondary; line-height: 1; }
+.statLbl { font-family: $font-body; font-size: 10px; color: $color-text-muted; text-transform: uppercase; letter-spacing: 0.06em; }
+
+// Form grid
+.formGrid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: $space-5;
+  @include sm { grid-template-columns: 1fr; }
+}
+
+.modalFooter {
+  display: flex; justify-content: flex-end; gap: $space-3;
+  margin-top: $space-7; padding-top: $space-5;
+  border-top: 1px solid rgba($color-primary, 0.08);
+}

@@ -1,0 +1,200 @@
+// AdminLayout.module.scss
+$sidebar-w: 240px;
+
+.root {
+  display: flex;
+  min-height: 100vh;
+  background: $color-off-white;
+}
+
+// ── Sidebar ───────────────────────────────────────────────
+.sidebar {
+  width: $sidebar-w;
+  min-height: 100vh;
+  background: $color-primary-dark;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  @include hide-scrollbar;
+
+  @include lg {
+    display: none;
+  }
+}
+
+.mobileSidebar {
+  position: fixed !important;
+  top: 0; left: 0; bottom: 0;
+  z-index: $z-navbar;
+  display: flex !important;
+  width: min($sidebar-w, 85vw);
+}
+
+.backdrop {
+  position: fixed; inset: 0;
+  background: rgba($color-primary-dark, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: $z-navbar - 1;
+  display: none;
+  @include lg { display: block; }
+}
+
+.mobileClose {
+  position: absolute; top: $space-4; right: $space-4;
+  width: 32px; height: 32px; border-radius: $radius-md;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.7); cursor: pointer;
+  transition: background $transition-fast;
+  &:hover { background: rgba($color-secondary, 0.2); }
+}
+
+// Logo
+.logo {
+  display: flex; align-items: center; gap: $space-3;
+  padding: $space-6 $space-5;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 38px; height: 38px; border-radius: $radius-md;
+  background: $color-secondary; @include flex-center;
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-lg; color: $color-white; flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba($color-secondary, 0.4);
+}
+
+.logoText { @include flex-col; gap: 2px; }
+
+.logoName {
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-sm; color: $color-white; text-transform: uppercase;
+  letter-spacing: 0.04em; line-height: 1;
+}
+
+.logoBadge {
+  font-family: $font-body; font-size: 10px; font-weight: $font-weight-semibold;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: $color-gold; line-height: 1;
+}
+
+// Nav
+.nav {
+  flex: 1; padding: $space-4 $space-3;
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.navLabel {
+  font-family: $font-body; font-size: 10px; font-weight: $font-weight-semibold;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); padding: $space-3 $space-3 $space-2;
+  display: block;
+}
+
+.navItem {
+  display: flex; align-items: center; gap: $space-3;
+  padding: $space-3 $space-3;
+  border-radius: $radius-md;
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.58); text-decoration: none;
+  transition: all $transition-fast; position: relative;
+
+  &:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+
+  &.active {
+    background: rgba($color-secondary, 0.15);
+    color: $color-white;
+    border-left: 3px solid $color-secondary;
+    padding-left: calc(#{$space-3} - 3px);
+
+    .navIcon { color: $color-secondary; }
+    .navChevron { opacity: 1; color: $color-secondary; }
+  }
+}
+
+.navIcon { color: rgba(255,255,255,0.45); flex-shrink: 0; }
+.navLabelText { flex: 1; }
+.navChevron { opacity: 0; transition: opacity $transition-fast; .navItem:hover & { opacity: 0.5; } }
+
+// Footer
+.sidebarFooter {
+  padding: $space-4 $space-4 $space-5;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex; flex-direction: column; gap: $space-3;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex; align-items: center; gap: $space-3;
+}
+
+.userAvatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: $color-secondary; @include flex-center;
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-sm; color: $color-white; flex-shrink: 0;
+}
+
+.userDetails { @include flex-col; gap: 2px; min-width: 0; }
+.userEmail {
+  font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.8);
+  @include truncate(1);
+}
+.userRole { font-family: $font-body; font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.logoutBtn {
+  display: flex; align-items: center; gap: $space-2;
+  padding: $space-3 $space-3; border-radius: $radius-md;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08); width: 100%;
+  cursor: pointer; transition: all $transition-fast;
+  &:hover { background: rgba($color-secondary, 0.12); color: $color-secondary; border-color: rgba($color-secondary, 0.25); }
+}
+
+// ── Main area ─────────────────────────────────────────────
+.main {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column;
+  max-width: 100%;
+}
+
+.topbar {
+  height: 60px; background: $color-white;
+  border-bottom: 1px solid rgba($color-primary, 0.07);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 $space-6; position: sticky; top: 0; z-index: $z-above;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.hamburger {
+  display: none; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: $radius-md;
+  background: rgba($color-primary, 0.05); cursor: pointer;
+  color: $color-primary; transition: background $transition-fast;
+  &:hover { background: rgba($color-secondary, 0.08); color: $color-secondary; }
+  @include lg { display: flex; }
+}
+
+.topbarRight { display: flex; align-items: center; gap: $space-4; margin-left: auto; }
+
+.topbarUser {}
+
+.topbarAvatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: $color-secondary; @include flex-center;
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-sm; color: $color-white;
+}
+
+.content {
+  flex: 1; padding: $space-6;
+  @include md { padding: $space-4; }
+}

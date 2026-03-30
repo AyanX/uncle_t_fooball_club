@@ -1,0 +1,89 @@
+.section { @include section-padding; background: $color-off-white; }
+.container { @include container; }
+
+.topRow { display: flex; flex-direction: column; gap: $space-6; margin-bottom: $space-10; }
+
+.filters { display: flex; flex-wrap: wrap; gap: $space-2; }
+
+.filterBtn {
+  @include btn-base;
+  background: $color-white; color: $color-text-secondary;
+  border-color: rgba($color-primary, 0.12); font-size: $font-size-xs;
+  padding: $space-2 $space-5; border-radius: $radius-full;
+  &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.04); }
+  &.active { background: $color-secondary; color: $color-white; border-color: $color-secondary; }
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: $space-6; }
+
+.card {
+  display: flex; flex-direction: column;
+  background: $color-white; border-radius: $radius-xl; overflow: hidden;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.06);
+  text-decoration: none; color: inherit;
+  transition: transform $transition-spring, box-shadow $transition-base;
+  &:hover { transform: translateY(-6px); box-shadow: $shadow-xl; .viewProfile { gap: $space-3; } .imgWrap img { transform: scale(1.06); } }
+}
+
+.imgWrap { position: relative; height: 260px; overflow: hidden; background: $color-primary; img { transition: transform 0.55s ease; } }
+
+.numberOverlay {
+  position: absolute; top: $space-4; left: $space-4;
+  background: rgba(255,255,255,0.1); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: $radius-md;
+  padding: $space-1 $space-3;
+}
+
+.number { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; color: $color-white; line-height: 1; }
+
+.positionBadge {
+  position: absolute; bottom: $space-4; right: $space-4;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: $color-secondary; color: $color-white;
+  padding: $space-1 $space-3; border-radius: $radius-full;
+}
+
+.info { padding: $space-5 $space-6 $space-6; display: flex; flex-direction: column; gap: $space-2; }
+
+.nameRow { display: flex; align-items: center; justify-content: space-between; gap: $space-2; }
+
+.name {
+  font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; line-height: $line-height-tight;
+  letter-spacing: -0.01em; @include truncate(1);
+}
+
+.flagIcon { color: $color-text-muted; flex-shrink: 0; }
+
+.nationality { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.stats { display: flex; gap: $space-5; margin-top: $space-3; padding-top: $space-4; border-top: 1px solid rgba($color-primary, 0.06); }
+
+.stat { display: flex; flex-direction: column; gap: 2px; }
+
+.statVal { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; color: $color-secondary; line-height: 1; }
+
+.statLabel { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.viewProfile {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
+  margin-top: $space-3; transition: gap $transition-fast, color $transition-fast;
+}
+
+.firstTeamBadge {
+  position: absolute;
+  top: $space-4;
+  right: $space-4;
+  font-family: $font-display;
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: $color-gold;
+  color: $color-primary-dark;
+  padding: 2px $space-3;
+  border-radius: $radius-full;
+}

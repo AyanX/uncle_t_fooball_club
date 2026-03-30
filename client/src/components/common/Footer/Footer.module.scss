@@ -1,0 +1,115 @@
+.footer {
+  background: $color-primary-dark;
+  color: rgba(255,255,255,0.65);
+  font-family: $font-body;
+  border-top: 1px solid rgba($color-secondary, 0.2);
+}
+
+.top { padding: $space-20 0 $space-16; @include md { padding: $space-12 0; } }
+
+.container {
+  @include container;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: $space-10;
+  @include xl { grid-template-columns: 1fr 1fr; }
+  @include md { grid-template-columns: 1fr; gap: $space-10; }
+}
+
+.brand { display: flex; flex-direction: column; gap: $space-5; }
+
+.logo { display: flex; align-items: center; gap: $space-3; text-decoration: none; }
+
+.logoMark {
+  width: 46px; height: 46px;
+  background: $color-secondary;
+  border-radius: $radius-md;
+  display: flex; align-items: center; justify-content: center;
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-xl; color: $color-white; flex-shrink: 0;
+  box-shadow: 0 2px 12px rgba($color-secondary, 0.4);
+}
+
+.logoText { display: flex; flex-direction: column; gap: 2px; }
+
+.logoName {
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-md; color: $color-white;
+  text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+}
+
+.logoSub {
+  font-family: $font-body; font-size: $font-size-xs;
+  color: $color-gold; letter-spacing: 0.12em;
+  text-transform: uppercase; line-height: 1;
+}
+
+.tagline {
+  font-family: $font-body; font-size: $font-size-sm;
+  line-height: $line-height-loose; color: rgba(255,255,255,0.45);
+  max-width: 300px;
+}
+
+.socials { display: flex; gap: $space-3; }
+
+.socialLink {
+  width: 36px; height: 36px; border-radius: $radius-md;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.55);
+  transition: all $transition-base;
+  &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.08); }
+}
+
+.linksCol { display: flex; flex-direction: column; gap: $space-5; }
+
+.colTitle {
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.16em;
+  text-transform: uppercase; color: $color-white;
+}
+
+.linkList {
+  list-style: none; display: flex; flex-direction: column; gap: $space-3;
+}
+
+.footerLink {
+  font-family: $font-body; font-size: $font-size-sm;
+  color: rgba(255,255,255,0.48); text-decoration: none;
+  transition: color $transition-fast;
+  &:hover { color: $color-gold; }
+}
+
+.contactList {
+  list-style: none; display: flex; flex-direction: column; gap: $space-4;
+  li {
+    display: flex; align-items: flex-start; gap: $space-3;
+    font-family: $font-body; font-size: $font-size-sm;
+    color: rgba(255,255,255,0.48); line-height: $line-height-snug;
+  }
+}
+
+.contactIcon { flex-shrink: 0; margin-top: 2px; color: $color-secondary; }
+
+.joinBtn { @include btn-primary; margin-top: $space-2; justify-content: center; font-size: $font-size-xs; }
+
+.bottom {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: $space-5 0;
+}
+
+.bottomInner {
+  @include container; @include flex-between; gap: $space-4;
+  @include sm { flex-direction: column; align-items: flex-start; }
+}
+
+.copy { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.28); }
+
+.legal { display: flex; gap: $space-5; }
+
+.legalLink {
+  font-family: $font-body; font-size: $font-size-xs;
+  color: rgba(255,255,255,0.28); text-decoration: none;
+  transition: color $transition-fast;
+  &:hover { color: $color-gold; }
+}

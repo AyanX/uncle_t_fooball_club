@@ -1,0 +1,51 @@
+.section { background: $color-off-white; padding: $space-16 0; border-top: 1px solid rgba($color-primary, 0.06); }
+.container { @include container; }
+
+.header { @include flex-between; flex-wrap: wrap; gap: $space-4; margin-bottom: $space-10; }
+
+.eyebrow {
+  display: block; font-family: $font-body; font-size: $font-size-xs;
+  font-weight: $font-weight-semibold; letter-spacing: 0.16em; text-transform: uppercase;
+  color: $color-secondary; margin-bottom: $space-2;
+}
+
+.title {
+  font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em;
+}
+
+.link {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.08em; text-transform: uppercase; color: $color-secondary;
+  text-decoration: none; border-bottom: 1px solid rgba($color-secondary, 0.35);
+  padding-bottom: 2px; white-space: nowrap;
+  transition: color $transition-fast, border-color $transition-fast;
+  &:hover { color: $color-secondary-dark; border-color: $color-secondary-dark; }
+}
+
+.logoGrid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: $space-4;
+}
+
+.logoCard {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: $space-2; padding: $space-6 $space-4;
+  background: $color-white; border-radius: $radius-lg;
+  border: 2px solid transparent; box-shadow: $shadow-sm;
+  text-decoration: none; transition: all $transition-base; cursor: pointer;
+  &:hover { border-color: $color-secondary; box-shadow: $shadow-red; transform: translateY(-3px); }
+  &.platinum { border-color: rgba($color-gold, 0.3); }
+}
+
+.logoName {
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold;
+  text-transform: uppercase; letter-spacing: 0.06em; color: $color-primary; text-align: center;
+}
+
+.tierBadge {
+  font-family: $font-body; font-size: $font-size-xs; text-transform: capitalize;
+  letter-spacing: 0.06em; padding: 2px $space-3; border-radius: $radius-full;
+  font-weight: $font-weight-semibold; color: $color-secondary;
+  background: rgba($color-secondary, 0.08);
+}

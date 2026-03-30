@@ -1,0 +1,160 @@
+.page { background: $color-off-white; }
+.container { @include container; }
+
+.backBand {
+  background: $color-primary-dark;
+  padding: $space-4 0;
+  padding-top: calc(#{$navbar-height} + #{$space-4});
+}
+
+.backBtn {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.58); text-decoration: none;
+  transition: color $transition-fast;
+  &:hover { color: $color-gold; }
+}
+
+// ── Category hero — full-width background image with title ────
+.heroImg {
+  position: relative;
+  height: 480px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  @include md { height: 320px; }
+  @include sm { height: 260px; }
+}
+
+.heroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba($color-primary-dark, 0.92) 0%,
+    rgba($color-primary-dark, 0.55) 50%,
+    rgba($color-primary-dark, 0.25) 100%
+  );
+}
+
+.heroTitleWrap {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end;
+  padding-bottom: $space-10;
+  @include md { padding-bottom: $space-8; }
+}
+
+.heroCat {
+  display: inline-flex; align-self: flex-start;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: $color-secondary; color: $color-white;
+  padding: $space-1 $space-4; border-radius: $radius-full;
+  margin-bottom: $space-4; display: block;
+}
+
+.heroTitle {
+  font-family: $font-display;
+  font-size: clamp(#{$font-size-xl}, 4vw, #{$font-size-3xl});
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-white;
+  line-height: $line-height-snug;
+  letter-spacing: -0.02em;
+  max-width: 800px;
+}
+
+// ── Article section ───────────────────────────────────────
+.section { @include section-padding; }
+
+.layout {
+  display: grid; grid-template-columns: 1fr 320px; gap: $space-10; align-items: start;
+  @include lg { grid-template-columns: 1fr; }
+}
+
+.article {
+  background: $color-white; border-radius: $radius-xl;
+  padding: $space-10; box-shadow: $shadow-sm;
+}
+
+.meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: $space-4;
+  font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted;
+  margin-bottom: $space-6; padding-bottom: $space-6;
+  border-bottom: 1px solid rgba($color-primary, 0.08);
+}
+
+.metaItem { display: flex; align-items: center; gap: $space-2; }
+
+.excerpt {
+  font-family: $font-body; font-size: $font-size-md;
+  color: $color-text-secondary; line-height: $line-height-loose;
+  border-left: 4px solid $color-secondary;
+  padding-left: $space-6; margin-bottom: $space-8;
+  font-style: italic;
+}
+
+// Article's own image placed before the content body
+.articleImg {
+  position: relative;
+  @include aspect-ratio(16, 9);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: $space-8;
+  box-shadow: $shadow-md;
+}
+
+.content {
+  font-family: $font-body; font-size: $font-size-base;
+  color: $color-text-secondary; line-height: $line-height-loose;
+
+  p { margin-bottom: $space-5; &:last-child { margin-bottom: 0; } }
+  h2, h3 {
+    font-family: $font-display; text-transform: uppercase; color: $color-primary;
+    margin: $space-8 0 $space-4; letter-spacing: -0.01em;
+  }
+  strong { color: $color-primary; font-weight: $font-weight-bold; }
+  em { color: $color-text-secondary; }
+}
+
+// ── Sidebar ───────────────────────────────────────────────
+.sidebar {
+  display: flex; flex-direction: column; gap: $space-5;
+  position: sticky; top: calc(#{$navbar-height} + #{$space-6});
+  @include lg { display: none; }
+}
+
+.sidebarTitle {
+  font-family: $font-display; font-size: $font-size-lg;
+  font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary;
+  letter-spacing: -0.01em; padding-bottom: $space-4;
+  border-bottom: 2px solid $color-secondary;
+}
+
+.relatedList { display: flex; flex-direction: column; gap: $space-4; }
+
+.relatedCard {
+  display: flex; gap: $space-4; text-decoration: none; color: inherit;
+  padding: $space-4; background: $color-white; border-radius: $radius-lg;
+  box-shadow: $shadow-sm; transition: all $transition-base;
+  &:hover { box-shadow: $shadow-md; transform: translateY(-2px); }
+}
+
+.relatedImg { width: 90px; height: 70px; border-radius: $radius-md; overflow: hidden; flex-shrink: 0; position: relative; }
+
+.relatedBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: $space-2; }
+
+.relatedCat {
+  display: inline-flex; align-items: center; gap: $space-1;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
+}
+
+.relatedTitle {
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold;
+  text-transform: uppercase; color: $color-primary; line-height: $line-height-snug;
+  @include truncate(2);
+}
+
+.relatedDate { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; }

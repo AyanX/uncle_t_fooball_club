@@ -1,0 +1,130 @@
+.container { @include container; }
+
+// ── Impact band ───────────────────────────────────────────
+.impactBand { background: $color-primary; padding: $space-12 0; }
+
+.impactStat {
+  display: flex; flex-direction: column; align-items: center; gap: $space-2;
+  padding: $space-6 $space-4; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  &:last-child { border-right: none; }
+  @include md { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); &:last-child { border-bottom: none; } }
+}
+
+.impactValue { font-family: $font-display; font-size: $font-size-3xl; font-weight: $font-weight-black; color: $color-gold; line-height: 1; letter-spacing: -0.02em; }
+
+.impactLabel { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.52); letter-spacing: 0.1em; text-transform: uppercase; }
+
+// ── Main section ──────────────────────────────────────────
+.section { @include section-padding; background: $color-off-white; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: $space-6; }
+
+.card {
+  background: $color-white; border-radius: $radius-xl; overflow: hidden;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
+  display: flex; flex-direction: column;
+  transition: all $transition-base;
+  &:hover { transform: translateY(-5px); box-shadow: $shadow-xl; }
+  &:hover .cardImg img { transform: scale(1.06); }
+}
+
+.cardImg {
+  position: relative; height: 200px; overflow: hidden; background: $color-primary;
+  img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.55s ease; }
+}
+
+.imgOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba($color-primary-dark, 0.8) 0%, transparent 60%);
+}
+
+.iconBadge {
+  position: absolute; bottom: $space-4; left: $space-5;
+  width: 52px; height: 52px; border-radius: $radius-md;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center; color: $color-white;
+}
+
+.cardBody { padding: $space-7; display: flex; flex-direction: column; gap: $space-3; flex: 1; }
+
+.tagline { font-family: $font-body; font-size: $font-size-xs; font-weight: $font-weight-semibold; letter-spacing: 0.12em; text-transform: uppercase; color: $color-secondary; }
+
+.title { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em; }
+
+.desc { font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; @include truncate(3); flex: 1; }
+
+.statsRow { display: flex; gap: $space-5; padding-top: $space-4; border-top: 1px solid rgba($color-primary, 0.06); }
+
+.stat { display: flex; flex-direction: column; gap: 2px; }
+
+.statVal { font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black; color: $color-secondary; line-height: 1; }
+
+.statLabel { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; }
+
+.cta {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
+  text-decoration: none; margin-top: auto; padding-top: $space-4;
+  border-top: 1px solid rgba($color-primary, 0.06);
+  transition: gap $transition-fast;
+  .card:hover & { gap: $space-3; }
+}
+
+// ── CTA banner ────────────────────────────────────────────
+.ctaBanner { @include section-padding; background: $color-primary; }
+
+.ctaContent { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: $space-5; text-align: center; }
+
+.ctaEyebrow { font-family: $font-body; font-size: $font-size-xs; font-weight: $font-weight-semibold; letter-spacing: 0.18em; text-transform: uppercase; color: $color-gold; }
+
+.ctaTitle { font-family: $font-display; font-size: $font-size-3xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-white; letter-spacing: -0.02em; @include md { font-size: $font-size-2xl; } }
+
+.ctaText { font-family: $font-body; font-size: $font-size-base; color: rgba(255,255,255,0.6); line-height: $line-height-loose; }
+
+.ctaBtns { display: flex; gap: $space-4; flex-wrap: wrap; justify-content: center; }
+
+.ctaBtnPrimary { @include btn-primary; }
+
+.ctaBtnOutline { @include btn-outline-white; border-radius: $radius-sm; }
+
+// Fetched programme title filter
+.sectionHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $space-6;
+  margin-bottom: $space-4;
+}
+
+.filterWrap { flex-shrink: 0; }
+
+.filterSelect {
+  appearance: none;
+  padding: $space-3 $space-12 $space-3 $space-5;
+  background: $color-white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C8102E' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right $space-4 center;
+  border: 2px solid rgba($color-primary, 0.12);
+  border-radius: $radius-md;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-primary;
+  cursor: pointer;
+  outline: none;
+  min-width: 220px;
+  transition: border-color $transition-fast;
+
+  &:focus { border-color: $color-secondary; }
+}
+
+.impactContainer {
+  @include container;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: $space-2;
+}

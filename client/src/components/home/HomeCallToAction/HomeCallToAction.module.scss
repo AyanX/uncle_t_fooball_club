@@ -1,0 +1,86 @@
+// HomeCallToAction.module.scss
+.section {
+  position: relative;
+  background: $color-primary-dark;
+  padding: $space-24 0;
+  overflow: hidden;
+  text-align: center;
+
+  @include lg { padding: $space-20 0; }
+  @include md { padding: $space-16 0; }
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba($color-secondary, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.container {
+  @include container;
+  position: relative;
+  z-index: $z-above;
+}
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-5;
+}
+
+.eyebrow {
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $color-gold;
+}
+
+.title {
+  font-family: $font-display;
+  font-size: clamp(#{$font-size-3xl}, 5vw, #{$font-size-4xl});
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-white;
+  line-height: $line-height-tight;
+  letter-spacing: -0.02em;
+}
+
+.titleGold { color: $color-gold; }
+
+.sub {
+  font-family: $font-display;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-white;
+  letter-spacing: 0.04em;
+}
+
+.desc {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: $line-height-loose;
+  max-width: 480px;
+}
+
+.btns {
+  display: flex;
+  gap: $space-4;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: $space-3;
+}
+
+.btnPrimary { @include btn-primary; }
+
+.btnOutline {
+  @include btn-outline-white;
+  border-radius: $radius-sm;
+}

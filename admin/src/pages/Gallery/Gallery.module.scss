@@ -1,0 +1,99 @@
+.page { display: flex; flex-direction: column; gap: $space-6; }
+.pageHeader { @include flex-between; flex-wrap: wrap; gap: $space-4; }
+.pageTitle { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
+.pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
+
+.filters { display: flex; flex-wrap: wrap; gap: $space-2; }
+.filterBtn { @include btn-base; background: $color-white; color: $color-text-secondary; border: 2px solid rgba($color-primary, 0.1); font-size: $font-size-xs; padding: $space-2 $space-4; border-radius: $radius-full; &:hover { border-color: $color-secondary; color: $color-secondary; } &.active { background: $color-secondary; color: $color-white; border-color: $color-secondary; } }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 180px;
+  gap: $space-3;
+}
+
+.addSlot {
+  border: 2px dashed rgba($color-secondary, 0.35); border-radius: $radius-lg;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: $space-2; cursor: pointer; color: rgba($color-secondary, 0.6);
+  background: rgba($color-secondary, 0.03); transition: all $transition-base;
+  span { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; }
+  &:hover { background: rgba($color-secondary, 0.07); border-color: $color-secondary; color: $color-secondary; }
+}
+
+.tile {
+  position: relative; border-radius: $radius-lg; overflow: hidden;
+  background: $color-primary-dark; cursor: pointer;
+  &:hover .tileActions { opacity: 1; }
+  &:hover .tileImg { transform: scale(1.05); }
+}
+
+.tileImg { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+
+.featuredBadge {
+  position: absolute; top: $space-2; left: $space-2;
+  display: flex; align-items: center; gap: 3px;
+  font-family: $font-display; font-size: 10px; font-weight: $font-weight-bold; letter-spacing: 0.08em; text-transform: uppercase;
+  background: $color-gold; color: $color-primary-dark; padding: 2px $space-2; border-radius: $radius-full;
+}
+
+.tileOverlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba($color-primary-dark, 0.92) 0%, transparent 70%);
+  padding: $space-3 $space-3 $space-3; display: flex; flex-direction: column; gap: 2px;
+}
+
+.tileCat { font-family: $font-display; font-size: 10px; font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase; color: $color-gold; }
+.tileCaption { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.85); @include truncate(2); }
+
+.tileActions {
+  position: absolute; top: $space-2; right: $space-2;
+  display: flex; gap: $space-1; opacity: 0; transition: opacity $transition-fast;
+}
+
+.editBtn, .deleteBtn {
+  width: 28px; height: 28px; border-radius: $radius-md; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all $transition-fast;
+}
+.editBtn { background: $color-white; color: $color-primary; &:hover { background: $color-primary; color: $color-white; } }
+.deleteBtn { background: $color-secondary; color: $color-white; &:hover { background: $color-secondary-dark; } }
+
+// Category manager
+.catSection { background: $color-white; border-radius: $radius-xl; padding: $space-6; box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07); }
+.catHeader { @include flex-between; margin-bottom: $space-4; }
+.catTitle { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-primary; letter-spacing: 0.06em; }
+.catList { display: flex; flex-wrap: wrap; gap: $space-2; }
+
+.catChip {
+  display: flex; align-items: center; gap: $space-2; padding: $space-2 $space-3;
+  background: $color-off-white; border-radius: $radius-full;
+  border: 1px solid rgba($color-primary, 0.1);
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  text-transform: uppercase; letter-spacing: 0.06em; color: $color-primary;
+}
+
+.catCount {
+  background: $color-secondary; color: $color-white; border-radius: $radius-full;
+  padding: 1px 7px; font-size: 10px; font-weight: $font-weight-bold;
+}
+
+.iconBtn {
+  width: 22px; height: 22px; border-radius: $radius-sm; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-primary, 0.07); color: $color-primary; transition: all $transition-fast;
+  &:hover { background: $color-primary; color: $color-white; }
+  &.danger:hover { background: $color-secondary; color: $color-white; }
+}
+
+.catAddChip {
+  display: flex; align-items: center; gap: $space-2; padding: $space-2 $space-4;
+  border: 2px dashed rgba($color-secondary, 0.3); border-radius: $radius-full;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  text-transform: uppercase; letter-spacing: 0.06em; color: rgba($color-secondary, 0.6);
+  cursor: pointer; transition: all $transition-fast;
+  &:hover { border-color: $color-secondary; color: $color-secondary; }
+}
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
+.modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary, 0.08); }

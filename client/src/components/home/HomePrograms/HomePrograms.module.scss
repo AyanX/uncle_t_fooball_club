@@ -1,0 +1,424 @@
+// HomePrograms.module.scss — Bento-grid layout matching reference image
+.section {
+  background: $color-off-white;
+  padding: $space-20 0;
+  @include lg { padding: $space-16 0; }
+  @include md { padding: $space-12 0; }
+}
+
+.container { @include container; }
+
+// Section header
+.header {
+  @include flex-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin-bottom: $space-10;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $color-secondary;
+  margin-bottom: $space-3;
+
+  &::before {
+    content: '';
+    width: 20px; height: 2px;
+    background: $color-secondary;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: $space-2;
+  }
+}
+
+.title {
+  font-family: $font-display;
+  font-size: clamp(#{$font-size-2xl}, 3.5vw, #{$font-size-3xl});
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-primary;
+  line-height: $line-height-tight;
+  letter-spacing: -0.02em;
+}
+
+.titleAccent { color: $color-secondary; }
+
+.seeAll {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-secondary;
+  text-decoration: none;
+  border-bottom: 1px solid rgba($color-secondary, 0.35);
+  padding-bottom: 2px;
+  transition: border-color $transition-fast, color $transition-fast;
+  flex-shrink: 0;
+
+  &:hover { border-color: $color-secondary; color: $color-secondary-dark; }
+}
+
+// ── Bento grid ────────────────────────────────────────────
+.bento {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;          // col 1 = big card | col 2 = right stack
+  grid-template-rows: auto auto auto;
+  gap: $space-4;
+
+  // Below big card: arts + leadership + libraries
+  // right col: env + health stacked
+
+  @include lg {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include md {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Generic card base
+.card {
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: transform $transition-spring, box-shadow $transition-base;
+  &:hover { transform: translateY(-4px); box-shadow: $shadow-xl; }
+}
+
+// ── Featured (Sports Academy) ─────────────────────────────
+.cardFeatured {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  min-height: 440px;
+  position: relative;
+
+  @include md { grid-column: 1; grid-row: auto; min-height: 360px; }
+}
+
+.featuredLink {
+  display: block;
+  height: 100%;
+  min-height: 440px;
+  position: relative;
+  text-decoration: none;
+
+  @include md { min-height: 360px; }
+}
+
+.featuredBg {
+  position: absolute;
+  inset: 0;
+}
+
+.featuredOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba($color-primary-dark, 0.97) 0%,
+    rgba($color-primary, 0.75)      50%,
+    rgba($color-primary, 0.3)       100%
+  );
+}
+
+.featuredContent {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: $space-8;
+  gap: $space-4;
+}
+
+.featuredIconWrap {
+  width: 52px; height: 52px;
+  background: rgba($color-gold, 0.15);
+  border: 1px solid rgba($color-gold, 0.3);
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featuredIconEmoji { font-size: 1.6rem; }
+
+.featuredTitle {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-white;
+  letter-spacing: 0.02em;
+}
+
+.featuredDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: rgba(255,255,255,0.72);
+  line-height: $line-height-loose;
+}
+
+.checkList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-2;
+    font-family: $font-body;
+    font-size: $font-size-xs;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.5;
+  }
+}
+
+.checkIcon { color: $color-gold; flex-shrink: 0; margin-top: 1px; }
+
+.featuredCta {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $color-gold;
+  border-bottom: 1px solid rgba($color-gold, 0.4);
+  padding-bottom: 2px;
+  width: fit-content;
+  transition: gap $transition-fast;
+
+  .featuredLink:hover & { gap: $space-3; }
+}
+
+// ── Right column: two dark stacked cards ─────────────────
+.rightCol {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  @include md { grid-column: 1; grid-row: auto; }
+}
+
+.cardDark {
+  background: $color-primary;
+  flex: 1;
+}
+
+.darkLink {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-7;
+  text-decoration: none;
+  height: 100%;
+}
+
+.darkIcon {
+  width: 52px; height: 52px;
+  border-radius: $radius-md;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: $color-gold;
+}
+
+.darkTitle {
+  font-family: $font-display;
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-white;
+  letter-spacing: 0.02em;
+}
+
+.darkDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: rgba(255,255,255,0.58);
+  line-height: $line-height-loose;
+  @include truncate(3);
+  flex: 1;
+}
+
+.darkCta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: $color-gold;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity $transition-base, transform $transition-base;
+
+  .cardDark:hover & { opacity: 1; transform: translateX(0); }
+}
+
+// ── Arts & Creativity — light card ───────────────────────
+.cardLight {
+  grid-column: 1;
+  background: $color-white;
+  border: 1px solid rgba($color-primary, 0.08);
+  box-shadow: $shadow-sm;
+
+  @include md { grid-column: 1; }
+}
+
+.lightLink {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-6;
+  text-decoration: none;
+}
+
+.lightIcon {
+  width: 48px; height: 48px;
+  border-radius: $radius-md;
+  background: rgba($color-primary, 0.06);
+  display: flex; align-items: center; justify-content: center;
+  color: $color-primary;
+}
+
+.lightTitle {
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: 0.02em;
+}
+
+.lightDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  @include truncate(3);
+}
+
+// ── Leadership — wide red card ────────────────────────────
+.cardRed {
+  grid-column: 2;
+  background: $color-secondary;
+
+  @include md { grid-column: 1; }
+}
+
+.redLink {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-7;
+  text-decoration: none;
+  height: 100%;
+}
+
+.redIcon {
+  width: 52px; height: 52px;
+  border-radius: $radius-md;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  color: $color-white;
+}
+
+.redTitle {
+  font-family: $font-display;
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-white;
+  letter-spacing: 0.02em;
+}
+
+.redDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: rgba(255,255,255,0.78);
+  line-height: $line-height-loose;
+  @include truncate(3);
+}
+
+.redCta {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $color-gold;
+  margin-top: auto;
+  border-bottom: 1px solid rgba($color-gold, 0.4);
+  padding-bottom: 2px;
+  width: fit-content;
+  transition: gap $transition-fast;
+
+  .cardRed:hover & { gap: $space-3; }
+}
+
+// ── Community Libraries ───────────────────────────────────
+.cardLibrary {
+  grid-column: 1;
+  background: $color-white;
+  border: 1px solid rgba($color-primary, 0.08);
+  box-shadow: $shadow-sm;
+
+  @include md { grid-column: 1; }
+}
+
+.libraryLink {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-6;
+  text-decoration: none;
+}
+
+.libraryIcon {
+  width: 44px; height: 44px;
+  border-radius: $radius-md;
+  background: rgba($color-primary, 0.06);
+  display: flex; align-items: center; justify-content: center;
+  color: $color-primary;
+}
+
+.libraryTitle {
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: 0.02em;
+}
+
+.libraryDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  @include truncate(3);
+}

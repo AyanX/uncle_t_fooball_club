@@ -1,0 +1,109 @@
+.page { background: $color-off-white; }
+.container { @include container; }
+
+.backBand { background: $color-primary-dark; padding: $space-4 0; padding-top: calc(#{$navbar-height} + #{$space-4}); }
+
+.backBtn {
+  display: inline-flex; align-items: center; gap: $space-2;
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+  text-decoration: none; transition: color $transition-fast;
+  &:hover { color: $color-gold; }
+}
+
+// ── Hero ──────────────────────────────────────────────────
+.hero {
+  position: relative; min-height: 520px; display: flex; align-items: flex-end;
+  overflow: hidden; padding-bottom: $space-20;
+  @include md { min-height: 380px; padding-bottom: $space-12; }
+}
+
+.heroBg { position: absolute; inset: 0; }
+
+.heroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba($color-primary-dark, 0.97) 0%, rgba($color-primary, 0.7) 45%, rgba($color-primary, 0.3) 100%);
+  z-index: 1;
+}
+
+.heroContent { position: relative; z-index: 2; display: flex; flex-direction: column; gap: $space-4; max-width: 680px; }
+
+.iconWrap {
+  width: 72px; height: 72px; border-radius: $radius-xl;
+  background: rgba($color-secondary, 0.15); border: 1px solid rgba($color-secondary, 0.3);
+  display: flex; align-items: center; justify-content: center; color: $color-secondary;
+  backdrop-filter: blur(8px);
+}
+
+.eyebrow {
+  display: inline-flex; align-self: flex-start;
+  font-family: $font-body; font-size: $font-size-xs; font-weight: $font-weight-semibold;
+  letter-spacing: 0.2em; text-transform: uppercase; color: $color-gold;
+  padding: $space-1 $space-4; border: 1px solid rgba($color-gold, 0.3); border-radius: $radius-full;
+}
+
+.title { font-family: $font-display; font-size: clamp(#{$font-size-3xl}, 6vw, #{$font-size-5xl}); font-weight: $font-weight-black; text-transform: uppercase; color: $color-white; line-height: $line-height-tight; letter-spacing: -0.02em; }
+
+.subtitle { font-family: $font-body; font-size: $font-size-md; color: rgba(255,255,255,0.68); line-height: $line-height-loose; max-width: 520px; }
+
+// ── Stats band ────────────────────────────────────────────
+.statsBand { background: $color-secondary; padding: $space-10 0; }
+
+.statsGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: $space-2; }
+
+.statBox {
+  display: flex; flex-direction: column; align-items: center; gap: $space-2;
+  padding: $space-6 $space-4; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.18);
+  &:last-child { border-right: none; }
+  @include md { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.14); }
+}
+
+.statValue { font-family: $font-display; font-size: $font-size-3xl; font-weight: $font-weight-black; color: $color-gold; line-height: 1; letter-spacing: -0.02em; }
+
+.statLabel { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.75); letter-spacing: 0.1em; text-transform: uppercase; }
+
+// ── Body section ──────────────────────────────────────────
+.bodySection { @include section-padding; }
+
+.bodyGrid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: $space-12; align-items: start;
+  @include lg { grid-template-columns: 1fr; gap: $space-8; }
+}
+
+.sectionHeading { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em; margin-bottom: $space-4; }
+
+.descAccent { width: 40px; height: 3px; background: $color-secondary; border-radius: $radius-full; margin-bottom: $space-5; }
+
+.description { font-family: $font-body; font-size: $font-size-base; color: $color-text-secondary; line-height: $line-height-loose; }
+
+.descText { font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; }
+
+.ctaBtn { @include btn-primary; align-self: flex-start; margin-top: $space-4; }
+
+.highlights {
+  background: $color-white; border-radius: $radius-xl; padding: $space-10;
+  box-shadow: $shadow-md; border-top: 3px solid $color-secondary;
+}
+
+.highlightsTitle { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em; margin-bottom: $space-6; }
+
+.highlightsList { list-style: none; display: flex; flex-direction: column; gap: $space-4; }
+
+.highlightItem { display: flex; align-items: flex-start; gap: $space-3; font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; }
+
+.checkIcon { color: $color-secondary; flex-shrink: 0; margin-top: 2px; }
+
+// ── CTA band ──────────────────────────────────────────────
+.ctaBand { background: $color-primary-dark; padding: $space-20 0; }
+
+.ctaContent { display: flex; flex-direction: column; align-items: center; text-align: center; gap: $space-5; max-width: 640px; margin: 0 auto; }
+
+.ctaTitle { font-family: $font-display; font-size: $font-size-3xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-white; letter-spacing: -0.02em; @include md { font-size: $font-size-2xl; } }
+
+.ctaText { font-family: $font-body; font-size: $font-size-base; color: rgba(255,255,255,0.58); line-height: $line-height-loose; }
+
+.ctaBtns { display: flex; gap: $space-4; flex-wrap: wrap; justify-content: center; }
+
+.ctaPrimary { @include btn-primary; }
+.ctaGhost   { @include btn-ghost; }

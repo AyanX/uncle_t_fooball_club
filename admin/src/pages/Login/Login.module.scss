@@ -1,0 +1,173 @@
+.page {
+  display: flex;
+  min-height: 100vh;
+  @include md { flex-direction: column; }
+}
+
+.left {
+  flex: 1;
+  background: $color-primary-dark;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-12;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba($color-secondary, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  @include md { flex: none; padding: $space-10 $space-6; }
+}
+
+.leftContent {
+  max-width: 440px;
+  position: relative; z-index: 1;
+  @include md { max-width: 100%; }
+}
+
+.brand {
+  display: flex; align-items: center; gap: $space-3;
+  margin-bottom: $space-10;
+}
+
+.brandMark {
+  width: 48px; height: 48px; border-radius: $radius-lg;
+  background: $color-secondary; @include flex-center;
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-xl; color: $color-white; flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba($color-secondary, 0.4);
+}
+
+.brandName {
+  display: block;
+  font-family: $font-display; font-size: $font-size-lg;
+  font-weight: $font-weight-black; color: $color-white;
+  text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+}
+
+.brandSub {
+  display: block;
+  font-family: $font-body; font-size: $font-size-xs;
+  color: $color-gold; letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+.heroTitle {
+  font-family: $font-display;
+  font-size: clamp(#{$font-size-2xl}, 3.5vw, #{$font-size-4xl});
+  font-weight: $font-weight-black;
+  color: $color-white; text-transform: uppercase;
+  line-height: $line-height-tight; letter-spacing: -0.02em;
+  margin-bottom: $space-5;
+}
+
+.heroSub {
+  font-family: $font-body; font-size: $font-size-base;
+  color: rgba(255,255,255,0.6); line-height: $line-height-loose;
+  margin-bottom: $space-8;
+}
+
+.features { display: flex; flex-direction: column; gap: $space-3; }
+
+.feature {
+  display: flex; align-items: center; gap: $space-3;
+  font-family: $font-body; font-size: $font-size-sm;
+  color: rgba(255,255,255,0.65);
+}
+
+.featureDot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: $color-secondary; flex-shrink: 0;
+}
+
+// Right panel
+.right {
+  width: 480px; min-height: 100vh;
+  background: $color-off-white;
+  display: flex; align-items: center; justify-content: center;
+  padding: $space-10 $space-8;
+
+  @include lg { width: 440px; padding: $space-8 $space-6; }
+  @include md { width: 100%; min-height: auto; padding: $space-8 $space-6; }
+}
+
+.card {
+  width: 100%; max-width: 400px;
+  background: $color-white; border-radius: $radius-xl;
+  padding: $space-10; box-shadow: $shadow-lg;
+  border-top: 4px solid $color-secondary;
+}
+
+.cardHeader { margin-bottom: $space-8; }
+
+.cardTitle {
+  font-family: $font-display; font-size: $font-size-2xl;
+  font-weight: $font-weight-black; text-transform: uppercase;
+  color: $color-primary; letter-spacing: -0.02em;
+}
+
+.cardSub {
+  font-family: $font-body; font-size: $font-size-sm;
+  color: $color-text-muted; margin-top: $space-2;
+}
+
+.form { display: flex; flex-direction: column; gap: $space-5; }
+
+.field { display: flex; flex-direction: column; gap: $space-2; }
+
+.label {
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase;
+  color: $color-primary;
+}
+
+.inputWrap { position: relative; }
+
+.inputIcon {
+  position: absolute; left: $space-4; top: 50%;
+  transform: translateY(-50%); color: $color-text-muted; pointer-events: none;
+}
+
+.input {
+  width: 100%; padding: $space-4 $space-4 $space-4 $space-10;
+  background: $color-off-white; border: 2px solid rgba($color-primary, 0.1);
+  border-radius: $radius-md; font-family: $font-body; font-size: $font-size-sm;
+  color: $color-primary; outline: none;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  &::placeholder { color: $color-text-muted; }
+  &:focus { border-color: $color-secondary; box-shadow: 0 0 0 3px rgba($color-secondary, 0.1); }
+}
+
+.eyeBtn {
+  position: absolute; right: $space-4; top: 50%;
+  transform: translateY(-50%); background: none; border: none;
+  color: $color-text-muted; cursor: pointer; padding: 0;
+  &:hover { color: $color-secondary; }
+}
+
+.submitBtn {
+  @include btn-primary;
+  width: 100%; justify-content: center; padding: $space-4;
+  font-size: $font-size-sm; margin-top: $space-2;
+  &:disabled { opacity: 0.65; cursor: not-allowed; }
+}
+
+.spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: $color-white;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hint {
+  text-align: center; margin-top: $space-5;
+  font-family: $font-body; font-size: $font-size-xs;
+  color: $color-text-muted; font-style: italic;
+}

@@ -1,0 +1,176 @@
+.page { display: flex; flex-direction: column; gap: $space-8; }
+
+.pageHeader { display: flex; flex-direction: column; gap: $space-1; }
+
+.pageTitle {
+  font-family: $font-display; font-size: $font-size-2xl;
+  font-weight: $font-weight-black; text-transform: uppercase;
+  color: $color-primary; letter-spacing: -0.02em;
+}
+
+.pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; }
+
+// Stat cards
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: $space-4;
+}
+
+.card {
+  display: flex; align-items: center; gap: $space-4;
+  background: $color-white; border-radius: $radius-xl;
+  padding: $space-5 $space-5; box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.07);
+  text-decoration: none; color: inherit;
+  transition: all $transition-base; position: relative;
+  border-left: 4px solid var(--card-color, #{$color-primary});
+
+  &:hover { transform: translateY(-3px); box-shadow: $shadow-lg; }
+  &:hover .cardArrow { opacity: 1; transform: translateX(3px); }
+}
+
+.cardIcon {
+  width: 44px; height: 44px; border-radius: $radius-lg; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--card-color, #{$color-primary}) 10%, transparent);
+  color: var(--card-color, #{$color-primary});
+}
+
+.cardInfo { flex: 1; min-width: 0; }
+
+.cardCount {
+  display: block; font-family: $font-display;
+  font-size: $font-size-2xl; font-weight: $font-weight-black;
+  color: $color-primary; line-height: 1;
+}
+
+.cardLabel {
+  font-family: $font-body; font-size: $font-size-xs;
+  color: $color-text-muted; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.cardArrow {
+  color: $color-text-muted; opacity: 0; flex-shrink: 0;
+  transition: opacity $transition-fast, transform $transition-fast;
+}
+
+// Club stats
+.statsGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: $space-3;
+}
+
+.statCard {
+  background: $color-primary-dark; border-radius: $radius-lg;
+  padding: $space-5 $space-4; display: flex; flex-direction: column; gap: $space-2; text-align: center;
+}
+
+.statValue {
+  font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black;
+  color: $color-gold; line-height: 1;
+}
+
+.statLabel {
+  font-family: $font-body; font-size: $font-size-xs;
+  color: rgba(255,255,255,0.55); letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+// Two-col layout
+.twoCol {
+  display: grid; grid-template-columns: 1fr 1fr; gap: $space-6;
+  @include md { grid-template-columns: 1fr; }
+}
+
+// Sections
+.section {
+  background: $color-white; border-radius: $radius-xl;
+  padding: $space-6; box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.07);
+}
+
+.sectionHeader {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: $space-5; padding-bottom: $space-4;
+  border-bottom: 1px solid rgba($color-primary, 0.07);
+}
+
+.sectionTitle {
+  font-family: $font-display; font-size: $font-size-sm;
+  font-weight: $font-weight-bold; text-transform: uppercase;
+  color: $color-primary; letter-spacing: 0.06em;
+}
+
+.sectionLink {
+  display: inline-flex; align-items: center; gap: $space-1;
+  font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; letter-spacing: 0.08em; text-transform: uppercase;
+  color: $color-secondary; text-decoration: none;
+  &:hover { color: $color-secondary-dark; }
+}
+
+// List
+.list { display: flex; flex-direction: column; gap: $space-1; }
+
+.listItem {
+  display: flex; align-items: center; gap: $space-3;
+  padding: $space-3 $space-3; border-radius: $radius-md;
+  text-decoration: none; color: inherit;
+  transition: background $transition-fast; position: relative;
+  &:hover { background: $color-off-white; }
+}
+
+.listImg {
+  width: 48px; height: 38px; border-radius: $radius-md;
+  overflow: hidden; flex-shrink: 0; background: $color-primary-dark;
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.listBody { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+
+.listCat {
+  font-family: $font-display; font-size: 10px; font-weight: $font-weight-bold;
+  letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
+}
+
+.listTitle {
+  font-family: $font-body; font-size: $font-size-sm; color: $color-primary;
+  font-weight: $font-weight-medium; @include truncate(1);
+}
+
+.listDate { font-family: $font-body; font-size: 11px; color: $color-text-muted; }
+
+.featuredDot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: $color-gold; flex-shrink: 0;
+}
+
+.empty { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; padding: $space-4 0; }
+
+// Fixtures
+.fixtureItem {
+  padding: $space-4 $space-3; border-radius: $radius-md;
+  display: flex; flex-direction: column; gap: $space-2;
+  border-bottom: 1px solid rgba($color-primary, 0.06);
+  &:last-child { border-bottom: none; }
+}
+
+.fixtureComp {
+  font-family: $font-display; font-size: 10px; font-weight: $font-weight-bold;
+  letter-spacing: 0.12em; text-transform: uppercase; color: $color-text-muted;
+}
+
+.fixtureTeams {
+  display: flex; align-items: center; gap: $space-3;
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold;
+  text-transform: uppercase; color: $color-text-secondary;
+  flex-wrap: wrap;
+}
+
+.us { color: $color-primary !important; font-weight: $font-weight-black !important; }
+
+.vs {
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-black;
+  color: $color-secondary;
+}
+
+.fixtureDate { font-family: $font-body; font-size: 12px; color: $color-text-muted; }

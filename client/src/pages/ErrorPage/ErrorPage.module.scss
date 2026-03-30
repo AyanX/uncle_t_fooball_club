@@ -1,0 +1,32 @@
+.page {
+  min-height: 100vh; background: $color-primary-dark;
+  display: flex; align-items: center; justify-content: center; position: relative;
+  &::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba($color-secondary, 0.08) 0%, transparent 65%); pointer-events: none; }
+}
+
+.container { @include container; }
+
+.content {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: $space-6; max-width: 520px; margin: 0 auto;
+  padding: $space-16 $space-6; position: relative; z-index: $z-above;
+}
+
+.iconWrap {
+  width: 96px; height: 96px; border-radius: $radius-xl;
+  background: rgba($color-secondary, 0.1); border: 1px solid rgba($color-secondary, 0.25);
+  display: flex; align-items: center; justify-content: center; color: $color-secondary;
+}
+
+.title { font-family: $font-display; font-size: $font-size-3xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-white; @include md { font-size: $font-size-2xl; } }
+
+.message {
+  font-family: $font-mono; font-size: $font-size-sm; color: rgba(255,255,255,0.45);
+  line-height: $line-height-loose; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: $radius-lg; padding: $space-4 $space-6;
+}
+
+.actions { display: flex; gap: $space-4; flex-wrap: wrap; justify-content: center; margin-top: $space-4; }
+
+.primaryBtn { @include btn-primary; }
+.ghostBtn   { @include btn-ghost; }

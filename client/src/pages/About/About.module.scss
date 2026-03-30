@@ -1,0 +1,243 @@
+.container { @include container; }
+
+// ── Mission ───────────────────────────────────────────────
+.missionSection {
+  @include section-padding;
+  background: $color-off-white;
+}
+
+.missionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $space-6;
+}
+
+.missionCard {
+  background: $color-white;
+  border-radius: $radius-xl;
+  padding: $space-10 $space-8;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.06);
+  display: flex; flex-direction: column; gap: $space-4;
+  border-top: 3px solid $color-secondary;
+}
+
+.visionCard {
+  background: $color-primary;
+  border-top-color: $color-gold;
+
+  .missionCardTitle  { color: $color-white; }
+  .missionCardText   { color: rgba(255,255,255,0.7); }
+  .missionIcon       { color: $color-gold; }
+}
+
+.missionIcon  { color: $color-secondary; flex-shrink: 0; }
+
+.missionCardTitle {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: -0.01em;
+}
+
+.missionCardText {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+}
+
+.honoursList {
+  list-style: none;
+  display: flex; flex-direction: column; gap: $space-3;
+
+  li {
+    font-family: $font-body;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    padding-left: $space-5;
+    position: relative;
+    line-height: $line-height-snug;
+
+    &::before {
+      content: '';
+      position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: $color-secondary;
+    }
+  }
+}
+
+// ── Values ────────────────────────────────────────────────
+.valuesSection {
+  @include section-padding;
+  background: $color-primary;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $space-5;
+}
+
+.valueCard {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: $radius-xl;
+  padding: $space-8;
+  display: flex; flex-direction: column; gap: $space-4;
+  transition: border-color $transition-base, background $transition-base;
+
+  &:hover {
+    border-color: rgba($color-secondary, 0.4);
+    background: rgba(255,255,255,0.07);
+  }
+}
+
+.valueIcon {
+  width: 60px; height: 60px;
+  border-radius: $radius-lg;
+  background: rgba($color-secondary, 0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: $color-secondary;
+}
+
+.valueTitle {
+  font-family: $font-display;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-white;
+  letter-spacing: -0.01em;
+}
+
+.valueDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: rgba(255,255,255,0.58);
+  line-height: $line-height-loose;
+}
+
+// ── Timeline ──────────────────────────────────────────────
+.timelineSection {
+  @include section-padding;
+  background: $color-off-white;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px; margin: 0 auto;
+  padding: $space-6 0;
+}
+
+.timelineLine {
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: linear-gradient(to bottom, $color-secondary, rgba($color-secondary, 0.12));
+  transform: translateX(-50%);
+  @include md { left: 20px; }
+}
+
+.timelineItem {
+  display: flex; align-items: flex-start; gap: $space-6;
+  margin-bottom: $space-10; position: relative;
+
+  &.left {
+    justify-content: flex-end;
+    padding-right: calc(50% + #{$space-10});
+    .timelineDot { right: calc(50% - 7px); left: auto; }
+    @include md { justify-content: flex-start; padding-right: 0; padding-left: 60px; .timelineDot { left: 13px; right: auto; } }
+  }
+
+  &.right {
+    justify-content: flex-start;
+    padding-left: calc(50% + #{$space-10});
+    .timelineDot { left: calc(50% - 7px); }
+    @include md { padding-left: 60px; .timelineDot { left: 13px; } }
+  }
+}
+
+.timelineDot {
+  position: absolute; top: 16px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: $color-secondary;
+  border: 3px solid $color-off-white;
+  box-shadow: 0 0 0 2px $color-secondary;
+  z-index: $z-above;
+}
+
+.timelineContent {
+  background: $color-white;
+  border-radius: $radius-lg;
+  padding: $space-6 $space-7;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.06);
+  border-left: 3px solid $color-secondary;
+  max-width: 380px;
+  display: flex; flex-direction: column; gap: $space-2;
+}
+
+.timelineYear {
+  font-family: $font-display;
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-black;
+  color: rgba($color-secondary, 0.18);
+  line-height: 1; letter-spacing: -0.02em;
+}
+
+.timelineTitle {
+  font-family: $font-display;
+  font-size: $font-size-lg; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em;
+}
+
+.timelineDesc {
+  font-family: $font-body;
+  font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose;
+}
+
+// ── Management ────────────────────────────────────────────
+.managementSection {
+  @include section-padding;
+  background: $color-white;
+}
+
+.managementGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-6;
+}
+
+.personCard {
+  display: flex; flex-direction: column; align-items: center;
+  gap: $space-4; text-align: center; cursor: default;
+}
+
+.personImg {
+  width: 140px; height: 140px; border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid $color-secondary;
+  box-shadow: $shadow-red;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.personName {
+  font-family: $font-display;
+  font-size: $font-size-lg; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em;
+}
+
+.personRole {
+  font-family: $font-body;
+  font-size: $font-size-sm; color: $color-secondary; font-weight: $font-weight-semibold;
+  letter-spacing: 0.04em;
+}
+
+// Timeline modifier classes
+.left  {}
+.right {}
