@@ -13,3 +13,6 @@ LICENSE
 *.bak
 *.tmp
 *.swp
+
+.gitignore
+.git/
