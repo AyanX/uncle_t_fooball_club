@@ -1,18 +1,15 @@
+kilimanjaro-fc-claude.zip
+
+*.zip
 node_modules/
+.env
 dist/
 build/
-.env
-.DS_Store
-*.log
-.idea/
-gh
+build
 README.md
-LICENSE
-*.zip
-*.tar.gz
-*.bak
-*.tmp
-*.swp
 
+.vite
+gh
 .gitignore
-.git/
+
+ls.sh
