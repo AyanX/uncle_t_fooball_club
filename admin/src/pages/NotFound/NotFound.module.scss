@@ -1,0 +1,118 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-off-white;
+  padding: $space-6;
+}
+
+.card {
+  background: $color-white;
+  border-radius: $radius-xl;
+  padding: $space-12 $space-10;
+  box-shadow: $shadow-lg;
+  border: 1px solid rgba($color-primary, 0.07);
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+
+  @include sm { padding: $space-8 $space-6; }
+}
+
+.iconWrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba($color-secondary, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto $space-6;
+}
+
+.icon { color: $color-secondary; }
+
+.code {
+  font-family: $font-display;
+  font-size: 6rem;
+  font-weight: $font-weight-black;
+  color: rgba($color-primary, 0.08);
+  line-height: 1;
+  margin-bottom: $space-4;
+  letter-spacing: -0.04em;
+}
+
+.title {
+  font-family: $font-display;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: -0.02em;
+  margin-bottom: $space-4;
+}
+
+.desc {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: $color-text-muted;
+  line-height: $line-height-loose;
+  margin-bottom: $space-8;
+}
+
+.actions {
+  display: flex;
+  gap: $space-4;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-6;
+  border-radius: $radius-lg;
+  border: 2px solid rgba($color-primary, 0.15);
+  background: transparent;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+    background: rgba($color-primary, 0.04);
+  }
+}
+
+.homeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-6;
+  border-radius: $radius-lg;
+  background: $color-secondary;
+  border: 2px solid $color-secondary;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-white;
+  text-decoration: none;
+  transition: all $transition-base;
+
+  &:hover {
+    background: $color-secondary-dark;
+    border-color: $color-secondary-dark;
+    transform: translateY(-2px);
+    box-shadow: $shadow-red;
+  }
+}

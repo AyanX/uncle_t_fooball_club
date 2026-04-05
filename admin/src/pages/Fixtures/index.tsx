@@ -35,11 +35,11 @@ const FixtureForm: React.FC<{ value:Omit<Fixture,'id'>; onChange:(v:Omit<Fixture
           {STATUS_OPTIONS.map(s=><option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
         </Select>
       </Field>
-      <Field label="Fans Attended"><Input type="number" value={value.fans} onChange={e=>set('fans',+e.target.value)} min={0}/></Field>
+      <Field label="Fans Attended"><Input type="number" value={value.fans || ""} placeholder='0'    onChange={e=>set('fans',+e.target.value)} min={0}/></Field>
       {value.status === 'completed' && (
         <>
-          <Field label="Home Score"><Input type="number" value={value.homeScore??0} onChange={e=>set('homeScore',+e.target.value)} min={0}/></Field>
-          <Field label="Away Score"><Input type="number" value={value.awayScore??0} onChange={e=>set('awayScore',+e.target.value)} min={0}/></Field>
+          <Field label="Home Score"><Input type="number" value={value.homeScore??""} placeholder='0'  onChange={e=>set('homeScore',+e.target.value)} min={0}/></Field>
+          <Field label="Away Score"><Input type="number" value={value.awayScore??""}  placeholder='0'  onChange={e=>set('awayScore',+e.target.value)} min={0}/></Field>
         </>
       )}
     </div>

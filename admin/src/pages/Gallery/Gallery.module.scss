@@ -31,7 +31,8 @@
 .tile {
   position: relative; border-radius: $radius-lg; overflow: hidden;
   background: $color-primary-dark; cursor: pointer;
-  &:hover .tileImg { transform: scale(1.05); }
+  &:hover { .tileImg { transform: scale(1.05); } }
+  &:hover img { transform: scale(1.05); }
 }
 
 .tileImg { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }

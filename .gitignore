@@ -7,7 +7,7 @@ dist/
 build/
 build
 README.md
-
+*.md
 .vite
 
 .gitignore

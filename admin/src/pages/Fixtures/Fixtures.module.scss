@@ -1,4 +1,4 @@
-.page { display: flex; flex-direction: column; gap: $space-6; }
+.page { display: flex; flex-direction: column; gap: $space-6; width: 100%; }
 .pageHeader { @include flex-between; flex-wrap: wrap; gap: $space-4; }
 .pageTitle { font-family: $font-display; font-size: clamp(#{$font-size-xl},3vw,#{$font-size-2xl}); font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
 .pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
@@ -38,7 +38,7 @@
 .editBtn { background: rgba($color-primary,0.07); color: $color-primary; &:hover { background: $color-primary; color: $color-white; } }
 .deleteBtn { background: rgba($color-secondary,0.08); color: $color-secondary; &:hover { background: $color-secondary; color: $color-white; } }
 
-.empty { border: 2px dashed rgba($color-secondary,0.3); border-radius: $radius-xl; padding: $space-14; display: flex; flex-direction: column; align-items: center; gap: $space-3; cursor: pointer; color: rgba($color-secondary,0.6); transition: all $transition-fast; span { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; } &:hover { background: rgba($color-secondary,0.04); border-color: $color-secondary; color: $color-secondary; } }
+.empty { border: 2px dashed rgba($color-secondary,0.3); border-radius: $radius-xl; padding: $space-12; display: flex; flex-direction: column; align-items: center; gap: $space-3; cursor: pointer; color: rgba($color-secondary,0.6); transition: all $transition-fast; span { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; } &:hover { background: rgba($color-secondary,0.04); border-color: $color-secondary; color: $color-secondary; } }
 
 .formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
 .modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary,0.08); }

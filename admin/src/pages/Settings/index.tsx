@@ -5,6 +5,7 @@ import { useAdminData } from '@/context/AdminDataContext';
 import { useToast } from '@/context/ToastContext';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/services/api';
+import BlurImage from '@/components/ui/BlurImage';
 import { ClubStat, MissionVisionItem, Milestone, Management } from '@/data/dummyData';
 import { Field, Input, Textarea, Btn, ConfirmDialog, Modal } from '@/components/ui';
 import ImageInput from '@/components/ui/ImageInput';
@@ -478,7 +479,7 @@ const ManagementPanel: React.FC = () => {
       <div className={styles.mgmtGrid}>
         {management.map(m => (
           <div key={m.id} className={styles.mgmtCard}>
-            <div className={styles.mgmtImg}>{m.image && <img src={m.image} alt={m.name}/>}</div>
+            <div className={styles.mgmtImg}>{m.image && <BlurImage src={m.image} blurSrc={m.blur_image||undefined} alt={m.name}/>}</div>
             <h4 className={styles.mgmtName}>{m.name}</h4>
             <span className={styles.mgmtRole}>{m.role}</span>
             <div className={styles.alwaysActions}>

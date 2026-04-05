@@ -7,6 +7,7 @@ import { useToast } from '@/context/ToastContext';
 import { api, buildFormData } from '@/services/api';
 import { GalleryItem, GalleryCategory } from '@/data/dummyData';
 import { Modal, ConfirmDialog, Field, Input, Select, Btn, Toggle } from '@/components/ui';
+import BlurImage from '@/components/ui/BlurImage';
 import ImageInput from '@/components/ui/ImageInput';
 import styles from './Gallery.module.scss';
 
@@ -161,7 +162,7 @@ const Gallery: React.FC = () => {
           {filtered.map((item,i) => (
             <motion.div key={item.id} className={styles.tile}
               initial={{opacity:0,scale:0.93}} animate={{opacity:1,scale:1}} transition={{duration:0.3,delay:i*0.03}}>
-              {item.image && <img src={item.image} alt={item.caption} className={styles.tileImg}/>}
+              {item.image && <BlurImage src={item.image} blurSrc={item.blur_image||undefined} alt={item.caption} className={styles.tileImg}/>}
               {item.featured && <span className={styles.featuredBadge}><Star size={10}/> Featured</span>}
               <div className={styles.tileOverlay}>
                 <span className={styles.tileCat}>{item.category}</span>

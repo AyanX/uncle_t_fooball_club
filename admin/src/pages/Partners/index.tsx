@@ -8,6 +8,7 @@ import { api, buildFormData } from '@/services/api';
 import { Partner, PartnerTier } from '@/data/dummyData';
 import { Modal, ConfirmDialog, Field, Input, Textarea, Select, Btn, Badge } from '@/components/ui';
 import ImageInput from '@/components/ui/ImageInput';
+import BlurImage from '@/components/ui/BlurImage';
 import styles from './Partners.module.scss';
 
 const tierColors: Record<string, string> = { platinum:'#C9A30C', gold:'#d97706', silver:'#6b7280' };
@@ -67,7 +68,7 @@ const Partners: React.FC = () => {
     if (!form.name) { error('Partner name required'); return; }
     setSaving(true);
     try {
-      const payload = buildFormData({...form}, imageFile, 'logo');
+      const payload = buildFormData({...form}, imageFile, 'image');
       if (editItem) {
         const res = await api.put.partner(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...form };
@@ -189,7 +190,7 @@ const Partners: React.FC = () => {
                     <div className={styles.cardTop}>
                       <div className={styles.logoArea}>
                         {p.logo
-                          ? <img src={p.logo} alt={p.name} className={styles.logoImg}/>
+                          ? <BlurImage src={p.logo} alt={p.name} className={styles.logoImg}/>
                           : <span className={styles.logoFallback}>{p.name.slice(0,2).toUpperCase()}</span>
                         }
                       </div>

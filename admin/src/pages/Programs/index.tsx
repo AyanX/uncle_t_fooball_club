@@ -1,13 +1,14 @@
 // Programs/index.tsx — with inline stat/highlight item management + programTitles CRUD
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, Check, X, GripVertical } from 'lucide-react';
+import { Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';
 import { useToast } from '@/context/ToastContext';
 import { api, buildFormData } from '@/services/api';
 import { Program, ProgramTitle } from '@/data/dummyData';
-import { Modal, ConfirmDialog, Field, Input, Textarea, Btn } from '@/components/ui';
+import { Modal, ConfirmDialog, Field, Input, Textarea, Select, Btn } from '@/components/ui';
 import ImageInput from '@/components/ui/ImageInput';
+import BlurImage from '@/components/ui/BlurImage';
 import styles from './Programs.module.scss';
 
 type ProgramForm = Omit<Program, 'id' | 'blur_image' | 'icon'>;
@@ -164,14 +165,32 @@ const EditableStatList: React.FC<EditableStatListProps> = ({ stats, onChange }) 
 const ProgramFormEl: React.FC<{
   value: ProgramForm; imageFile: File|null;
   onImageChange:(f:File|null)=>void; onChange:(v:ProgramForm)=>void; isEdit:boolean;
-}> = ({ value, imageFile, onImageChange, onChange, isEdit }) => {
+  programTitles: ProgramTitle[];
+}> = ({ value, imageFile, onImageChange, onChange, isEdit, programTitles }) => {
   const set = (k: keyof ProgramForm, v: any) => onChange({ ...value, [k]: v });
+
+  // When a title is picked from dropdown, also auto-fill slug
+  const handleTitleChange = (title: string) => {
+    const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    onChange({ ...value, title, slug: value.slug || slug });
+  };
+
   return (
     <div className={styles.formGrid}>
       <div style={{gridColumn:'1/-1'}}>
         <ImageInput currentUrl={isEdit ? value.image||undefined : undefined} onFileChange={onImageChange} label="Programme Image" required aspectRatio="16/9"/>
       </div>
-      <Field label="Title" required><Input value={value.title} onChange={e=>set('title',e.target.value)}/></Field>
+      {/* Title as dropdown from programTitles */}
+      <Field label="Title" required>
+        <Select value={value.title} onChange={e=>handleTitleChange(e.target.value)}>
+          <option value="">Select programme title…</option>
+          {programTitles.map(t=><option key={t.id} value={t.title}>{t.title}</option>)}
+          <option value={value.title && !programTitles.find(t=>t.title===value.title) ? value.title : '__custom'}
+            disabled={!value.title || !!programTitles.find(t=>t.title===value.title)}>
+            {value.title && !programTitles.find(t=>t.title===value.title) ? value.title : 'Or add a new title above ↑'}
+          </option>
+        </Select>
+      </Field>
       <Field label="Slug" required><Input value={value.slug} onChange={e=>set('slug',e.target.value)} placeholder="sports"/></Field>
       <Field label="Tagline"><Input value={value.tagline} onChange={e=>set('tagline',e.target.value)}/></Field>
       <Field label="Accent Color">
@@ -324,7 +343,7 @@ const Programs: React.FC = () => {
           <motion.div key={prog.id} className={styles.card} style={{ '--prog-color': prog.color } as any}
             initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.05}}>
             <div className={styles.cardImg}>
-              {prog.image && <img src={prog.image} alt={prog.title}/>}
+              {prog.image && <BlurImage src={prog.image} blurSrc={(prog as any).blur_image||undefined} alt={prog.title}/>}
               <div className={styles.imgOverlay}/>
               <div className={styles.colorAccent} style={{background:prog.color}}/>
             </div>
@@ -353,7 +372,7 @@ const Programs: React.FC = () => {
 
       {/* Programme Modal */}
       <Modal open={addOpen||!!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Programme':'Add Programme'} size="lg">
-        <ProgramFormEl value={form} imageFile={imageFile} onImageChange={setImageFile} onChange={setForm} isEdit={!!editItem}/>
+        <ProgramFormEl value={form} imageFile={imageFile} onImageChange={setImageFile} onChange={setForm} isEdit={!!editItem} programTitles={programTitles}/>
         <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
           <Btn loading={saving} onClick={handleSave}>{editItem ? 'Save Changes':'Add Programme'}</Btn>

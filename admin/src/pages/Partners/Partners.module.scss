@@ -1,4 +1,4 @@
-.page { display: flex; flex-direction: column; gap: $space-6; }
+.page { display: flex; flex-direction: column; gap: $space-6; width: 100%; }
 .pageHeader { @include flex-between; flex-wrap: wrap; gap: $space-4; }
 .pageTitle { font-family: $font-display; font-size: clamp(#{$font-size-xl},3vw,#{$font-size-2xl}); font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
 .pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Newspaper, Users, Calendar, Image, Target, Handshake, ArrowRight, TrendingUp, Eye } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';
+import BlurImage from '@/components/ui/BlurImage';
 import styles from './Dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
@@ -79,7 +80,7 @@ const Dashboard: React.FC = () => {
             <Link key={item.id} to={`/news/${encodeURIComponent(item.title)}`} className={styles.viewRow}>
               <span className={styles.viewRank}>#{i + 1}</span>
               <div className={styles.viewThumb}>
-                {item.image && <img src={item.image} alt={item.title} />}
+                {item.image && <BlurImage src={item.image} blurSrc={(item as any).blur_image||undefined} alt={item.title}/>}
               </div>
               <div className={styles.viewBody}>
                 <span className={styles.viewCat}>{item.category}</span>
@@ -109,7 +110,7 @@ const Dashboard: React.FC = () => {
             {loading && <div className={styles.skeleton} style={{ height: 180 }} />}
             {!loading && recentNews.map(item => (
               <Link key={item.id} to={`/news/${encodeURIComponent(item.title)}`} className={styles.newsRow}>
-                <div className={styles.newsThumb}>{item.image && <img src={item.image} alt={item.title} />}</div>
+                <div className={styles.newsThumb}>{item.image && <BlurImage src={item.image} blurSrc={(item as any).blur_image||undefined} alt={item.title}/>}</div>
                 <div className={styles.newsBody}>
                   <span className={styles.newsCat}>{item.category}</span>
                   <p className={styles.newsTitle}>{item.title}</p>

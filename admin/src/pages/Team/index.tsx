@@ -8,6 +8,7 @@ import { api, buildFormData } from '@/services/api';
 import { Player } from '@/data/dummyData';
 import { Modal, ConfirmDialog, Field, Input, Textarea, Select, Btn, Toggle } from '@/components/ui';
 import ImageInput from '@/components/ui/ImageInput';
+import BlurImage from '@/components/ui/BlurImage';
 import styles from './Team.module.scss';
 
 const POSITIONS = ['Goalkeeper','Defender','Midfielder','Forward'];
@@ -152,7 +153,7 @@ const Team: React.FC = () => {
             <motion.div key={player.id} className={styles.card} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.04}}>
               {/* Image */}
               <div className={styles.imgWrap}>
-                {player.image && <img src={player.image} alt={player.name} className={styles.playerImg}/>}
+                {player.image && <BlurImage src={player.image} blurSrc={player.blur_image||undefined} alt={player.name} objectPosition="center top"/>}
                 <div className={styles.numberBadge}>#{player.number}</div>
                 <span className={styles.posBadge}>{player.position}</span>
                 {player.first_team && <span className={styles.firstTeamBadge}><Star size={9}/> First XI</span>}

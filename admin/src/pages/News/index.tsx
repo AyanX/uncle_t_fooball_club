@@ -8,10 +8,13 @@ import { useToast } from '@/context/ToastContext';
 import { api, buildFormData } from '@/services/api';
 import { NewsItem, NewsCategory } from '@/data/dummyData';
 import { Modal, ConfirmDialog, Field, Input, Textarea, Select, Btn, Toggle } from '@/components/ui';
+import BlurImage from '@/components/ui/BlurImage';
 import ImageInput from '@/components/ui/ImageInput';
 import styles from './News.module.scss';
 
 type NewsFormData = Omit<NewsItem, 'id' | 'blur_image'>;
+
+const toSlug = (t: string) => t.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,80);
 
 const emptyNews: NewsFormData = {
   slug:'', title:'', excerpt:'', content:'', image:'',
@@ -34,9 +37,20 @@ const NewsForm: React.FC<{
         <ImageInput currentUrl={isEdit ? value.image || undefined : undefined} onFileChange={onImageChange} label="Article Image" required aspectRatio="16/9"/>
       </div>
       <div style={{gridColumn:'1/-1'}}>
-        <Field label="Title" required><Input value={value.title} onChange={e=>set('title',e.target.value)} placeholder="Article title"/></Field>
+        <Field label="Title" required>
+          <Input value={value.title} onChange={e => {
+            const t = e.target.value;
+            onChange({ ...value, title: t, slug: toSlug(t) });
+          }} placeholder="Article title"/>
+        </Field>
       </div>
-      <Field label="Slug" required><Input value={value.slug} onChange={e=>set('slug',e.target.value)} placeholder="article-slug"/></Field>
+      <div style={{gridColumn:'1/-1'}}>
+        <Field label="Slug (auto-generated from title)">
+          <div style={{padding:'10px 14px',background:'rgba(10,20,47,0.04)',borderRadius:8,fontFamily:'monospace',fontSize:13,color:'#6b7280',border:'1.5px solid rgba(10,20,47,0.08)',minHeight:42,display:'flex',alignItems:'center'}}>
+            {value.slug || <span style={{opacity:0.4,fontStyle:'italic'}}>Generated from title…</span>}
+          </div>
+        </Field>
+      </div>
       <Field label="Category" required>
         <Select value={value.category} onChange={e=>set('category',e.target.value)}>
           <option value="">Select category…</option>
@@ -119,7 +133,7 @@ const News: React.FC = () => {
   };
 
   const handleSaveNews = async () => {
-    if (!newsForm.title || !newsForm.slug) { error('Title and slug required'); return; }
+    if (!newsForm.title) { error('Title is required'); return; }
     setSaving(true);
     try {
       const payload = buildFormData({ ...newsForm }, newsImageFile);
@@ -234,7 +248,7 @@ const News: React.FC = () => {
           {featured ? (
             <div className={styles.featuredCard}>
               <div className={styles.featuredImg}>
-                {featured.image && <img src={featured.image} alt={featured.title}/>}
+                {featured.image && <BlurImage src={featured.image} blurSrc={featured.blur_image||undefined} alt={featured.title}/>}
                 {featured.featured && <span className={styles.featuredBadge}><Star size={11}/> Featured</span>}
                 <span className={styles.catBadge}>{featured.category}</span>
               </div>
@@ -268,7 +282,7 @@ const News: React.FC = () => {
           <div className={styles.sideList}>
             {rest.map(item => (
               <div key={item.id} className={styles.sideCard}>
-                <div className={styles.sideImg}>{item.image && <img src={item.image} alt={item.title}/>}</div>
+                <div className={styles.sideImg}>{item.image && <BlurImage src={item.image} blurSrc={item.blur_image||undefined} alt={item.title}/>}</div>
                 <div className={styles.sideBody}>
                   <span className={styles.sideCat}>{item.category}</span>
                   <p className={styles.sideTitle}>{item.title}</p>

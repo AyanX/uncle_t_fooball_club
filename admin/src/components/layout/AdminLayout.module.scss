@@ -1,27 +1,52 @@
-// AdminLayout.module.scss — fixed sidebar, full-width content
+// AdminLayout.module.scss — fixed sidebar, full-width content on ALL screen sizes
 $sidebar-w: 248px;
 $topbar-h:  60px;
 
-.root { display: flex; min-height: 100vh; background: $color-off-white; }
+// Root must be 100vw so main can fill remaining space after sidebar margin
+.root {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  background: $color-off-white;
+}
 
-// ── Fixed Sidebar ─────────────────────────────────────────
+// ── Sidebar (fixed, not in flow) ──────────────────────────
 .sidebar {
-  width: $sidebar-w; height: 100vh; position: fixed; top: 0; left: 0;
-  background: $color-primary-dark; display: flex; flex-direction: column;
-  overflow-y: auto; @include hide-scrollbar; z-index: $z-navbar;
-  flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.06);
+  width: $sidebar-w;
+  height: 100vh;
+  position: fixed;
+  top: 0; left: 0;
+  background: $color-primary-dark;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  @include hide-scrollbar;
+  z-index: $z-navbar;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.06);
+
   @include lg { display: none; }
 }
 
 .mobileSidebar {
-  position: fixed !important; top: 0; bottom: 0; left: 0; display: flex !important;
-  flex-direction: column; z-index: $z-navbar + 1; width: min($sidebar-w, 90vw);
-  height: 100vh; overflow-y: auto; @include hide-scrollbar;
+  position: fixed !important;
+  top: 0; bottom: 0; left: 0;
+  display: flex !important;
+  flex-direction: column;
+  z-index: $z-navbar + 1;
+  width: min($sidebar-w, 88vw);
+  height: 100vh;
+  overflow-y: auto;
+  @include hide-scrollbar;
 }
 
 .backdrop {
-  position: fixed; inset: 0; background: rgba($color-primary-dark, 0.6);
-  backdrop-filter: blur(3px); z-index: $z-navbar; display: none;
+  position: fixed; inset: 0;
+  background: rgba($color-primary-dark, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: $z-navbar;
+  display: none;
   @include lg { display: block; }
 }
 
@@ -34,11 +59,12 @@ $topbar-h:  60px;
   &:hover { background: rgba($color-secondary,0.2); color: $color-white; }
 }
 
-// Brand
+// ── Brand ─────────────────────────────────────────────────
 .sidebarBrand {
   display: flex; align-items: center; gap: $space-3;
   padding: $space-5 $space-5 $space-4;
-  border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
 }
 
 .logoMark {
@@ -50,17 +76,32 @@ $topbar-h:  60px;
 }
 
 .brandText { display: flex; flex-direction: column; gap: 2px; }
-.brandName { font-family: $font-display; font-weight: $font-weight-black; font-size: $font-size-sm; color: $color-white; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; }
-.brandBadge { font-family: $font-body; font-size: 10px; font-weight: $font-weight-semibold; letter-spacing: 0.16em; text-transform: uppercase; color: $color-gold; line-height: 1; }
+.brandName {
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-sm; color: $color-white;
+  text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+}
+.brandBadge {
+  font-family: $font-body; font-size: 10px; font-weight: $font-weight-semibold;
+  letter-spacing: 0.16em; text-transform: uppercase; color: $color-gold; line-height: 1;
+}
 
-// Nav
-.sidebarNav { flex: 1; padding: $space-4 $space-3; display: flex; flex-direction: column; gap: 2px; }
+// ── Nav ───────────────────────────────────────────────────
+.sidebarNav {
+  flex: 1; padding: $space-4 $space-3;
+  display: flex; flex-direction: column; gap: 2px;
+}
 
-.navSection { font-family: $font-body; font-size: 10px; font-weight: $font-weight-semibold; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.28); padding: $space-4 $space-3 $space-2; display: block; }
+.navSection {
+  font-family: $font-body; font-size: 10px; font-weight: $font-weight-semibold;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.28); padding: $space-4 $space-3 $space-2; display: block;
+}
 
 .navItem {
   display: flex; align-items: center; gap: $space-3; padding: $space-3 $space-3;
-  border-radius: $radius-md; font-family: $font-display; font-size: $font-size-xs;
+  border-radius: $radius-md;
+  font-family: $font-display; font-size: $font-size-xs;
   font-weight: $font-weight-bold; letter-spacing: 0.05em; text-transform: uppercase;
   color: rgba(255,255,255,0.55); text-decoration: none; transition: all $transition-fast;
   &:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
@@ -74,7 +115,7 @@ $topbar-h:  60px;
 .navIcon { color: rgba(255,255,255,0.4); flex-shrink: 0; transition: color $transition-fast; }
 .navLabel { flex: 1; }
 
-// Footer — username STACKED above email (column layout)
+// ── Footer ────────────────────────────────────────────────
 .sidebarFooter {
   padding: $space-4 $space-4 $space-5;
   border-top: 1px solid rgba(255,255,255,0.07);
@@ -92,14 +133,12 @@ $topbar-h:  60px;
   font-family: $font-display; font-weight: $font-weight-black; font-size: $font-size-sm; color: $color-white;
 }
 
-// Stack username above email vertically
+// Username stacked ABOVE email
 .userInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-
 .userName {
   font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
   color: $color-white; text-transform: uppercase; letter-spacing: 0.04em; @include truncate(1); line-height: 1.2;
 }
-
 .userEmail {
   font-family: $font-body; font-size: 10px; color: rgba(255,255,255,0.4); @include truncate(1); line-height: 1.2;
 }
@@ -114,22 +153,36 @@ $topbar-h:  60px;
   &:hover { background: rgba($color-secondary,0.12); color: $color-secondary; border-color: rgba($color-secondary,0.25); }
 }
 
-// ── Main area ─────────────────────────────────────────────
+// ── Main — KEY FIX: margin pushes content right of fixed sidebar ──
+// On desktop (> 1024px): sidebar is fixed 248px, main gets margin-left
+// On mobile (≤ 1024px): sidebar hidden, main takes full width with no margin
 .main {
-  flex: 1;
+  // Takes full remaining width — margin-left accounts for fixed sidebar
   margin-left: $sidebar-w;
+  flex: 1;
   min-width: 0;
-  max-width: calc(100vw - #{$sidebar-w});   // prevent content overflow
-  display: flex; flex-direction: column; min-height: 100vh;
-  @include lg { margin-left: 0; max-width: 100vw; }
+  max-width: calc(100% - #{$sidebar-w});
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  // On mobile, sidebar is hidden so NO margin and FULL width
+  @include lg {
+    margin-left: 0 !important;
+    max-width: 100% !important;
+    width: 100%;
+  }
 }
 
-// Sticky topbar — fixed so it never scrolls away
+// ── Topbar (sticky) ───────────────────────────────────────
 .topbar {
-  height: $topbar-h; background: $color-white;
+  height: $topbar-h;
+  background: $color-white;
   border-bottom: 1px solid rgba($color-primary, 0.08);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 $space-6; position: sticky; top: 0; z-index: $z-above;
+  padding: 0 $space-6;
+  position: sticky; top: 0; z-index: $z-above;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   @include md { padding: 0 $space-4; }
 }
@@ -144,7 +197,10 @@ $topbar-h:  60px;
 }
 
 .topbarCenter { flex: 1; display: flex; align-items: center; @include lg { padding-left: $space-4; } }
-.topbarTitle { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: 0.04em; }
+.topbarTitle {
+  font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-black;
+  text-transform: uppercase; color: $color-primary; letter-spacing: 0.04em;
+}
 
 .topbarRight { display: flex; align-items: center; gap: $space-3; }
 
@@ -160,11 +216,17 @@ $topbar-h:  60px;
   font-family: $font-display; font-weight: $font-weight-black; font-size: $font-size-xs; color: $color-white; flex-shrink: 0;
 }
 
-.topbarName { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-primary; letter-spacing: 0.04em; @include sm { display: none; } }
+.topbarName {
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  text-transform: uppercase; color: $color-primary; letter-spacing: 0.04em;
+  @include sm { display: none; }
+}
 
-// Full-width page content
+// ── Content area ──────────────────────────────────────────
 .content {
-  flex: 1; width: 100%; padding: $space-6;
+  flex: 1;
+  width: 100%;
+  padding: $space-6;
   @include md { padding: $space-4; }
   @include sm { padding: $space-3; }
 }

@@ -14,7 +14,7 @@ import {
   MissionVisionItem, Milestone, Management, SocialInfo,
 } from '@/data/dummyData';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.kilimanjaro-fc.com/v1';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api';
 
 interface ApiResponse<T> { data: T; message: string; }
 
@@ -56,6 +56,7 @@ export const api = {
     // News
     news: (): Promise<NewsItem[]> =>
       safeFetch(() => http.get<ApiResponse<NewsItem[]>>('/news'), dummyNews),
+
     newsItem: (slug: string): Promise<NewsItem | undefined> =>
       safeFetch(
         () => http.get<ApiResponse<NewsItem>>(`/news/${slug}`),

@@ -16,4 +16,16 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    port: 5174,
+    // Proxy API requests in dev to avoid CORS issues
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_BASE_URL || 'https://api.kilimanjaro-fc.com',
+        changeOrigin: true,
+        secure: false,
+        cookieDomainRewrite: 'localhost',
+      },
+    },
+  },
 })

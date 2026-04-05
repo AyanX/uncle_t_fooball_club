@@ -1,72 +1,79 @@
-// context/AuthContext.tsx — extended with username, email in profile
+// context/AuthContext.tsx — Session verified via GET /auth on mount (no localStorage)
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '@/services/api';
 
-export interface AuthUser {
-  email: string;
-  token: string;
-  username: string;
-}
+export interface AuthUser { email: string; token: string; username: string; }
 
 interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithPin: (email: string, pin: string) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (partial: Partial<AuthUser>) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null, loading: true,
-  login: async () => {}, logout: async () => {}, updateUser: () => {},
+  login: async () => {}, loginWithPin: async () => {},
+  logout: async () => {}, updateUser: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser]   = useState<AuthUser | null>(null);
+  const [user, setUser]       = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('admin_user');
-    if (stored) { try { setUser(JSON.parse(stored)); } catch {} }
-    setLoading(false);
+    // Verify session by hitting GET /auth — server validates cookie/token
+    // If 200+: user is logged in. If <200 or error: not logged in.
+    api.auth.verify()
+      .then(u => { if (u) setUser(u); })
+      .catch(() => { /* not authenticated */ })
+      .finally(() => setLoading(false));
 
+    // 403 on any request → force logout
     const onForbidden = async () => {
       await api.auth.logout().catch(() => {});
-      localStorage.removeItem('admin_token');
-      localStorage.removeItem('admin_user');
       setUser(null);
     };
     window.addEventListener('admin:forbidden', onForbidden as any);
     return () => window.removeEventListener('admin:forbidden', onForbidden as any);
   }, []);
 
+  const _applyUser = (d: any, fallbackEmail?: string) => {
+    const u: AuthUser = {
+      email:    d.email    || fallbackEmail || '',
+      token:    d.token    || '',
+      username: d.username || 'admin',
+    };
+    // Only store token (not user data) — session is cookie-based
+    if (u.token) localStorage.setItem('admin_token', u.token);
+    setUser(u);
+    return u;
+  };
+
   const login = async (email: string, password: string) => {
     const res = await api.auth.login(email, password);
-    const d = res.data.data;
-    const u: AuthUser = { email: d.email, token: d.token, username: d.username || 'admin' };
-    localStorage.setItem('admin_token', u.token);
-    localStorage.setItem('admin_user', JSON.stringify(u));
-    setUser(u);
+    _applyUser(res.data?.data ?? res.data, email);
+  };
+
+  const loginWithPin = async (email: string, pin: string) => {
+    const res = await api.auth.loginWithPin(email, pin);
+    _applyUser(res.data?.data ?? res.data, email);
   };
 
   const logout = async () => {
     await api.auth.logout().catch(() => {});
     localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
     setUser(null);
   };
 
   const updateUser = (partial: Partial<AuthUser>) => {
-    setUser(prev => {
-      if (!prev) return prev;
-      const updated = { ...prev, ...partial };
-      localStorage.setItem('admin_user', JSON.stringify(updated));
-      return updated;
-    });
+    setUser(prev => prev ? { ...prev, ...partial } : prev);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, loginWithPin, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
