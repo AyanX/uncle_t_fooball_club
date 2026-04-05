@@ -1,9 +1,10 @@
 const express= require('express');
 const GalleryController = require('../../controllers/gallery/gallery.controller');
+const { upload } = require('ayan-pkg');
 
 const galleryRouter = express.Router();
 
-galleryRouter.post("/", GalleryController.createGallery);   
+galleryRouter.post("/", upload, GalleryController.createGallery);   
 galleryRouter.get("/", GalleryController.getAllGalleries);
 galleryRouter.put("/:id", GalleryController.updateGallery);
 galleryRouter.delete("/:id", GalleryController.deleteGallery);

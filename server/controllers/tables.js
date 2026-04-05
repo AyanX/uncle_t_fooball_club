@@ -13,6 +13,8 @@ const {
     MissionVissionTable,
     managementTable,
     socialsTable,
+    clicksTable,
+    newsTable,
     programTitlesTable,
     programsTable,
     adminLoginDetails,
@@ -21,9 +23,11 @@ const {
 
 module.exports = {
   adminLoginDetails,
+  clicksTable,
   adminProfileTable,
   viewsTable,
   db,
+  newsTable,
  player,
   newsCategory,
   managementTable,

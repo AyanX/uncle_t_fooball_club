@@ -16,6 +16,7 @@ class ProgramsController {
 
     static async updateProgram(req, res) {
         try {
+            console.log("Updating program with data:", req.body, "and fileUrl:", req.fileUrl);
             if(!req.params.id) return res.status(400).json({ message: "Program id is required", data:[] });
             if(!validProgram(req.body)) return res.status(400).json({ message: "Invalid program data", data:[] });
 
@@ -29,18 +30,20 @@ class ProgramsController {
             await db.update(programsTable).set(programToDb(req.body)).where(eq(programsTable.id, req.params.id));
 
             //return the req body instead of fetch ,
-            res.json(200).json({ message: "Program updated successfully", data:programsToClient([req.body]) });
+           res.status(200).json({ message: "Program updated successfully", data:programsToClient([req.body]) });
 
+           if(!req.fileUrl) return; // if image is not updated, no need to generate blur
              //generate blur
 
              const blur  = await generateBlurImage(image);
-             if(blur) {
+             if(blur ) {
                  await db.update(programsTable).set({ blur_image: blur }).where(eq(programsTable.id, req.params.id));
              }
              return;
 
 
         } catch (error) {
+            console.error("error updating prog",error);
             return res.status(500).json({ message: "Error updating program", data:[] });
         }
     }

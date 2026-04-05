@@ -51,23 +51,6 @@ const newsCategory = mysqlTable("news_category", {
 });
 
 
-// export interface Fixture {
-//   id: number;
-//   homeTeam: string;
-//   awayTeam: string;
-//   homeTeamLogo: string;
-//   awayTeamLogo: string;
-//   date: string;
-//   time: string;
-//   venue: string;
-//   competition: string;
-//   status: 'upcoming' | 'completed' | 'live';
-//   homeScore?: number;
-//   awayScore?: number;
-//   fans: number;
-// }
-
-
 const fixturesTable = mysqlTable("fixtures", {
   id: int("id").primaryKey().autoincrement(),
   homeTeam: varchar("home_team", { length: 255 }).notNull(),
@@ -206,21 +189,24 @@ const programTitlesTable = mysqlTable("program_titles", {
     modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
 })
 
-// export interface Program {
-//   id: number;
-//   slug: string;
-//   title: string;
-//   tagline: string;
-//   description: string;
-//   longDescription: string;
-//   image: string;
-//   blur_image: string;
-//   icon: string;
-//   color: string;
-//   stats: { label: string; value: string }[];
-//   highlights: string[];
-// }
 
+const newsTable = mysqlTable("news", {
+    id: int("id").primaryKey().autoincrement(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    title: varchar("title", { length: 255 }).notNull(),
+    excerpt: text("excerpt").notNull(),
+    content: longtext("content").notNull(),
+    image: varchar("image", { length: 255 }).notNull(),
+    blur_image: varchar("blur_image", { length: 255 }),
+    category :varchar("category", { length: 255 }).notNull(),
+    author: varchar("author", { length: 255 }).notNull(),
+    date: date("date").notNull(),
+    readTime: varchar("read_time", { length: 255 }).notNull(),
+    featured: boolean("featured").default(false),
+    isDeleted: boolean("is_deleted").default(false),
+    created_at: timestamp("created_at").defaultNow(),
+    modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
+})
 
 const programsTable = mysqlTable("programs", {
     id: int("id").primaryKey().autoincrement(),
@@ -263,9 +249,19 @@ const adminLoginDetails = mysqlTable("admin_login_details", {
     created_at: timestamp("created_at").defaultNow(),
     modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
 })
+//   { id: 1, newsId: 1, views: 1540 }, { id: 2, newsId: 2, views: 892 },
+const clicksTable = mysqlTable("clicks", {
+    id: int("id").primaryKey().autoincrement(),
+    newsId: int("news_id").notNull(),
+    clicks: int("clicks").notNull().default(0),
+    isDeleted: boolean("is_deleted").default(false),
+    created_at: timestamp("created_at").defaultNow(),
+    modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
+})
 
 module.exports = {
     adminProfileTable,
+    clicksTable,
     viewsTable,
     adminLoginDetails,
   player,
@@ -278,6 +274,7 @@ module.exports = {
     galleryCategoryTable,
     clubStatsTable,
     clubMilestonesTable,
+    newsTable,
     MissionVissionTable,
     socialsTable,
     programsTable,

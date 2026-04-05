@@ -9,12 +9,5 @@ programsRouter.post("/", upload ,ProgramsController.createProgram);
 programsRouter.put("/:id",upload, ProgramsController.updateProgram);
 programsRouter.delete("/:id", ProgramsController.deleteProgram);
 
-//titles
-
-programsRouter.get("/titles", ProgramsController.getProgramTitles);
-programsRouter.post("/titles", ProgramsController.createProgramTitles);
-programsRouter.put("/titles/:id", ProgramsController.updateProgramTitles);
-programsRouter.delete("/titles/:id", ProgramsController.deleteProgramTitles);
-
 
 module.exports= programsRouter;

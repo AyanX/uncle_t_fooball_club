@@ -44,7 +44,7 @@ class GalleryController {
                 return res.status(404).json({ error: 'Gallery not found', data: null });
             }
 
-            const image = req.fileUrl 
+            const image = req.fileUrl || req.body.image
 
                if(!image){
                 return res.status(400).json({ error: 'Image is required', data: null });
@@ -58,12 +58,14 @@ class GalleryController {
                 image: image,
                 caption,
                 category,
-                featured,
+                featured : featured === true ? 1 : 0,
                 blur_image: image
             }).where(eq(galleryTable.id, galleryId));
 
             // send the data with the response, and then update blur in background
-            res.status(200).json({ message: 'Gallery updated successfully', data: galleriesToClient([{...gallery[0], image, caption, category, featured , blur_image: image}]) });
+            res.status(200).json({ message: 'Gallery updated successfully', data:{image, caption, category, featured: featured === true ? 1 : 0 , blur_image: image, id: galleryId} });
+
+            if(!req.fileUrl)return
 
             //generate blur
             const blur = await generateBlurImage(image);
@@ -75,6 +77,7 @@ class GalleryController {
 
 
         } catch (error) {
+            console.error('Error updating gallery:', error);
             return res.status(500).json({ error: 'Failed to update gallery', data: null });
         }
     }
@@ -106,8 +109,7 @@ class GalleryController {
     }
 
     static async createGallery(req, res) {
-        try {
-            if(!validGallery(req.body)){
+        try {    if(!validGallery(req.body)){
                 return res.status(400).json({ error: 'Invalid gallery data', data: null });
             }
             const image = req.fileUrl 
@@ -115,23 +117,23 @@ class GalleryController {
             if(!image){
                 return res.status(400).json({ error: 'Image is required', data: null });
             }
-
-
             const { caption, category, featured } = req.body;
+
+            
 
           await db.insert(galleryTable).values({
                 image,
                 caption,
                 category,
                 blur_image: image,
-                featured: featured || false
+                featured: featured === true ? 1 : 0
             })
 
             // fetch it for response, last entry
 
             const newGallery = await db.select().from(galleryTable).where(eq(galleryTable.isDeleted, false)).orderBy(desc(galleryTable.created_at)).limit(1);
             // give res and generate blur
-            res.status(201).json({ message: 'Gallery created successfully', data: galleriesToClient(newGallery) });
+            res.status(201).json({ message: 'Gallery created successfully', data:{image, caption, category, featured:  featured === "true" ? 1 : 0 , blur_image: image, id: newGallery[0].id} });
             
             //update blur in background
             const blur = await generateBlurImage(image);
@@ -142,6 +144,7 @@ class GalleryController {
             return;
 
         } catch (error) {
+            console.error("error adding gallery",error)
             return res.status(500).json({ error: 'Failed to create gallery' , data: null});
         }
     }
@@ -195,7 +198,7 @@ class GalleryController {
             }).where(eq(galleryCategoryTable.id, categoryId));
 
             // send the data with the response
-            res.status(200).json({ message: 'Gallery category updated successfully', data: categoriesToClient([{...category[0], title: req.body.title}]) });
+            res.status(200).json({ message: 'Gallery category updated successfully', data:{id: categoryId, title: req.body.title} });
 
             return;
         } catch (error) {
@@ -246,7 +249,7 @@ class GalleryController {
 
             const newCategory = await db.select().from(galleryCategoryTable).where(eq(galleryCategoryTable.isDeleted, false)).orderBy(desc(galleryCategoryTable.created_at)).limit(1);
              // give res 
-        return    res.status(201).json({ message: 'Gallery category created successfully', data: categoriesToClient(newCategory) });
+        return    res.status(201).json({ message: 'Gallery category created successfully', data:{id: newCategory[0].id, title} });
 
 
         } catch (error) {

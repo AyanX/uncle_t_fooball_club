@@ -2,10 +2,11 @@ const express = require('express');
 const path = require("path");
 const app = express();
 const cors = require('cors');
-
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());  
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["http://localhost:5173", "http://localhost:5174",  "http://localhost:5175"],
     credentials: true,
   })
 );
@@ -23,6 +24,10 @@ const clubRouter = require('./routers/club/club.router');
 const socialsRouter = require('./routers/socials/socials.router');
 const programsRouter = require('./routers/programs/programs.router');
 const adminRouter = require('./routers/admin/admin.router');
+const programTitleRouter = require('./routers/programs/titles/titles.router');
+const clicksRouter = require('./routers/clicks/clicks.router');
+const useAuth = require('./utils/useAuth');
+const AuthCheck = require('./controllers/authChecker/auth');
 
 
 
@@ -44,10 +49,15 @@ app.use("/api/club", clubRouter)
 
 app.use("/api/socials", socialsRouter);
 
-app.use("/api/programmes", programsRouter )
+app.use("/api/programmes", programTitleRouter )
 
 app.use("/api/admin",adminRouter)
 
-// app.use("/api/programs", programsRouter )
+app.use("/api/programs", programsRouter )
+
+app.use("/click", clicksRouter)
+
+
+app.use("/api/auth", useAuth, AuthCheck.checkAuth)
 
 module.exports = app;

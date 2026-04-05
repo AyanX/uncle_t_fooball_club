@@ -11,4 +11,8 @@ adminRouter.put("/email", AdminController.updateEmail);
 adminRouter.post("/pin", AdminController.updatePin);
 
 
+adminRouter.post("/login", AdminController.login);
+adminRouter.post("/logout", AdminController.logout);
+
+
 module.exports = adminRouter;

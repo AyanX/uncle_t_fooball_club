@@ -6,7 +6,9 @@ const { generateBlurImage } = require("ayan-pkg");
 
 class PartnersController {
   static async createPartner(req, res) {
+     console.log("Creating partner with data:", req.body, "and fileUrl:", req.fileUrl);
     try {
+     
     
         if(!validPartner(req.body)) {
             return res.status(400).json({ message: "Name, tier and description are required", data: null });
@@ -51,7 +53,7 @@ class PartnersController {
         }
 
         //give a res then continue blur
-        res.status(201).json({ message: "Partner created successfully", data: partnerToClient(newPartner)[0] });
+        res.status(201).json({data:partnerToClient(newPartner)[0] });
 
         const blur_image = await generateBlurImage(image)
 
@@ -114,7 +116,7 @@ try {
             return res.status(400).json({ message: "Invalid partner tier", data: null });
         }
 
-        const image =  req.fileUrl;
+        const image =  req.fileUrl || req.body.logo
 
         //if no image logo, break
         if(!image) {
@@ -143,7 +145,10 @@ try {
         // res then blur  it
        res.status(200).json({ message: "Partner updated successfully", data: partnerToClient(updatedPartner)[0] });
 
-        const blur_image = await generateBlurImage(image)
+
+       if(!req.fileUrl) return
+
+      const blur_image = await generateBlurImage(image)
 
         if(blur_image) {
             //update the table, id is in newPartner[0].id

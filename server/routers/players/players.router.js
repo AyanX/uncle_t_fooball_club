@@ -7,6 +7,7 @@ const PlayerController = require('../../controllers/player/player.controller');
 const playersRouter = express.Router();
 
 playersRouter.get("/",PlayerController.getAllPlayers);
+playersRouter.get("/:id",PlayerController.getPlayerById);
 playersRouter.post("/",upload,PlayerController.createPlayer);
 playersRouter.put("/:id",PlayerController.updatePlayer);
 playersRouter.delete("/:id",PlayerController.deletePlayer);

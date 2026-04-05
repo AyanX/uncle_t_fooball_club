@@ -46,16 +46,17 @@ const  programsToClient = (programs) => {
             blur_image: program.blur_image,
             icon: program.icon,
             color: program.color,
-            stats: JSON.parse(program.stats),
-            highlights: JSON.parse(program.highlights)
+            stats: typeof program.stats === "string"
+  ? JSON.parse(program.stats)
+  : program.stats,
+            highlights: typeof program.highlights === "string"
+  ? JSON.parse(program.highlights)
+  : program.highlights
         }
     })
 }
 
 const programToDb = (program) => {
-    programHighlighArray
-
-
     return {
         slug: program.slug,
         title: program.title,

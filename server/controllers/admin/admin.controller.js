@@ -1,6 +1,7 @@
 const { desc } = require("drizzle-orm");
 const {db,adminLoginDetails,adminProfileTable} = require("../tables");
 const {hashPassword, comparePasswords} = require("../../utils/bcrypt");
+const { generateToken, generateRefreshToken } = require("../../utils/jwt");
 class AdminController{
 
     static async getProfile(req,res){
@@ -11,7 +12,7 @@ class AdminController{
                 return res.status(404).json({message: "Admin profile not found", data:null});
             }
 
-            return res.status(200).json({message: "Admin profile fetched successfully", data: profile[0]});
+            return res.status(200).json({message: "Admin profile fetched successfully", data: {email: profile[0].email, username: profile[0].username}});
         }
         catch(error){
             console.error("Error fetching admin profile:", error);
@@ -144,6 +145,104 @@ class AdminController{
     }
 
     }
+
+
+      static async login(req, res) {
+         try {
+      if (!req.body.email || !req.body.password) {
+        return res
+          .status(400)
+          .json({ message: "Email and password are required" });
+      }
+      const email = await db
+        .select()
+        .from(adminProfileTable)
+        .orderBy(desc(adminProfileTable.created_at))
+        .limit(1);
+
+      if (email.length < 1) {
+        return res.status(404).json({ message: "Admin email not found" });
+      }
+
+      const password = await db
+        .select()
+        .from(adminLoginDetails)
+        .orderBy(desc(adminLoginDetails.created_at))
+        .limit(1);
+
+      if (password.length < 1) {
+        return res.status(404).json({ message: "Admin password not found" });
+      }
+
+      // check emails match
+      if (email[0].email !== req.body.email) {
+        return res.status(401).json({ error: "Incorrect Login credentials" });
+      }
+      //check password using bcrypt
+
+      const isPasswordValid = await comparePasswords(
+        req.body.password,
+        password[0].password,
+      );
+
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: "Incorrect Login credentials" });
+      }
+      // cookies implementaation
+
+      const token = generateToken({
+        email: email[0].email,
+        username: email[0].username,
+      });
+
+      const refreshToken = generateRefreshToken({
+        email: email[0].email,
+        username: email[0].username,
+      });
+
+
+      res.cookie("token", token, {
+          httpOnly: true,
+          sameSite: "lax",
+          secure: false,
+          path: "/",
+          maxAge: 1000 * 60 * 10, // 10 minutes
+        })
+        .cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+      return res.json({ message: "Login successful", data:{email: email[0].email, username: email[0].username} });
+  
+  
+    } catch (error) {
+      console.error("Error during login:", error);
+      return res.status(500).json({ message: "Error during login" });
+    }
+  }
+
+  static async logout(req, res) {
+     try {
+      // clear the token cookie and refreshToken
+      res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "Lax",
+        secure: process.env.NODE_ENV === "production",
+      }).clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
+      });
+      return res.json({ message: "Logout successful" });
+    } catch (error) {
+      console.error("Error during logout:", error);
+      return res.status(500).json({ message: "Error during logout" });
+    }
+  }
 
 }
 module.exports = AdminController;

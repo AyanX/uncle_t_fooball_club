@@ -1,9 +1,13 @@
 const { eq, desc } = require("drizzle-orm");
-const { db, newsCategory } = require("../tables");
+const { db, newsCategory ,newsTable} = require("../tables");
 const {
   validNewsCategoryToClient,
   validNewsCategory,
+  validNewsToClient,
+  validNews,
 } = require("./news.utils");
+
+const {generateBlurImage}= require("ayan-pkg")
 
 //TODO
 class NewsController {
@@ -131,7 +135,42 @@ class NewsController {
     return res.status(200).json({data: [], message: "Get news endpoint"});
   }
 
-  static async addNews(req, res) {}
+  static async addNews(req, res) {
+    try {
+      if(!validNews(req.body)){
+          return res.status(400).json({data: [], message: "Invalid news data"});
+      }
+
+      const image = req.fileUrl
+      if(!image){
+          return res.status(400).json({data: [], message: "News image is required"});
+      }
+
+      const {slug, title, excerpt, content, category, author, date, readTime, featured} = req.body;
+
+      await db.insert(newsTable).values({slug, title, excerpt, content, image, blur_image:image , category, author, date: new Date(date), readTime, featured: featured === "true"});
+
+      //its the last entry, fetch and return it
+      const insertedNews = await db.select().from(newsTable).orderBy(desc(newsTable.created_at)).limit(1);
+      if(insertedNews.length === 0){
+          return res.status(404).json({data: [], message: "News not found after insertion"});
+      }
+
+       res.status(201).json({data: validNewsToClient(insertedNews), message: "News added successfully"});
+      
+      //generate blur
+
+      const blur = await generateBlurImage(image);
+      if(blur){
+        await db.update(newsTable).set({blur_image: blur}).where(eq(newsTable.id, insertedNews[0].id));
+      }
+
+
+    } catch (error) {
+      console.error("Error adding news:", error);
+      return res.status(500).json({ data: [], message: "Error adding news" });
+    }
+  }
 
   static async updateNews(req, res) {}
 
