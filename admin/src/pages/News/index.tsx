@@ -1,103 +1,139 @@
-// pages/News/index.tsx — News management: grid like frontend + edit/delete + category management
+// pages/News/index.tsx — news grid + categories + views + featured toggle + always-visible actions
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, Eye, Star, Tag, Image } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, Star, Tag, TrendingUp } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';
 import { useToast } from '@/context/ToastContext';
-import { api } from '@/services/api';
+import { api, buildFormData } from '@/services/api';
 import { NewsItem, NewsCategory } from '@/data/dummyData';
 import { Modal, ConfirmDialog, Field, Input, Textarea, Select, Btn, Toggle } from '@/components/ui';
+import ImageInput from '@/components/ui/ImageInput';
 import styles from './News.module.scss';
 
-const emptyNews: Omit<NewsItem, 'id'> = {
-  slug: '', title: '', excerpt: '', content: '', image: '', blur_image: '',
-  category: '', author: '', date: new Date().toISOString().slice(0, 10),
-  readTime: 3, featured: false,
+type NewsFormData = Omit<NewsItem, 'id' | 'blur_image'>;
+
+const emptyNews: NewsFormData = {
+  slug:'', title:'', excerpt:'', content:'', image:'',
+  category:'', author:'', date: new Date().toISOString().slice(0,10),
+  readTime:3, featured:false,
 };
 
-const NewsForm: React.FC<{ value: Omit<NewsItem, 'id'>; categories: NewsCategory[]; onChange: (v: Omit<NewsItem, 'id'>) => void }> = ({ value, categories, onChange }) => {
-  const set = (k: keyof typeof value, v: any) => onChange({ ...value, [k]: v });
+const NewsForm: React.FC<{
+  value: NewsFormData;
+  imageFile: File|null;
+  onImageChange: (f:File|null)=>void;
+  categories: NewsCategory[];
+  onChange: (v:NewsFormData)=>void;
+  isEdit: boolean;
+}> = ({ value, imageFile, onImageChange, categories, onChange, isEdit }) => {
+  const set = (k: keyof NewsFormData, v: any) => onChange({ ...value, [k]: v });
   return (
     <div className={styles.formGrid}>
-      <div style={{ gridColumn: '1 / -1' }}>
-        <Field label="Title" required><Input value={value.title} onChange={e => set('title', e.target.value)} placeholder="Article title" /></Field>
+      <div style={{gridColumn:'1/-1'}}>
+        <ImageInput currentUrl={isEdit ? value.image || undefined : undefined} onFileChange={onImageChange} label="Article Image" required aspectRatio="16/9"/>
       </div>
-      <Field label="Slug" required><Input value={value.slug} onChange={e => set('slug', e.target.value)} placeholder="article-slug" /></Field>
+      <div style={{gridColumn:'1/-1'}}>
+        <Field label="Title" required><Input value={value.title} onChange={e=>set('title',e.target.value)} placeholder="Article title"/></Field>
+      </div>
+      <Field label="Slug" required><Input value={value.slug} onChange={e=>set('slug',e.target.value)} placeholder="article-slug"/></Field>
       <Field label="Category" required>
-        <Select value={value.category} onChange={e => set('category', e.target.value)}>
+        <Select value={value.category} onChange={e=>set('category',e.target.value)}>
           <option value="">Select category…</option>
-          {categories.map(c => <option key={c.id} value={c.category}>{c.category}</option>)}
+          {categories.map(c=><option key={c.id} value={c.category}>{c.category}</option>)}
         </Select>
       </Field>
-      <Field label="Author"><Input value={value.author} onChange={e => set('author', e.target.value)} placeholder="Author name" /></Field>
-      <Field label="Date"><Input type="date" value={value.date} onChange={e => set('date', e.target.value)} /></Field>
-      <Field label="Read Time (min)"><Input type="number" value={value.readTime} onChange={e => set('readTime', +e.target.value)} min={1} /></Field>
-      <Field label="Image URL" required><Input value={value.image} onChange={e => set('image', e.target.value)} placeholder="https://..." /></Field>
-      <Field label="Blur Image URL"><Input value={value.blur_image} onChange={e => set('blur_image', e.target.value)} placeholder="https://... (tiny placeholder)" /></Field>
-      <div style={{ gridColumn: '1 / -1' }}>
+      <Field label="Author"><Input value={value.author} onChange={e=>set('author',e.target.value)} placeholder="Author name"/></Field>
+      <Field label="Date"><Input type="date" value={value.date} onChange={e=>set('date',e.target.value)}/></Field>
+      <Field label="Read Time (min)"><Input type="number" value={value.readTime} onChange={e=>set('readTime',+e.target.value)} min={1}/></Field>
+      <div style={{gridColumn:'1/-1'}}>
         <Field label="Excerpt" required>
-          <Textarea value={value.excerpt} onChange={e => set('excerpt', e.target.value)} rows={3} placeholder="Short summary…" />
+          <Textarea value={value.excerpt} onChange={e=>set('excerpt',e.target.value)} rows={3} placeholder="Short summary…"/>
         </Field>
       </div>
-      <div style={{ gridColumn: '1 / -1' }}>
+      <div style={{gridColumn:'1/-1'}}>
         <Field label="Full Content (HTML)">
-          <Textarea value={value.content} onChange={e => set('content', e.target.value)} rows={8} placeholder="<p>Article content in HTML…</p>" style={{ fontFamily: 'monospace', fontSize: 13 }} />
+          <Textarea value={value.content} onChange={e=>set('content',e.target.value)} rows={7} placeholder="<p>Article HTML…</p>" style={{fontFamily:'monospace',fontSize:13}}/>
         </Field>
       </div>
-      <div style={{ gridColumn: '1 / -1' }}>
-        <Toggle checked={value.featured} onChange={v => set('featured', v)} label="Mark as Featured (shown large on homepage)" />
+      <div style={{gridColumn:'1/-1'}}>
+        <Toggle checked={value.featured} onChange={v=>set('featured',v)} label="Mark as Featured"/>
       </div>
     </div>
   );
 };
 
-const CategoryForm: React.FC<{ value: Omit<NewsCategory, 'id'>; onChange: (v: Omit<NewsCategory, 'id'>) => void }> = ({ value, onChange }) => (
-  <div className={styles.formGrid}>
-    <Field label="Category Name" required><Input value={value.category} onChange={e => onChange({ ...value, category: e.target.value })} placeholder="Match Report" /></Field>
-    <Field label="Hero Image URL"><Input value={value.image} onChange={e => onChange({ ...value, image: e.target.value })} placeholder="https://..." /></Field>
+const CategoryForm: React.FC<{
+  value: Omit<NewsCategory,'id'>;
+  imageFile: File|null;
+  onImageChange:(f:File|null)=>void;
+  onChange:(v:Omit<NewsCategory,'id'>)=>void;
+  isEdit:boolean;
+}> = ({ value, imageFile, onImageChange, onChange, isEdit }) => (
+  <div style={{display:'flex',flexDirection:'column',gap:16}}>
+    <ImageInput currentUrl={isEdit ? value.image||undefined : undefined} onFileChange={onImageChange} label="Category Hero Image" aspectRatio="16/9"/>
+    <Field label="Category Name" required>
+      <Input value={value.category} onChange={e=>onChange({...value,category:e.target.value})} placeholder="Match Report"/>
+    </Field>
   </div>
 );
 
 const News: React.FC = () => {
-  const { news, newsCategories, setNews, setNewsCategories, loading } = useAdminData();
+  const { news, newsCategories, newsViews, setNews, setNewsCategories, loading } = useAdminData();
   const { success, error } = useToast();
 
   const [catFilter, setCatFilter] = useState('All');
-  const [addOpen, setAddOpen] = useState(false);
-  const [editItem, setEditItem] = useState<NewsItem | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<NewsItem | null>(null);
-  const [catOpen, setCatOpen] = useState(false);
-  const [editCat, setEditCat] = useState<NewsCategory | null>(null);
-  const [deleteCat, setDeleteCat] = useState<NewsCategory | null>(null);
-  const [newsForm, setNewsForm] = useState<Omit<NewsItem, 'id'>>(emptyNews);
-  const [catForm, setCatForm] = useState<Omit<NewsCategory, 'id'>>({ category: '', image: '' });
-  const [saving, setSaving] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  const [addOpen, setAddOpen]     = useState(false);
+  const [editItem, setEditItem]   = useState<NewsItem|null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<NewsItem|null>(null);
+  const [catOpen, setCatOpen]     = useState(false);
+  const [editCat, setEditCat]     = useState<NewsCategory|null>(null);
+  const [deleteCat, setDeleteCat] = useState<NewsCategory|null>(null);
+  const [newsForm, setNewsForm]   = useState<NewsFormData>(emptyNews);
+  const [newsImageFile, setNewsImageFile] = useState<File|null>(null);
+  const [catForm, setCatForm]     = useState<Omit<NewsCategory,'id'>>({ category:'', image:'' });
+  const [catImageFile, setCatImageFile] = useState<File|null>(null);
+  const [saving, setSaving]       = useState(false);
+  const [deleting, setDeleting]   = useState(false);
 
-  const filtered = catFilter === 'All' ? news : news.filter(n => n.category === catFilter);
-  const sorted = [...filtered].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-  const featured = sorted[0];
-  const rest = sorted.slice(1);
-  // Empty slots to show + buttons (home shows up to 4 total)
+  const sorted = [...news]
+    .sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+    .filter(n => catFilter === 'All' || n.category === catFilter);
+  const featured  = sorted[0];
+  const rest      = sorted.slice(1);
   const emptySlots = Math.max(0, 3 - rest.length);
 
-  const openAdd = () => { setNewsForm({ ...emptyNews, date: new Date().toISOString().slice(0, 10) }); setAddOpen(true); };
-  const openEdit = (item: NewsItem) => { setNewsForm({ ...item }); setEditItem(item); };
+  const getViews = (id:number) => newsViews.find(v=>v.newsId===id)?.views ?? 0;
+
+  const openAdd  = () => { setNewsForm({...emptyNews, date:new Date().toISOString().slice(0,10)}); setNewsImageFile(null); setAddOpen(true); };
+  const openEdit = (item:NewsItem) => { setNewsForm({...item}); setNewsImageFile(null); setEditItem(item); };
+
+  // Featured toggle via POST /news/features/:id
+  const toggleFeatured = async (item: NewsItem) => {
+    try {
+      const res = await api.post.toggleFeatured(item.id);
+      const updated = res.data?.data ?? { ...item, featured: !item.featured };
+      setNews(news.map(n => n.id === item.id ? updated : n));
+      success(res.data?.message || (updated.featured ? 'Marked as featured' : 'Removed from featured'));
+    } catch { error('Failed to toggle featured'); }
+  };
 
   const handleSaveNews = async () => {
-    if (!newsForm.title || !newsForm.slug) { error('Title and slug are required'); return; }
+    if (!newsForm.title || !newsForm.slug) { error('Title and slug required'); return; }
     setSaving(true);
     try {
+      const payload = buildFormData({ ...newsForm }, newsImageFile);
       if (editItem) {
-        await api.put.news(editItem.id, newsForm);
-        setNews(news.map(n => n.id === editItem.id ? { ...editItem, ...newsForm } : n));
-        success('News article updated');
+        const res = await api.put.news(editItem.id, payload);
+        const updated = res.data?.data ?? { ...editItem, ...newsForm };
+        setNews(news.map(n => n.id === editItem.id ? updated : n));
+        success(res.data?.message || 'Article updated');
         setEditItem(null);
       } else {
-        await api.post.news(newsForm);
-        setNews([{ id: Date.now(), ...newsForm }, ...news]);
-        success('News article published');
+        const res = await api.post.news(payload);
+        const created = res.data?.data ?? { id: Date.now(), blur_image:'', ...newsForm };
+        setNews([created, ...news]);
+        success(res.data?.message || 'Article published');
         setAddOpen(false);
       }
     } catch { error('Failed to save article'); } finally { setSaving(false); }
@@ -105,30 +141,34 @@ const News: React.FC = () => {
 
   const handleDeleteNews = async () => {
     if (!deleteTarget) return;
+    const target = deleteTarget;
     setDeleting(true);
+    setDeleteTarget(null);
     try {
-      await api.delete.news(deleteTarget.id);
-      setNews(news.filter(n => n.id !== deleteTarget.id));
-      success('Article deleted');
-      setDeleteTarget(null);
-    } catch { error('Failed to delete'); } finally { setDeleting(false); }
+      const res = await api.delete.news(target.id);
+      setNews(news.filter(n => n.id !== target.id));
+      success((res as any)?.data?.message || 'Article deleted');
+    } catch { error('Failed to delete article'); } finally { setDeleting(false); }
   };
 
-  const openAddCat = () => { setCatForm({ category: '', image: '' }); setEditCat(null); setCatOpen(true); };
-  const openEditCat = (c: NewsCategory) => { setCatForm({ category: c.category, image: c.image }); setEditCat(c); setCatOpen(true); };
+  const openAddCat  = () => { setCatForm({ category:'', image:'' }); setCatImageFile(null); setEditCat(null); setCatOpen(true); };
+  const openEditCat = (c:NewsCategory) => { setCatForm({ category:c.category, image:c.image }); setCatImageFile(null); setEditCat(c); setCatOpen(true); };
 
   const handleSaveCat = async () => {
     if (!catForm.category) { error('Category name required'); return; }
     setSaving(true);
     try {
+      const payload = buildFormData({ category: catForm.category, image: catForm.image }, catImageFile);
       if (editCat) {
-        await api.put.newsCategory(editCat.id, catForm);
-        setNewsCategories(newsCategories.map(c => c.id === editCat.id ? { ...editCat, ...catForm } : c));
-        success('Category updated');
+        const res = await api.put.newsCategory(editCat.id, payload as any);
+        const updated = res.data?.data ?? { ...editCat, ...catForm };
+        setNewsCategories(newsCategories.map(c => c.id === editCat.id ? updated : c));
+        success(res.data?.message || 'Category updated');
       } else {
-        await api.post.newsCategory(catForm);
-        setNewsCategories([...newsCategories, { id: Date.now(), ...catForm }]);
-        success('Category added');
+        const res = await api.post.newsCategory(payload);
+        const created = res.data?.data ?? { id: Date.now(), ...catForm };
+        setNewsCategories([...newsCategories, created]);
+        success(res.data?.message || 'Category added');
       }
       setCatOpen(false);
     } catch { error('Failed to save category'); } finally { setSaving(false); }
@@ -136,66 +176,91 @@ const News: React.FC = () => {
 
   const handleDeleteCat = async () => {
     if (!deleteCat) return;
+    const target = deleteCat;
     setDeleting(true);
+    setDeleteCat(null);
     try {
-      await api.delete.newsCategory(deleteCat.id);
-      setNewsCategories(newsCategories.filter(c => c.id !== deleteCat.id));
-      success('Category deleted');
-      setDeleteCat(null);
+      const res = await api.delete.newsCategory(target.id);
+      setNewsCategories(newsCategories.filter(c => c.id !== target.id));
+      success((res as any)?.data?.message || 'Category deleted');
     } catch { error('Failed to delete category'); } finally { setDeleting(false); }
   };
 
   return (
     <div className={styles.page}>
+      {/* Header */}
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>News Management</h1>
           <p className={styles.pageSub}>{news.length} articles · {newsCategories.length} categories</p>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <Btn variant="secondary" onClick={() => setCatOpen(true)}><Tag size={14} /> Categories</Btn>
-          <Btn onClick={openAdd}><Plus size={14} /> New Article</Btn>
+        <div className={styles.headerBtns}>
+          <Btn variant="secondary" onClick={() => setCatOpen(true)}><Tag size={14}/> Categories</Btn>
+          <Btn onClick={openAdd}><Plus size={14}/> New Article</Btn>
         </div>
       </div>
 
-      {/* Category filter pills */}
+      {/* Views summary */}
+      {newsViews.length > 0 && (
+        <div className={styles.viewsBar}>
+          <div className={styles.viewsBarHead}>
+            <TrendingUp size={14} className={styles.viewsIcon}/>
+            <span className={styles.viewsTitle}>Top Articles by Views</span>
+          </div>
+          <div className={styles.viewsList}>
+            {[...news].map(n => ({ ...n, v: getViews(n.id) }))
+              .sort((a,b) => b.v - a.v).slice(0,5).map((item,i) => (
+              <Link key={item.id} to={`/news/${encodeURIComponent(item.title)}`} className={styles.viewItem}>
+                <span className={styles.viewRank}>#{i+1}</span>
+                <span className={styles.viewName}>{item.title}</span>
+                <span className={styles.viewCount}><Eye size={11}/> {item.v.toLocaleString()}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Category filter */}
       <div className={styles.filters}>
-        {['All', ...newsCategories.map(c => c.category)].map(cat => (
-          <button key={cat} className={`${styles.filterBtn} ${catFilter === cat ? styles.active : ''}`} onClick={() => setCatFilter(cat)}>{cat}</button>
+        {['All', ...newsCategories.map(c=>c.category)].map(cat => (
+          <button key={cat} className={`${styles.filterBtn} ${catFilter===cat ? styles.active:''}`} onClick={() => setCatFilter(cat)}>{cat}</button>
         ))}
       </div>
 
-      {/* News grid — same layout as frontend (featured large + side list) */}
-      {loading ? <div className={styles.skeleton} /> : (
+      {/* News grid */}
+      {loading ? <div className={styles.skeleton}/> : (
         <div className={styles.newsGrid}>
-          {/* Featured / large card */}
+          {/* Featured */}
           {featured ? (
             <div className={styles.featuredCard}>
               <div className={styles.featuredImg}>
-                <img src={featured.image} alt={featured.title} />
-                {featured.featured && <span className={styles.featuredBadge}><Star size={11} /> Featured</span>}
+                {featured.image && <img src={featured.image} alt={featured.title}/>}
+                {featured.featured && <span className={styles.featuredBadge}><Star size={11}/> Featured</span>}
                 <span className={styles.catBadge}>{featured.category}</span>
-                <div className={styles.cardActions}>
-                  <Link to={`/news/${featured.id}`} className={styles.actionBtn} title="View / Edit"><Eye size={14} /></Link>
-                  <button className={styles.actionBtn} onClick={() => openEdit(featured)} title="Edit"><Pencil size={14} /></button>
-                  <button className={`${styles.actionBtn} ${styles.danger}`} onClick={() => setDeleteTarget(featured)} title="Delete"><Trash2 size={14} /></button>
-                </div>
               </div>
               <div className={styles.featuredBody}>
-                <div className={styles.meta}>
-                  <span>{featured.author}</span>
-                  <span>{new Date(featured.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                  <span>{featured.readTime} min read</span>
+                <div className={styles.metaRow}>
+                  <span className={styles.meta}>{featured.author}</span>
+                  <span className={styles.meta}>{new Date(featured.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
+                  {getViews(featured.id) > 0 && <span className={styles.viewsBadge}><Eye size={11}/> {getViews(featured.id).toLocaleString()}</span>}
                 </div>
                 <h2 className={styles.featuredTitle}>{featured.title}</h2>
                 <p className={styles.featuredExcerpt}>{featured.excerpt}</p>
+                {/* Always-visible actions */}
+                <div className={styles.cardActions}>
+                  <Link to={`/news/${encodeURIComponent(featured.title)}`} className={styles.actionBtn} title="Edit article"><Eye size={14}/></Link>
+                  <button className={styles.actionBtn} onClick={() => toggleFeatured(featured)} title={featured.featured ? 'Remove featured':'Set featured'}>
+                    <Star size={14} style={{fill: featured.featured ? 'currentColor':'none'}}/>
+                  </button>
+                  <button className={styles.actionBtn} onClick={() => openEdit(featured)} title="Edit"><Pencil size={14}/></button>
+                  <button className={`${styles.actionBtn} ${styles.danger}`} onClick={() => setDeleteTarget(featured)} title="Delete"><Trash2 size={14}/></button>
+                </div>
               </div>
             </div>
           ) : (
             <div className={styles.emptyFeatured} onClick={openAdd}>
-              <Plus size={28} />
-              <span>Add Featured Article</span>
-              <small>First article in the list becomes featured</small>
+              <Plus size={28}/><span>Add Featured Article</span>
+              <small>First article becomes the featured card</small>
             </div>
           )}
 
@@ -203,78 +268,78 @@ const News: React.FC = () => {
           <div className={styles.sideList}>
             {rest.map(item => (
               <div key={item.id} className={styles.sideCard}>
-                <div className={styles.sideImg}><img src={item.image} alt={item.title} /></div>
+                <div className={styles.sideImg}>{item.image && <img src={item.image} alt={item.title}/>}</div>
                 <div className={styles.sideBody}>
                   <span className={styles.sideCat}>{item.category}</span>
                   <p className={styles.sideTitle}>{item.title}</p>
-                  <span className={styles.sideDate}>{new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <span className={styles.sideMeta}>{new Date(item.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
+                  {getViews(item.id) > 0 && <span className={styles.sideViews}><Eye size={11}/> {getViews(item.id).toLocaleString()}</span>}
                 </div>
+                {/* Always-visible */}
                 <div className={styles.sideActions}>
-                  <Link to={`/news/${item.id}`} className={styles.iconBtn} title="Edit page"><Eye size={14} /></Link>
-                  <button className={styles.iconBtn} onClick={() => openEdit(item)}><Pencil size={14} /></button>
-                  <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDeleteTarget(item)}><Trash2 size={14} /></button>
+                  <Link to={`/news/${encodeURIComponent(item.title)}`} className={styles.iconBtn} title="Edit article"><Eye size={13}/></Link>
+                  <button className={styles.iconBtn} onClick={() => toggleFeatured(item)} title={item.featured ? 'Remove featured':'Set featured'}>
+                    <Star size={13} style={{fill: item.featured ? 'currentColor':'none'}}/>
+                  </button>
+                  <button className={styles.iconBtn} onClick={() => openEdit(item)}><Pencil size={13}/></button>
+                  <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDeleteTarget(item)}><Trash2 size={13}/></button>
                 </div>
               </div>
             ))}
-            {/* Empty slots */}
-            {Array.from({ length: emptySlots }).map((_, i) => (
-              <div key={`empty-${i}`} className={styles.emptySlot} onClick={openAdd}>
-                <Plus size={20} /><span>Add Article</span>
+            {Array.from({length: emptySlots}).map((_,i) => (
+              <div key={`e-${i}`} className={styles.emptySlot} onClick={openAdd}>
+                <Plus size={18}/><span>Add Article</span>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Categories panel */}
+      {/* Categories */}
       <div className={styles.catsSection}>
-        <div className={styles.catsHeader}>
+        <div className={styles.catsHead}>
           <span className={styles.catsTitle}>News Categories</span>
-          <Btn variant="secondary" onClick={openAddCat}><Plus size={13} /> Add Category</Btn>
+          <Btn variant="secondary" onClick={openAddCat}><Plus size={13}/> Add Category</Btn>
         </div>
         <div className={styles.catsGrid}>
           {newsCategories.map(cat => (
             <div key={cat.id} className={styles.catCard}>
-              {cat.image && <div className={styles.catImg}><img src={cat.image} alt={cat.category} /></div>}
+              {cat.image && <div className={styles.catImg}><img src={cat.image} alt={cat.category}/></div>}
               <div className={styles.catBody}>
                 <span className={styles.catName}>{cat.category}</span>
-                <span className={styles.catCount}>{news.filter(n => n.category === cat.category).length} articles</span>
+                <span className={styles.catCount}>{news.filter(n=>n.category===cat.category).length} articles</span>
               </div>
               <div className={styles.catActions}>
-                <button className={styles.iconBtn} onClick={() => openEditCat(cat)}><Pencil size={13} /></button>
-                <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDeleteCat(cat)}><Trash2 size={13} /></button>
+                <button className={styles.iconBtn} onClick={() => openEditCat(cat)}><Pencil size={12}/></button>
+                <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDeleteCat(cat)}><Trash2 size={12}/></button>
               </div>
             </div>
           ))}
-          <div className={styles.catAddSlot} onClick={openAddCat}><Plus size={20} /><span>Add Category</span></div>
+          <div className={styles.catAddSlot} onClick={openAddCat}><Plus size={18}/><span>Add Category</span></div>
         </div>
       </div>
 
-      {/* Add/Edit News Modal */}
-      <Modal open={addOpen || !!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Article' : 'New Article'} size="lg">
-        <NewsForm value={newsForm} categories={newsCategories} onChange={setNewsForm} />
+      {/* Modals */}
+      <Modal open={addOpen||!!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Article' : 'New Article'} size="lg">
+        <NewsForm value={newsForm} imageFile={newsImageFile} onImageChange={setNewsImageFile} categories={newsCategories} onChange={setNewsForm} isEdit={!!editItem}/>
         <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
-          <Btn loading={saving} onClick={handleSaveNews}>{editItem ? 'Save Changes' : 'Publish Article'}</Btn>
+          <Btn loading={saving} onClick={handleSaveNews}>{editItem ? 'Save Changes' : 'Publish'}</Btn>
         </div>
       </Modal>
 
-      {/* Category Modal */}
       <Modal open={catOpen} onClose={() => setCatOpen(false)} title={editCat ? 'Edit Category' : 'Add Category'} size="sm">
-        <CategoryForm value={catForm} onChange={setCatForm} />
+        <CategoryForm value={catForm} imageFile={catImageFile} onImageChange={setCatImageFile} onChange={setCatForm} isEdit={!!editCat}/>
         <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => setCatOpen(false)}>Cancel</Btn>
-          <Btn loading={saving} onClick={handleSaveCat}>{editCat ? 'Save' : 'Add Category'}</Btn>
+          <Btn loading={saving} onClick={handleSaveCat}>{editCat ? 'Save' : 'Add'}</Btn>
         </div>
       </Modal>
 
-      {/* Delete News */}
       <ConfirmDialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDeleteNews} loading={deleting}
-        title="Delete Article?" message={`Delete "${deleteTarget?.title}"? This cannot be undone.`} />
-
-      {/* Delete Category */}
+        title="Delete Article?" message={`Delete "${deleteTarget?.title}"?`}/>
       <ConfirmDialog open={!!deleteCat} onClose={() => setDeleteCat(null)} onConfirm={handleDeleteCat} loading={deleting}
-        title="Delete Category?" message={`Delete category "${deleteCat?.category}"?`} />
+        title="Delete Category?" message={`Delete "${deleteCat?.category}"?`}/>
     </div>
   );
 };

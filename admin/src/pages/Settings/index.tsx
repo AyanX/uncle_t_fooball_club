@@ -1,62 +1,176 @@
-// pages/Settings/index.tsx — Admin credentials + club stats, mission/vision, milestones, management, socials
+// Settings/index.tsx — Credentials, Socials, Stats, Mission/Vision, Milestones, Management
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, Save, Eye, EyeOff, Globe, Users, Trophy, BookOpen } from 'lucide-react';
+import { Plus, Pencil, Trash2, Save, Eye, EyeOff, Globe, Users, Trophy, BookOpen, Key, User, Mail, Lock } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';
 import { useToast } from '@/context/ToastContext';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/services/api';
 import { ClubStat, MissionVisionItem, Milestone, Management } from '@/data/dummyData';
 import { Field, Input, Textarea, Btn, ConfirmDialog, Modal } from '@/components/ui';
+import ImageInput from '@/components/ui/ImageInput';
+import { buildFormData } from '@/services/api';
 import styles from './Settings.module.scss';
 
-// ─── Credentials ────────────────────────────────────────
+// ─── Credentials Panel ───────────────────────────────────
 const CredentialsPanel: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { success, error } = useToast();
-  const [email, setEmail]     = useState(user?.email || '');
-  const [current, setCurrent] = useState('');
-  const [newPass, setNewPass] = useState('');
-  const [repeat, setRepeat]   = useState('');
-  const [show, setShow]       = useState(false);
-  const [saving, setSaving]   = useState(false);
 
-  const save = async () => {
-    if (newPass && newPass !== repeat) { error('Passwords do not match'); return; }
-    if (newPass && !current) { error('Current password required'); return; }
-    setSaving(true);
+  // Username
+  const [username, setUsername] = useState(user?.username || '');
+  const [savingUser, setSavingUser] = useState(false);
+
+  // Email
+  const [email, setEmail] = useState(user?.email || '');
+  const [savingEmail, setSavingEmail] = useState(false);
+
+  // Password
+  const [current, setCurrent]   = useState('');
+  const [newPass, setNewPass]   = useState('');
+  const [repeat, setRepeat]     = useState('');
+  const [showCur, setShowCur]   = useState(false);
+  const [showNew, setShowNew]   = useState(false);
+  const [savingPass, setSavingPass] = useState(false);
+
+  // PIN
+  const [pin, setPin]           = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
+  const [savingPin, setSavingPin]   = useState(false);
+
+  // Fetch profile on mount to get username
+  useEffect(() => {
+    api.auth.getProfile().then((p: any) => {
+      if (p?.username) setUsername(p.username);
+      if (p?.email) setEmail(p.email);
+    });
+  }, []);
+
+  const saveUsername = async () => {
+    if (!username.trim()) { error('Username cannot be empty'); return; }
+    setSavingUser(true);
     try {
-      await api.auth.changeCredentials({ current_password: current, new_password: newPass, email });
-      success('Credentials updated');
+      const res = await api.auth.updateUsername(username.trim());
+      updateUser({ username: res.data.data.username });
+      success(res.data.message || 'Username updated');
+    } catch { error('Failed to update username'); } finally { setSavingUser(false); }
+  };
+
+  const saveEmail = async () => {
+    if (!email.trim() || !email.includes('@')) { error('Enter a valid email address'); return; }
+    setSavingEmail(true);
+    try {
+      const res = await api.auth.updateEmail(email.trim());
+      updateUser({ email: res.data.data.email });
+      success(res.data.message || 'Email updated');
+    } catch { error('Failed to update email'); } finally { setSavingEmail(false); }
+  };
+
+  const savePassword = async () => {
+    if (!current) { error('Current password is required'); return; }
+    if (!newPass)  { error('New password cannot be empty'); return; }
+    if (newPass !== repeat) { error('Passwords do not match'); return; }
+    if (newPass.length < 6) { error('Password must be at least 6 characters'); return; }
+    setSavingPass(true);
+    try {
+      const res = await api.auth.updatePassword({ current_password: current, new_password: newPass });
+      success(res.data.message || 'Password updated');
       setCurrent(''); setNewPass(''); setRepeat('');
-    } catch { error('Failed to update credentials'); } finally { setSaving(false); }
+    } catch { error('Failed to update password'); } finally { setSavingPass(false); }
+  };
+
+  const savePin = async () => {
+    const trimPin = pin.trim();
+    if (!/^\d{4,8}$/.test(trimPin)) { error('PIN must be 4–8 digits'); return; }
+    if (trimPin !== confirmPin.trim()) { error('PINs do not match'); return; }
+    setSavingPin(true);
+    try {
+      const res = await api.auth.updatePin({ pin: trimPin, confirm_pin: confirmPin.trim() });
+      success(res.data.message || 'PIN updated');
+      setPin(''); setConfirmPin('');
+    } catch { error('Failed to update PIN'); } finally { setSavingPin(false); }
   };
 
   return (
-    <div className={styles.panel}>
-      <h3 className={styles.panelTitle}>Admin Credentials</h3>
-      <div className={styles.formGrid}>
-        <div style={{ gridColumn: '1/-1' }}>
-          <Field label="Email Address"><Input type="email" value={email} onChange={e => setEmail(e.target.value)} /></Field>
-        </div>
-        <Field label="Current Password">
-          <div style={{ position: 'relative' }}>
-            <Input type={show ? 'text' : 'password'} value={current} onChange={e => setCurrent(e.target.value)} placeholder="Enter current password" />
-            <button onClick={() => setShow(!show)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#718096' }}>
-              {show ? <EyeOff size={15} /> : <Eye size={15} />}
-            </button>
-          </div>
+    <div className={styles.credsGrid}>
+      {/* Username */}
+      <div className={styles.credCard}>
+        <div className={styles.credHeader}><User size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Username</h4></div>
+        <p className={styles.credDesc}>Displayed in the admin navbar and sidebar</p>
+        <Field label="Username">
+          <Input value={username} onChange={e => setUsername(e.target.value)} placeholder="admin" />
         </Field>
-        <div />
-        <Field label="New Password"><Input type="password" value={newPass} onChange={e => setNewPass(e.target.value)} placeholder="Leave blank to keep current" /></Field>
-        <Field label="Confirm New Password"><Input type="password" value={repeat} onChange={e => setRepeat(e.target.value)} placeholder="Repeat new password" /></Field>
+        <div className={styles.credFooter}>
+          <Btn loading={savingUser} onClick={saveUsername}><Save size={13} /> Save Username</Btn>
+        </div>
       </div>
-      <div className={styles.panelFooter}><Btn loading={saving} onClick={save}><Save size={14} /> Save Credentials</Btn></div>
+
+      {/* Email */}
+      <div className={styles.credCard}>
+        <div className={styles.credHeader}><Mail size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Email Address</h4></div>
+        <p className={styles.credDesc}>Used for admin login and notifications</p>
+        <Field label="Email">
+          <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@kilimanjaro-fc.com" />
+        </Field>
+        <div className={styles.credFooter}>
+          <Btn loading={savingEmail} onClick={saveEmail}><Save size={13} /> Save Email</Btn>
+        </div>
+      </div>
+
+      {/* Password */}
+      <div className={styles.credCard}>
+        <div className={styles.credHeader}><Lock size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Password</h4></div>
+        <p className={styles.credDesc}>Minimum 6 characters. Current password required.</p>
+        <div className={styles.passFields}>
+          <Field label="Current Password">
+            <div className={styles.passWrap}>
+              <Input type={showCur ? 'text' : 'password'} value={current} onChange={e => setCurrent(e.target.value)} placeholder="Current password" />
+              <button type="button" className={styles.eyeBtn} onClick={() => setShowCur(v => !v)}>{showCur ? <EyeOff size={14}/> : <Eye size={14}/>}</button>
+            </div>
+          </Field>
+          <Field label="New Password">
+            <div className={styles.passWrap}>
+              <Input type={showNew ? 'text' : 'password'} value={newPass} onChange={e => setNewPass(e.target.value)} placeholder="New password" />
+              <button type="button" className={styles.eyeBtn} onClick={() => setShowNew(v => !v)}>{showNew ? <EyeOff size={14}/> : <Eye size={14}/>}</button>
+            </div>
+          </Field>
+          <Field label="Confirm New Password">
+            <Input type="password" value={repeat} onChange={e => setRepeat(e.target.value)} placeholder="Repeat new password" />
+          </Field>
+        </div>
+        <div className={styles.credFooter}>
+          <Btn loading={savingPass} onClick={savePassword}><Save size={13} /> Update Password</Btn>
+        </div>
+      </div>
+
+      {/* PIN */}
+      <div className={styles.credCard}>
+        <div className={styles.credHeader}><Key size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Security PIN</h4></div>
+        <p className={styles.credDesc}>4–8 digit numeric PIN for quick actions</p>
+        <div className={styles.passFields}>
+          <Field label="New PIN">
+            <Input
+              type="password" inputMode="numeric" value={pin}
+              onChange={e => setPin(e.target.value.replace(/\D/g, '').slice(0, 8))}
+              placeholder="4–8 digits" maxLength={8}
+            />
+          </Field>
+          <Field label="Confirm PIN">
+            <Input
+              type="password" inputMode="numeric" value={confirmPin}
+              onChange={e => setConfirmPin(e.target.value.replace(/\D/g, '').slice(0, 8))}
+              placeholder="Repeat PIN" maxLength={8}
+            />
+          </Field>
+        </div>
+        <div className={styles.credFooter}>
+          <Btn loading={savingPin} onClick={savePin}><Save size={13} /> Set PIN</Btn>
+        </div>
+      </div>
     </div>
   );
 };
 
-// ─── Socials panel ──────────────────────────────────────
+// ─── Socials Panel (full width) ──────────────────────────
 const SocialsPanel: React.FC = () => {
   const { socials, setSocials } = useAdminData();
   const { success, error } = useToast();
@@ -64,152 +178,150 @@ const SocialsPanel: React.FC = () => {
   const [saving, setSaving] = useState(false);
   useEffect(() => { setForm({ ...socials }); }, [socials]);
   const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
+
   const save = async () => {
     setSaving(true);
-    try { await api.put.socials(form); setSocials(form); success('Contact info updated'); }
-    catch { error('Failed to save'); } finally { setSaving(false); }
+    try {
+      const res = await api.put.socials(form);
+      setSocials(res.data?.data ?? form);
+      success(res.data?.message || 'Contact info updated');
+    } catch { error('Failed to save contact info'); } finally { setSaving(false); }
   };
-  const fields: [string, string, string][] = [
-    ['address','Address','National Main Stadium, Dar es Salaam'],
-    ['phone_number','Phone Number','+255 123 456 789'],
-    ['email','Email Address','info@kilimanjaro-fc.com'],
-    ['location','Location','Dar es Salaam, Tanzania'],
-    ['open_day','Open Day','Mon'],
-    ['close_day','Close Day','Fri'],
-    ['open_hours','Opening Hours','8:00'],
-    ['close_hours','Closing Hours','17:00'],
-    ['twitter','Twitter URL','https://twitter.com/...'],
-    ['facebook','Facebook URL','https://facebook.com/...'],
-    ['instagram','Instagram URL','https://instagram.com/...'],
-    ['youtube','YouTube URL','https://youtube.com/...'],
+
+  const leftFields: [string, string, string][] = [
+    ['address',      'Address',        'National Main Stadium, Dar es Salaam'],
+    ['phone_number', 'Phone Number',   '+255 123 456 789'],
+    ['email',        'Email Address',  'info@kilimanjaro-fc.com'],
+    ['location',     'Location',       'Dar es Salaam, Tanzania'],
+    ['open_day',     'Opening Day',    'Mon'],
+    ['close_day',    'Closing Day',    'Fri'],
+    ['open_hours',   'Opening Hours',  '8:00'],
+    ['close_hours',  'Closing Hours',  '17:00'],
   ];
+  const socialFields: [string, string][] = [
+    ['twitter','Twitter URL'],['facebook','Facebook URL'],
+    ['instagram','Instagram URL'],['youtube','YouTube URL'],
+  ];
+
   return (
     <div className={styles.panel}>
-      <h3 className={styles.panelTitle}>Contact & Social Info</h3>
-      <div className={styles.formGrid}>
-        {fields.map(([k, label, placeholder]) => (
+      <div className={styles.panelTitleRow}><Globe size={16}/><h3 className={styles.panelTitle}>Contact & Social Info</h3></div>
+      <div className={styles.fullGrid}>
+        {leftFields.map(([k,label,ph]) => (
           <Field key={k} label={label}>
-            <Input value={(form as any)[k] || ''} onChange={e => set(k, e.target.value)} placeholder={placeholder} />
+            <Input value={(form as any)[k]||''} onChange={e=>set(k,e.target.value)} placeholder={ph}/>
+          </Field>
+        ))}
+        {socialFields.map(([k,label]) => (
+          <Field key={k} label={label}>
+            <Input value={(form as any)[k]||''} onChange={e=>set(k,e.target.value)} placeholder={`https://...`}/>
           </Field>
         ))}
       </div>
-      <div className={styles.panelFooter}><Btn loading={saving} onClick={save}><Save size={14} /> Save Contact Info</Btn></div>
+      <div className={styles.panelFooter}><Btn loading={saving} onClick={save}><Save size={14}/> Save Contact Info</Btn></div>
     </div>
   );
 };
 
-// ─── Club Stats panel ───────────────────────────────────
+// ─── Stats Panel (full width) ────────────────────────────
 const StatsPanel: React.FC = () => {
   const { stats, setStats } = useAdminData();
   const { success, error } = useToast();
-  const [editItem, setEditItem] = useState<ClubStat | null>(null);
-  const [form, setForm] = useState({ label: '', value: '', icon: 'Trophy' });
+  const [editItem, setEditItem] = useState<ClubStat|null>(null);
+  const [form, setForm] = useState({ label:'', value:'', icon:'Trophy' });
   const [addOpen, setAddOpen] = useState(false);
-  const [delTarget, setDelTarget] = useState<ClubStat | null>(null);
+  const [delTarget, setDelTarget] = useState<ClubStat|null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const ICONS = ['Trophy','Calendar','Users','Globe','Star','Target'];
 
-  const openEdit = (s: ClubStat) => { setForm({ label: s.label, value: s.value, icon: s.icon }); setEditItem(s); };
+  const openEdit = (s: ClubStat) => { setForm({ label:s.label, value:s.value, icon:s.icon }); setEditItem(s); };
   const handleSave = async () => {
+    if (!form.label || !form.value) { error('Label and value are required'); return; }
     setSaving(true);
     try {
       if (editItem) {
-        await api.put.stat(editItem.id, form);
-        setStats(stats.map(s => s.id === editItem.id ? { ...editItem, ...form } : s));
-        success('Stat updated'); setEditItem(null);
+        const res = await api.put.stat(editItem.id, form);
+        const updated = res.data?.data ?? { ...editItem, ...form };
+        setStats(stats.map(s => s.id === editItem.id ? updated : s));
+        success(res.data?.message || 'Stat updated'); setEditItem(null);
       } else {
-        await api.post.stat(form);
-        setStats([...stats, { id: Date.now(), ...form }]);
-        success('Stat added'); setAddOpen(false);
+        const res = await api.post.stat(form);
+        const created = res.data?.data ?? { id: Date.now(), ...form };
+        setStats([...stats, created]);
+        success(res.data?.message || 'Stat added'); setAddOpen(false);
       }
-    } catch { error('Failed'); } finally { setSaving(false); }
+    } catch { error('Failed to save stat'); } finally { setSaving(false); }
   };
   const handleDel = async () => {
-    if (!delTarget) return; setDeleting(true);
-    try { await api.delete.stat(delTarget.id); setStats(stats.filter(s => s.id !== delTarget.id)); success('Stat deleted'); setDelTarget(null); }
-    catch { error('Failed'); } finally { setDeleting(false); }
+    if (!delTarget) return;
+    setDeleting(true);
+    setDelTarget(null);
+    try {
+      const res = await api.delete.stat(delTarget.id);
+      setStats(stats.filter(s => s.id !== delTarget.id));
+      success((res as any)?.data?.message || 'Stat deleted');
+    } catch { error('Failed to delete stat'); } finally { setDeleting(false); }
   };
 
   return (
     <div className={styles.panel}>
-      <div className={styles.panelHeader}>
-        <h3 className={styles.panelTitle}>Club Statistics</h3>
-        <Btn variant="secondary" onClick={() => { setForm({ label: '', value: '', icon: 'Trophy' }); setAddOpen(true); }}><Plus size={13} /> Add Stat</Btn>
+      <div className={styles.panelHeaderRow}>
+        <div className={styles.panelTitleRow}><Trophy size={16}/><h3 className={styles.panelTitle}>Club Statistics</h3></div>
+        <Btn variant="secondary" onClick={() => { setForm({ label:'', value:'', icon:'Trophy' }); setAddOpen(true); }}><Plus size={13}/> Add Stat</Btn>
       </div>
-      <div className={styles.statGrid}>
+      <div className={styles.statsGrid}>
         {stats.map(s => (
           <div key={s.id} className={styles.statCard}>
             <span className={styles.statVal}>{s.value}</span>
             <span className={styles.statLbl}>{s.label}</span>
-            <div className={styles.statActions}>
-              <button className={styles.iconBtn} onClick={() => openEdit(s)}><Pencil size={12} /></button>
-              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(s)}><Trash2 size={12} /></button>
+            <div className={styles.alwaysActions}>
+              <button className={styles.iconBtn} onClick={() => openEdit(s)}><Pencil size={12}/></button>
+              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(s)}><Trash2 size={12}/></button>
             </div>
           </div>
         ))}
-        <div className={styles.statAddSlot} onClick={() => { setForm({ label: '', value: '', icon: 'Trophy' }); setAddOpen(true); }}><Plus size={20} /></div>
+        <div className={styles.addSlotCard} onClick={() => { setForm({ label:'', value:'', icon:'Trophy' }); setAddOpen(true); }}><Plus size={20}/></div>
       </div>
       <Modal open={addOpen || !!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Stat' : 'Add Stat'} size="sm">
-        <div className={styles.formGrid}>
-          <Field label="Label"><Input value={form.label} onChange={e => setForm(p => ({ ...p, label: e.target.value }))} placeholder="League Titles" /></Field>
-          <Field label="Value"><Input value={form.value} onChange={e => setForm(p => ({ ...p, value: e.target.value }))} placeholder="8" /></Field>
-          <div style={{ gridColumn: '1/-1' }}>
-            <Field label="Icon">
-              <select value={form.icon} onChange={e => setForm(p => ({ ...p, icon: e.target.value }))} style={{ width: '100%', padding: '10px 14px', background: '#F8F9FA', border: '2px solid rgba(10,20,47,0.1)', borderRadius: 8, fontFamily: 'Inter,sans-serif', fontSize: 14, color: '#0A142F', outline: 'none' }}>
-                {ICONS.map(i => <option key={i} value={i}>{i}</option>)}
-              </select>
-            </Field>
-          </div>
+        <div className={styles.formGrid2}>
+          <Field label="Label"><Input value={form.label} onChange={e => setForm(p => ({ ...p, label: e.target.value }))} placeholder="League Titles"/></Field>
+          <Field label="Value"><Input value={form.value} onChange={e => setForm(p => ({ ...p, value: e.target.value }))} placeholder="8"/></Field>
         </div>
-        <div className={styles.panelFooter}>
+        <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
           <Btn loading={saving} onClick={handleSave}>{editItem ? 'Save' : 'Add'}</Btn>
         </div>
       </Modal>
-      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Delete Stat?" message={`Delete "${delTarget?.label}"?`} />
+      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Delete Stat?" message={`Delete "${delTarget?.label}"?`}/>
     </div>
   );
 };
 
-// ─── Mission/Vision panel ────────────────────────────────
+// ─── Mission/Vision (edit-only, exactly 2 entries) ───────
 const MissionPanel: React.FC = () => {
   const { missionVision, setMissionVision } = useAdminData();
   const { success, error } = useToast();
-  const [editItem, setEditItem] = useState<MissionVisionItem | null>(null);
-  const [form, setForm] = useState({ title: '', content: '' });
-  const [addOpen, setAddOpen] = useState(false);
-  const [delTarget, setDelTarget] = useState<MissionVisionItem | null>(null);
+  const [editItem, setEditItem] = useState<MissionVisionItem|null>(null);
+  const [form, setForm] = useState({ title:'', content:'' });
   const [saving, setSaving] = useState(false);
-  const [deleting, setDeleting] = useState(false);
 
-  const openEdit = (m: MissionVisionItem) => { setForm({ title: m.title, content: m.content }); setEditItem(m); };
+  const openEdit = (m: MissionVisionItem) => { setForm({ title:m.title, content:m.content }); setEditItem(m); };
   const handleSave = async () => {
+    if (!editItem) return;
     setSaving(true);
     try {
-      if (editItem) {
-        await api.put.missionVision(editItem.id, form);
-        setMissionVision(missionVision.map(m => m.id === editItem.id ? { ...editItem, ...form } : m));
-        success('Updated'); setEditItem(null);
-      } else {
-        await api.post.missionVision(form);
-        setMissionVision([...missionVision, { id: Date.now(), ...form }]);
-        success('Added'); setAddOpen(false);
-      }
-    } catch { error('Failed'); } finally { setSaving(false); }
-  };
-  const handleDel = async () => {
-    if (!delTarget) return; setDeleting(true);
-    try { await api.delete.missionVision(delTarget.id); setMissionVision(missionVision.filter(m => m.id !== delTarget.id)); success('Deleted'); setDelTarget(null); }
-    catch { error('Failed'); } finally { setDeleting(false); }
+      const res = await api.put.missionVision(editItem.id, form);
+      const updated = res.data?.data ?? { ...editItem, ...form };
+      setMissionVision(missionVision.map(m => m.id === editItem.id ? updated : m));
+      success(res.data?.message || 'Updated'); setEditItem(null);
+    } catch { error('Failed to save'); } finally { setSaving(false); }
   };
 
   return (
     <div className={styles.panel}>
-      <div className={styles.panelHeader}>
-        <h3 className={styles.panelTitle}>Mission & Vision</h3>
-        <Btn variant="secondary" onClick={() => { setForm({ title: '', content: '' }); setAddOpen(true); }}><Plus size={13} /> Add</Btn>
-      </div>
+      <div className={styles.panelTitleRow}><BookOpen size={16}/><h3 className={styles.panelTitle}>Mission & Vision</h3></div>
+      <p className={styles.panelDesc}>These 2 entries are fixed. You can only edit their content.</p>
       <div className={styles.listItems}>
         {missionVision.map(m => (
           <div key={m.id} className={styles.listItem}>
@@ -217,66 +329,71 @@ const MissionPanel: React.FC = () => {
               <h4 className={styles.listTitle}>{m.title}</h4>
               <p className={styles.listText}>{m.content}</p>
             </div>
-            <div className={styles.listActions}>
-              <button className={styles.iconBtn} onClick={() => openEdit(m)}><Pencil size={13} /></button>
-              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(m)}><Trash2 size={13} /></button>
+            <div className={styles.alwaysActions}>
+              <button className={styles.iconBtn} onClick={() => openEdit(m)}><Pencil size={13}/></button>
             </div>
           </div>
         ))}
-        <div className={styles.addListSlot} onClick={() => { setForm({ title: '', content: '' }); setAddOpen(true); }}><Plus size={18} /><span>Add Item</span></div>
       </div>
-      <Modal open={addOpen || !!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit' : 'Add Mission/Vision'} size="sm">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <Field label="Title"><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} /></Field>
-          <Field label="Content"><Textarea value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))} rows={4} /></Field>
+      <Modal open={!!editItem} onClose={() => setEditItem(null)} title="Edit Mission/Vision" size="sm">
+        <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+          <Field label="Title"><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))}/></Field>
+          <Field label="Content"><Textarea value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))} rows={4}/></Field>
         </div>
-        <div className={styles.panelFooter}>
-          <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
-          <Btn loading={saving} onClick={handleSave}>{editItem ? 'Save' : 'Add'}</Btn>
+        <div className={styles.modalFooter}>
+          <Btn variant="secondary" onClick={() => setEditItem(null)}>Cancel</Btn>
+          <Btn loading={saving} onClick={handleSave}>Save Changes</Btn>
         </div>
       </Modal>
-      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Delete?" message={`Delete "${delTarget?.title}"?`} />
     </div>
   );
 };
 
-// ─── Milestones panel ────────────────────────────────────
+// ─── Milestones Panel ─────────────────────────────────────
 const MilestonesPanel: React.FC = () => {
   const { milestones, setMilestones } = useAdminData();
   const { success, error } = useToast();
-  const [editItem, setEditItem] = useState<Milestone | null>(null);
-  const [form, setForm] = useState({ year: '', title: '', content: '' });
+  const [editItem, setEditItem] = useState<Milestone|null>(null);
+  const [form, setForm] = useState({ year:'', title:'', content:'' });
   const [addOpen, setAddOpen] = useState(false);
-  const [delTarget, setDelTarget] = useState<Milestone | null>(null);
+  const [delTarget, setDelTarget] = useState<Milestone|null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const openEdit = (m: Milestone) => { setForm({ year: m.year, title: m.title, content: m.content }); setEditItem(m); };
+  const openEdit = (m: Milestone) => { setForm({ year:m.year, title:m.title, content:m.content }); setEditItem(m); };
   const handleSave = async () => {
+    if (!form.year || !form.title) { error('Year and title required'); return; }
     setSaving(true);
     try {
       if (editItem) {
-        await api.put.milestone(editItem.id, form);
-        setMilestones(milestones.map(m => m.id === editItem.id ? { ...editItem, ...form } : m));
-        success('Updated'); setEditItem(null);
+        const res = await api.put.milestone(editItem.id, form);
+        const updated = res.data?.data ?? { ...editItem, ...form };
+        setMilestones(milestones.map(m => m.id === editItem.id ? updated : m));
+        success(res.data?.message || 'Milestone updated'); setEditItem(null);
       } else {
-        await api.post.milestone(form);
-        setMilestones([...milestones, { id: Date.now(), ...form }]);
-        success('Added'); setAddOpen(false);
+        const res = await api.post.milestone(form);
+        const created = res.data?.data ?? { id: Date.now(), ...form };
+        setMilestones([...milestones, created]);
+        success(res.data?.message || 'Milestone added'); setAddOpen(false);
       }
     } catch { error('Failed'); } finally { setSaving(false); }
   };
   const handleDel = async () => {
-    if (!delTarget) return; setDeleting(true);
-    try { await api.delete.milestone(delTarget.id); setMilestones(milestones.filter(m => m.id !== delTarget.id)); success('Deleted'); setDelTarget(null); }
-    catch { error('Failed'); } finally { setDeleting(false); }
+    if (!delTarget) return;
+    setDeleting(true);
+    setDelTarget(null);
+    try {
+      const res = await api.delete.milestone(delTarget.id);
+      setMilestones(milestones.filter(m => m.id !== delTarget.id));
+      success((res as any)?.data?.message || 'Deleted');
+    } catch { error('Failed to delete'); } finally { setDeleting(false); }
   };
 
   return (
     <div className={styles.panel}>
-      <div className={styles.panelHeader}>
-        <h3 className={styles.panelTitle}>Club Milestones</h3>
-        <Btn variant="secondary" onClick={() => { setForm({ year: '', title: '', content: '' }); setAddOpen(true); }}><Plus size={13} /> Add</Btn>
+      <div className={styles.panelHeaderRow}>
+        <div className={styles.panelTitleRow}><BookOpen size={16}/><h3 className={styles.panelTitle}>Club Milestones</h3></div>
+        <Btn variant="secondary" onClick={() => { setForm({ year:'', title:'', content:'' }); setAddOpen(true); }}><Plus size={13}/> Add Milestone</Btn>
       </div>
       <div className={styles.listItems}>
         {milestones.map(m => (
@@ -286,130 +403,140 @@ const MilestonesPanel: React.FC = () => {
               <h4 className={styles.listTitle}>{m.title}</h4>
               <p className={styles.listText}>{m.content}</p>
             </div>
-            <div className={styles.listActions}>
-              <button className={styles.iconBtn} onClick={() => openEdit(m)}><Pencil size={13} /></button>
-              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(m)}><Trash2 size={13} /></button>
+            <div className={styles.alwaysActions}>
+              <button className={styles.iconBtn} onClick={() => openEdit(m)}><Pencil size={13}/></button>
+              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(m)}><Trash2 size={13}/></button>
             </div>
           </div>
         ))}
-        <div className={styles.addListSlot} onClick={() => { setForm({ year: '', title: '', content: '' }); setAddOpen(true); }}><Plus size={18} /><span>Add Milestone</span></div>
+        <div className={styles.addListSlot} onClick={() => { setForm({ year:'', title:'', content:'' }); setAddOpen(true); }}><Plus size={18}/><span>Add Milestone</span></div>
       </div>
       <Modal open={addOpen || !!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Milestone' : 'Add Milestone'} size="sm">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <Field label="Year"><Input value={form.year} onChange={e => setForm(p => ({ ...p, year: e.target.value }))} placeholder="2024" /></Field>
-          <Field label="Title"><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} /></Field>
-          <Field label="Description"><Textarea value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))} rows={3} /></Field>
+        <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+          <Field label="Year"><Input value={form.year} onChange={e => setForm(p => ({ ...p, year: e.target.value }))} placeholder="2024"/></Field>
+          <Field label="Title"><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))}/></Field>
+          <Field label="Description"><Textarea value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))} rows={3}/></Field>
         </div>
-        <div className={styles.panelFooter}>
+        <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
           <Btn loading={saving} onClick={handleSave}>{editItem ? 'Save' : 'Add'}</Btn>
         </div>
       </Modal>
-      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Delete Milestone?" message={`Delete "${delTarget?.title}"?`} />
+      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Delete Milestone?" message={`Delete "${delTarget?.title}"?`}/>
     </div>
   );
 };
 
-// ─── Management panel ────────────────────────────────────
+// ─── Management Panel (full width) ───────────────────────
 const ManagementPanel: React.FC = () => {
   const { management, setManagement } = useAdminData();
   const { success, error } = useToast();
-  const [editItem, setEditItem] = useState<Management | null>(null);
-  const [form, setForm] = useState({ name: '', role: '', image: '', blur_image: '' });
+  const [editItem, setEditItem] = useState<Management|null>(null);
+  const [form, setForm] = useState({ name:'', role:'', image:'' });
+  const [imageFile, setImageFile] = useState<File|null>(null);
   const [addOpen, setAddOpen] = useState(false);
-  const [delTarget, setDelTarget] = useState<Management | null>(null);
+  const [delTarget, setDelTarget] = useState<Management|null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const openEdit = (m: Management) => { setForm({ name: m.name, role: m.role, image: m.image, blur_image: m.blur_image }); setEditItem(m); };
+  const openEdit = (m: Management) => { setForm({ name:m.name, role:m.role, image:m.image }); setImageFile(null); setEditItem(m); };
   const handleSave = async () => {
+    if (!form.name || !form.role) { error('Name and role required'); return; }
     setSaving(true);
     try {
+      const payload = buildFormData({ name:form.name, role:form.role, image:form.image }, imageFile);
       if (editItem) {
-        await api.put.management(editItem.id, form);
-        setManagement(management.map(m => m.id === editItem.id ? { ...editItem, ...form } : m));
-        success('Updated'); setEditItem(null);
+        const res = await api.put.management(editItem.id, payload);
+        const updated = res.data?.data ?? { ...editItem, ...form };
+        setManagement(management.map(m => m.id === editItem.id ? updated : m));
+        success(res.data?.message || 'Updated'); setEditItem(null);
       } else {
-        await api.post.management(form);
-        setManagement([...management, { id: Date.now(), ...form }]);
-        success('Added'); setAddOpen(false);
+        const res = await api.post.management(payload);
+        const created = res.data?.data ?? { id: Date.now(), ...form, blur_image:'' };
+        setManagement([...management, created]);
+        success(res.data?.message || 'Added'); setAddOpen(false);
       }
     } catch { error('Failed'); } finally { setSaving(false); }
   };
   const handleDel = async () => {
-    if (!delTarget) return; setDeleting(true);
-    try { await api.delete.management(delTarget.id); setManagement(management.filter(m => m.id !== delTarget.id)); success('Deleted'); setDelTarget(null); }
-    catch { error('Failed'); } finally { setDeleting(false); }
+    if (!delTarget) return;
+    setDeleting(true);
+    setDelTarget(null);
+    try {
+      const res = await api.delete.management(delTarget.id);
+      setManagement(management.filter(m => m.id !== delTarget.id));
+      success((res as any)?.data?.message || 'Deleted');
+    } catch { error('Failed to delete'); } finally { setDeleting(false); }
   };
 
   return (
     <div className={styles.panel}>
-      <div className={styles.panelHeader}>
-        <h3 className={styles.panelTitle}>Club Management</h3>
-        <Btn variant="secondary" onClick={() => { setForm({ name: '', role: '', image: '', blur_image: '' }); setAddOpen(true); }}><Plus size={13} /> Add</Btn>
+      <div className={styles.panelHeaderRow}>
+        <div className={styles.panelTitleRow}><Users size={16}/><h3 className={styles.panelTitle}>Club Management</h3></div>
+        <Btn variant="secondary" onClick={() => { setForm({ name:'', role:'', image:'' }); setImageFile(null); setAddOpen(true); }}><Plus size={13}/> Add Person</Btn>
       </div>
-      <div className={styles.managementGrid}>
+      <div className={styles.mgmtGrid}>
         {management.map(m => (
           <div key={m.id} className={styles.mgmtCard}>
-            <div className={styles.mgmtImg}><img src={m.image} alt={m.name} /></div>
+            <div className={styles.mgmtImg}>{m.image && <img src={m.image} alt={m.name}/>}</div>
             <h4 className={styles.mgmtName}>{m.name}</h4>
             <span className={styles.mgmtRole}>{m.role}</span>
-            <div className={styles.mgmtActions}>
-              <button className={styles.iconBtn} onClick={() => openEdit(m)}><Pencil size={12} /></button>
-              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(m)}><Trash2 size={12} /></button>
+            <div className={styles.alwaysActions}>
+              <button className={styles.iconBtn} onClick={() => openEdit(m)}><Pencil size={12}/></button>
+              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(m)}><Trash2 size={12}/></button>
             </div>
           </div>
         ))}
-        <div className={styles.mgmtAddSlot} onClick={() => { setForm({ name: '', role: '', image: '', blur_image: '' }); setAddOpen(true); }}><Plus size={24} /><span>Add Member</span></div>
+        <div className={styles.mgmtAddSlot} onClick={() => { setForm({ name:'', role:'', image:'' }); setImageFile(null); setAddOpen(true); }}>
+          <Plus size={24}/><span>Add Member</span>
+        </div>
       </div>
       <Modal open={addOpen || !!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Person' : 'Add Management'} size="sm">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <Field label="Full Name"><Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} /></Field>
-          <Field label="Role / Title"><Input value={form.role} onChange={e => setForm(p => ({ ...p, role: e.target.value }))} placeholder="Head Coach" /></Field>
-          <Field label="Photo URL"><Input value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))} placeholder="https://..." /></Field>
-          <Field label="Blur Image URL"><Input value={form.blur_image} onChange={e => setForm(p => ({ ...p, blur_image: e.target.value }))} /></Field>
+        <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+          <ImageInput currentUrl={editItem?.image || undefined} onFileChange={setImageFile} label="Photo" aspectRatio="1/1"/>
+          <Field label="Full Name"><Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}/></Field>
+          <Field label="Role / Title"><Input value={form.role} onChange={e => setForm(p => ({ ...p, role: e.target.value }))} placeholder="Head Coach"/></Field>
         </div>
-        <div className={styles.panelFooter}>
+        <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
           <Btn loading={saving} onClick={handleSave}>{editItem ? 'Save' : 'Add'}</Btn>
         </div>
       </Modal>
-      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Remove Person?" message={`Remove ${delTarget?.name}?`} />
+      <ConfirmDialog open={!!delTarget} onClose={() => setDelTarget(null)} onConfirm={handleDel} loading={deleting} title="Remove Person?" message={`Remove ${delTarget?.name}?`}/>
     </div>
   );
 };
 
-// ─── Main Settings page ──────────────────────────────────
-const Settings: React.FC = () => {
-  const sections = [
-    { id: 'credentials', label: 'Credentials', icon: <Eye size={16} /> },
-    { id: 'contact',     label: 'Contact & Socials', icon: <Globe size={16} /> },
-    { id: 'stats',       label: 'Club Stats', icon: <Trophy size={16} /> },
-    { id: 'mission',     label: 'Mission & Vision', icon: <BookOpen size={16} /> },
-    { id: 'milestones',  label: 'Milestones', icon: <BookOpen size={16} /> },
-    { id: 'management',  label: 'Management', icon: <Users size={16} /> },
-  ];
-  const [active, setActive] = useState('credentials');
+// ─── Main Settings Page ───────────────────────────────────
+const TABS = [
+  { id: 'credentials', label: 'Credentials', icon: <Key size={15}/> },
+  { id: 'contact',     label: 'Contact & Socials', icon: <Globe size={15}/> },
+  { id: 'stats',       label: 'Club Stats', icon: <Trophy size={15}/> },
+  { id: 'mission',     label: 'Mission & Vision', icon: <BookOpen size={15}/> },
+  { id: 'milestones',  label: 'Milestones', icon: <BookOpen size={15}/> },
+  { id: 'management',  label: 'Management', icon: <Users size={15}/> },
+];
 
+const Settings: React.FC = () => {
+  const [active, setActive] = useState('credentials');
   return (
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>Settings</h1>
-      <div className={styles.layout}>
-        <aside className={styles.settingsNav}>
-          {sections.map(s => (
-            <button key={s.id} className={`${styles.navItem} ${active === s.id ? styles.navActive : ''}`} onClick={() => setActive(s.id)}>
-              {s.icon} {s.label}
-            </button>
-          ))}
-        </aside>
-        <div className={styles.settingsContent}>
-          {active === 'credentials' && <CredentialsPanel />}
-          {active === 'contact'     && <SocialsPanel />}
-          {active === 'stats'       && <StatsPanel />}
-          {active === 'mission'     && <MissionPanel />}
-          {active === 'milestones'  && <MilestonesPanel />}
-          {active === 'management'  && <ManagementPanel />}
-        </div>
+      {/* Horizontal tab bar */}
+      <div className={styles.tabBar}>
+        {TABS.map(t => (
+          <button key={t.id} className={`${styles.tab} ${active === t.id ? styles.tabActive : ''}`} onClick={() => setActive(t.id)}>
+            {t.icon}<span>{t.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className={styles.tabContent}>
+        {active === 'credentials' && <CredentialsPanel/>}
+        {active === 'contact'     && <SocialsPanel/>}
+        {active === 'stats'       && <StatsPanel/>}
+        {active === 'mission'     && <MissionPanel/>}
+        {active === 'milestones'  && <MilestonesPanel/>}
+        {active === 'management'  && <ManagementPanel/>}
       </div>
     </div>
   );

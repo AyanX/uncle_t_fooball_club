@@ -1,0 +1,22 @@
+CREATE TABLE `player` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`slug` varchar(255) NOT NULL,
+	`position` varchar(255) NOT NULL,
+	`number` int NOT NULL,
+	`nationality` varchar(255) NOT NULL,
+	`age` int NOT NULL,
+	`image` varchar(255) NOT NULL,
+	`blur_image` varchar(255) NOT NULL,
+	`goals` int NOT NULL,
+	`assists` int NOT NULL,
+	`appearances` int NOT NULL,
+	`bio` text NOT NULL,
+	`first_team` boolean NOT NULL,
+	`social_twitter` varchar(255),
+	`social_instagram` varchar(255),
+	`created_at` timestamp DEFAULT (now()),
+	`modified_at` timestamp DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`is_deleted` boolean DEFAULT false,
+	CONSTRAINT `player_id` PRIMARY KEY(`id`)
+);

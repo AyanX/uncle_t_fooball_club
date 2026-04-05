@@ -1,4 +1,4 @@
-// context/AdminDataContext.tsx — fetches ALL data in one Promise.all
+// context/AdminDataContext.tsx — single Promise.all, includes news views
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { api } from '@/services/api';
 import {
@@ -11,6 +11,8 @@ import {
   dummyMilestones, dummyManagement, dummySocials,
 } from '@/data/dummyData';
 
+export interface NewsView { id: number; newsId: number; views: number; }
+
 interface AdminData {
   players: Player[]; news: NewsItem[]; newsCategories: NewsCategory[];
   fixtures: Fixture[]; programs: Program[]; programTitles: ProgramTitle[];
@@ -18,18 +20,19 @@ interface AdminData {
   gallery: GalleryItem[]; galleryCategories: GalleryCategory[];
   stats: ClubStat[]; missionVision: MissionVisionItem[];
   milestones: Milestone[]; management: Management[]; socials: SocialInfo;
+  newsViews: NewsView[];
   loading: boolean;
 }
 
 interface AdminDataContextType extends AdminData {
   refresh: () => void;
-  // local optimistic updaters
   setPlayers: (v: Player[]) => void;
   setNews: (v: NewsItem[]) => void;
   setNewsCategories: (v: NewsCategory[]) => void;
   setFixtures: (v: Fixture[]) => void;
   setPrograms: (v: Program[]) => void;
   setPartners: (v: Partner[]) => void;
+  setProgramTitles: (v: ProgramTitle[]) => void;
   setPartnerTiers: (v: PartnerTier[]) => void;
   setGallery: (v: GalleryItem[]) => void;
   setGalleryCategories: (v: GalleryCategory[]) => void;
@@ -38,6 +41,7 @@ interface AdminDataContextType extends AdminData {
   setMilestones: (v: Milestone[]) => void;
   setManagement: (v: Management[]) => void;
   setSocials: (v: SocialInfo) => void;
+  setNewsViews: (v: NewsView[]) => void;
 }
 
 const AdminDataContext = createContext<AdminDataContextType>({} as AdminDataContextType);
@@ -50,7 +54,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     gallery: dummyGallery, galleryCategories: dummyGalleryCategories,
     stats: dummyClubStats, missionVision: dummyMissionVision,
     milestones: dummyMilestones, management: dummyManagement, socials: dummySocials,
-    loading: true,
+    newsViews: [], loading: true,
   });
 
   const fetchAll = useCallback(async () => {
@@ -58,19 +62,21 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     const [
       players, news, newsCategories, fixtures, programs, programTitles,
       partners, partnerTiers, gallery, galleryCategories,
-      stats, missionVision, milestones, management, socials,
+      stats, missionVision, milestones, management, socials, newsViews,
     ] = await Promise.all([
       api.get.players(), api.get.news(), api.get.newsCategories(),
       api.get.fixtures(), api.get.programs(), api.get.programTitles(),
       api.get.partners(), api.get.partnerTiers(),
       api.get.gallery(), api.get.galleryCategories(),
       api.get.stats(), api.get.missionVision(), api.get.milestones(),
-      api.get.management(), api.get.socials(),
+      api.get.management(), api.get.socials(), api.get.newsViews(),
     ]);
     setData({
       players, news, newsCategories, fixtures, programs, programTitles,
       partners, partnerTiers, gallery, galleryCategories,
-      stats, missionVision, milestones, management, socials, loading: false,
+      stats, missionVision, milestones, management, socials,
+      newsViews: newsViews as NewsView[],
+      loading: false,
     });
   }, []);
 
@@ -81,22 +87,16 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AdminDataContext.Provider value={{
-      ...data,
-      refresh: fetchAll,
-      setPlayers: make('players'),
-      setNews: make('news'),
-      setNewsCategories: make('newsCategories'),
-      setFixtures: make('fixtures'),
-      setPrograms: make('programs'),
-      setPartners: make('partners'),
-      setPartnerTiers: make('partnerTiers'),
-      setGallery: make('gallery'),
-      setGalleryCategories: make('galleryCategories'),
-      setStats: make('stats'),
-      setMissionVision: make('missionVision'),
-      setMilestones: make('milestones'),
-      setManagement: make('management'),
-      setSocials: make('socials'),
+      ...data, refresh: fetchAll,
+      setPlayers: make('players'), setNews: make('news'),
+      setNewsCategories: make('newsCategories'), setFixtures: make('fixtures'),
+      setPrograms: make('programs'), setPartners: make('partners'),
+      setProgramTitles: make('programTitles'),
+      setPartnerTiers: make('partnerTiers'), setGallery: make('gallery'),
+      setGalleryCategories: make('galleryCategories'), setStats: make('stats'),
+      setMissionVision: make('missionVision'), setMilestones: make('milestones'),
+      setManagement: make('management'), setSocials: make('socials'),
+      setNewsViews: make('newsViews'),
     }}>
       {children}
     </AdminDataContext.Provider>

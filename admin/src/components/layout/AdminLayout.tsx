@@ -1,128 +1,155 @@
-// components/layout/AdminLayout.tsx
+// AdminLayout.tsx — fixed sidebar + sticky topbar + full-width content
 import React, { useState } from 'react';
-import { NavLink, useNavigate, Outlet } from 'react-router-dom';
+import { NavLink, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Newspaper, Users, Calendar, Image,
   Target, Handshake, Settings, LogOut, Menu, X,
-  ChevronRight, Trophy, Globe,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import styles from './AdminLayout.module.scss';
 
 const navItems = [
-  { path: '/',           icon: <LayoutDashboard size={18} />, label: 'Dashboard' },
-  { path: '/news',       icon: <Newspaper size={18} />,       label: 'News' },
-  { path: '/team',       icon: <Users size={18} />,           label: 'Team' },
-  { path: '/fixtures',   icon: <Calendar size={18} />,        label: 'Fixtures' },
-  { path: '/gallery',    icon: <Image size={18} />,           label: 'Gallery' },
-  { path: '/programs',   icon: <Target size={18} />,          label: 'Programmes' },
-  { path: '/partners',   icon: <Handshake size={18} />,       label: 'Partners' },
-  { path: '/settings',   icon: <Settings size={18} />,        label: 'Settings' },
+  { path: '/',          icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
+  { path: '/news',      icon: <Newspaper size={17} />,       label: 'News' },
+  { path: '/team',      icon: <Users size={17} />,           label: 'Team' },
+  { path: '/fixtures',  icon: <Calendar size={17} />,        label: 'Fixtures' },
+  { path: '/gallery',   icon: <Image size={17} />,           label: 'Gallery' },
+  { path: '/programs',  icon: <Target size={17} />,          label: 'Programmes' },
+  { path: '/partners',  icon: <Handshake size={17} />,       label: 'Partners' },
+  { path: '/settings',  icon: <Settings size={17} />,        label: 'Settings' },
 ];
 
-const AdminLayout: React.FC = () => {
+const pageTitles: Record<string, string> = {
+  '/': 'Dashboard', '/news': 'News', '/team': 'Team', '/fixtures': 'Fixtures',
+  '/gallery': 'Gallery', '/programs': 'Programmes', '/partners': 'Partners', '/settings': 'Settings',
+};
+
+const SidebarInner: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
   const { user, logout } = useAuth();
   const { success } = useToast();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
+    onClose?.();
     await logout();
     success('Logged out successfully');
     navigate('/login', { replace: true });
   };
 
-  const SidebarContent = () => (
+  return (
     <>
-      {/* Logo */}
-      <div className={styles.logo}>
-        <div className={styles.logoMark}><span>K</span></div>
-        <div className={styles.logoText}>
-          <span className={styles.logoName}>Kilimanjaro</span>
-          <span className={styles.logoBadge}>Admin</span>
+      {onClose && (
+        <button className={styles.closeBtn} onClick={onClose} aria-label="Close menu">
+          <X size={16} />
+        </button>
+      )}
+
+      {/* Brand */}
+      <div className={styles.sidebarBrand}>
+        <div className={styles.logoMark}>K</div>
+        <div className={styles.brandText}>
+          <span className={styles.brandName}>Kilimanjaro</span>
+          <span className={styles.brandBadge}>Admin Panel</span>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className={styles.nav}>
-        <span className={styles.navLabel}>Menu</span>
+      <nav className={styles.sidebarNav}>
+        <span className={styles.navSection}>Navigation</span>
         {navItems.map(item => (
           <NavLink
             key={item.path}
             to={item.path}
             end={item.path === '/'}
             className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`}
-            onClick={() => setSidebarOpen(false)}
+            onClick={onClose}
           >
             <span className={styles.navIcon}>{item.icon}</span>
-            <span className={styles.navLabelText}>{item.label}</span>
-            <ChevronRight size={14} className={styles.navChevron} />
+            <span className={styles.navLabel}>{item.label}</span>
           </NavLink>
         ))}
       </nav>
 
-      {/* User + logout */}
+      {/* Footer */}
       <div className={styles.sidebarFooter}>
-        <div className={styles.userInfo}>
-          <div className={styles.userAvatar}>{user?.email?.[0]?.toUpperCase() ?? 'A'}</div>
-          <div className={styles.userDetails}>
-            <span className={styles.userEmail}>{user?.email ?? 'admin'}</span>
-            <span className={styles.userRole}>Administrator</span>
+        <div className={styles.userCard}>
+          <div className={styles.userAvatar}>
+            {(user?.username || user?.email || 'A')[0].toUpperCase()}
+          </div>
+          <div className={styles.userInfo}>
+            <span className={styles.userName}>{user?.username || 'Admin'}</span>
+            <span className={styles.userEmail}>{user?.email || ''}</span>
           </div>
         </div>
         <button className={styles.logoutBtn} onClick={handleLogout}>
-          <LogOut size={16} /> Logout
+          <LogOut size={15} /> Sign Out
         </button>
       </div>
     </>
   );
+};
+
+const AdminLayout: React.FC = () => {
+  const { user } = useAuth();
+  const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Get page title from location
+  const pathKey = Object.keys(pageTitles).find(k =>
+    k === '/' ? location.pathname === '/' : location.pathname.startsWith(k)
+  ) || '/';
+  const pageTitle = pageTitles[pathKey] || 'Admin';
 
   return (
     <div className={styles.root}>
-      {/* Desktop sidebar */}
+      {/* Desktop fixed sidebar */}
       <aside className={styles.sidebar}>
-        <SidebarContent />
+        <SidebarInner />
       </aside>
 
       {/* Mobile backdrop */}
       <AnimatePresence>
-        {sidebarOpen && (
+        {mobileOpen && (
           <motion.div
             className={styles.backdrop}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setSidebarOpen(false)}
+            transition={{ duration: 0.2 }}
+            onClick={() => setMobileOpen(false)}
           />
         )}
       </AnimatePresence>
 
-      {/* Mobile sidebar */}
+      {/* Mobile drawer */}
       <AnimatePresence>
-        {sidebarOpen && (
+        {mobileOpen && (
           <motion.aside
             className={`${styles.sidebar} ${styles.mobileSidebar}`}
             initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 280 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 260 }}
           >
-            <button className={styles.mobileClose} onClick={() => setSidebarOpen(false)}>
-              <X size={18} />
-            </button>
-            <SidebarContent />
+            <SidebarInner onClose={() => setMobileOpen(false)} />
           </motion.aside>
         )}
       </AnimatePresence>
 
       {/* Main */}
       <div className={styles.main}>
-        {/* Topbar */}
+        {/* Sticky topbar */}
         <header className={styles.topbar}>
-          <button className={styles.hamburger} onClick={() => setSidebarOpen(true)}>
+          <button className={styles.hamburger} onClick={() => setMobileOpen(true)} aria-label="Open menu">
             <Menu size={20} />
           </button>
+          <div className={styles.topbarCenter}>
+            <span className={styles.topbarTitle}>{pageTitle}</span>
+          </div>
           <div className={styles.topbarRight}>
             <div className={styles.topbarUser}>
-              <div className={styles.topbarAvatar}>{user?.email?.[0]?.toUpperCase() ?? 'A'}</div>
+              <div className={styles.topbarAvatar}>
+                {(user?.username || user?.email || 'A')[0].toUpperCase()}
+              </div>
+              <span className={styles.topbarName}>{user?.username || 'Admin'}</span>
             </div>
           </div>
         </header>

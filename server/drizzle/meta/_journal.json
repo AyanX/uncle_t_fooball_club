@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1775061124897,
+      "tag": "0000_common_kronos",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1775061309123,
+      "tag": "0001_slippery_captain_cross",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1775167277614,
+      "tag": "0002_stale_ben_urich",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1775167470791,
+      "tag": "0003_curved_starjammers",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1775167498165,
+      "tag": "0004_flaky_sebastian_shaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1775215161776,
+      "tag": "0005_goofy_katie_power",
+      "breakpoints": true
+    }
+  ]
+}
