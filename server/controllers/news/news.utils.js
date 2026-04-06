@@ -50,6 +50,23 @@ const validNewsToClient = (news) => {
     })
 }
 
+const singleNewsToClient = (item) => {
+    return {
+        id: item.id,
+        slug: item.slug,
+        title: item.title,
+        excerpt: item.excerpt,
+        content: item.content,
+        image: item.image,
+        blur_image: item.blur_image,
+        category: item.category,
+        author: item.author,
+        date: item.date,
+        readTime: item.readTime,
+        featured: item.featured,
+    }
+}   
+
 
 const validNews = (news) => {
     return news.slug && news.title && news.excerpt && news.content && news.category && news.author && 
@@ -64,4 +81,5 @@ module.exports = {
     validNewsCategoryToClient,
     validNews,
     validNewsToClient,
+    singleNewsToClient
 }

@@ -203,6 +203,32 @@ class PlayerController {
         return res.status(500).json({ data: null, message: "Internal Server Error" });
     }
   }
+
+
+  static async setFirstTeam(req, res) { 
+    try {
+      if(!req.params.id) {
+        return res.status(400).json({ data: null, message: "Player ID is required" });
+      }
+
+      const existingPlayer = await db.select().from(player).where(eq(player.id, parseInt(req.params.id)));
+
+      if (!existingPlayer || existingPlayer.length === 0) {
+        return res.status(404).json({ data: null, message: "Player not found" });
+      }
+
+      await db.update(player).set({ first_team: true }).where(eq(player.id, parseInt(req.params.id)));
+
+
+      //return the player that was set as first team in response
+
+      existingPlayer[0].first_team = true;
+
+      return res.status(200).json({ data: playerToClientSingle(existingPlayer[0]), message: "Player set as first team successfully" });
+    } catch (error) {
+      return res.status(500).json({ data: null, message: "Internal Server Error" });
+    }
+  }
 }
 
 module.exports = PlayerController;

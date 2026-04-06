@@ -253,17 +253,48 @@ const adminLoginDetails = mysqlTable("admin_login_details", {
 const clicksTable = mysqlTable("clicks", {
     id: int("id").primaryKey().autoincrement(),
     newsId: int("news_id").notNull(),
-    clicks: int("clicks").notNull().default(0),
+    views: int("views").notNull().default(0),
     isDeleted: boolean("is_deleted").default(false),
     created_at: timestamp("created_at").defaultNow(),
     modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
 })
 
+const teamNameTable = mysqlTable("team_name", {
+    id: int("id").primaryKey().autoincrement(),
+    name: varchar("name", { length: 255 }).notNull(),
+    isDeleted: boolean("is_deleted").default(false),
+    created_at: timestamp("created_at").defaultNow(),
+    modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
+})
+
+// location
+// : 
+// "nairobi  kenya"
+
+
+
+const messagesTable = mysqlTable("messages", {
+    id: int("id").primaryKey().autoincrement(),
+    name: varchar("name", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    phone_number: varchar("phone_number", { length: 255 }).notNull(),
+    subject: varchar("subject", { length: 255 }).notNull(),
+    location: varchar("location", { length: 255 }).notNull(),
+    isRead: boolean("is_read").default(false),
+    message: text("message").notNull(),
+    isDeleted: boolean("is_deleted").default(false),
+    created_at: timestamp("created_at").defaultNow(),
+    modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
+})
+
+
 module.exports = {
+    messagesTable,
     adminProfileTable,
     clicksTable,
     viewsTable,
-    adminLoginDetails,
+    teamNameTable,
+adminLoginDetails,
   player,
   managementTable,
   newsCategory,

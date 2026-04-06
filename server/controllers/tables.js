@@ -18,12 +18,15 @@ const {
     programTitlesTable,
     programsTable,
     adminLoginDetails,
-    adminProfileTable,viewsTable
+    messagesTable,
+    adminProfileTable,viewsTable,teamNameTable
 } = require("../models/schema");
 
 module.exports = {
   adminLoginDetails,
   clicksTable,
+  teamNameTable,
+  messagesTable,
   adminProfileTable,
   viewsTable,
   db,

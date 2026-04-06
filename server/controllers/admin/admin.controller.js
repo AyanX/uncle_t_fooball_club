@@ -225,6 +225,75 @@ class AdminController{
     }
   }
 
+
+static async loginWithPin(req, res) {
+  try {
+     const {email,pin}= req.body;
+
+     if(!email || !pin){
+        return res.status(400).json({message: "Email and PIN are required"});
+     }
+
+     const emailData = await db.select().from(adminProfileTable).orderBy(desc(adminProfileTable.created_at)).limit(1);
+
+     if(emailData.length === 0){
+        return res.status(404).json({message: "Admin email not found"});
+     }
+
+     const pinData = await db.select().from(adminLoginDetails).orderBy(desc(adminLoginDetails.created_at)).limit(1);
+
+     if(pinData.length === 0){
+        return res.status(404).json({message: "Admin PIN not found"});
+     }
+
+     if(emailData[0].email !== email){
+        return res.status(401).json({message: "Incorrect Login credentials"});
+     }
+
+     const isPinValid = await comparePasswords(pin, pinData[0].pin);
+
+     if(!isPinValid){
+        return res.status(401).json({message: "Incorrect Login credentials"});
+     }
+
+
+           // cookies implementaation
+
+      const token = generateToken({
+        email: emailData[0].email,
+        username: emailData[0].username,
+      });
+
+      const refreshToken = generateRefreshToken({
+        email: emailData[0].email,
+        username: emailData[0].username,
+      });
+
+
+      res.cookie("token", token, {
+          httpOnly: true,
+          sameSite: "lax",
+          secure: false,
+          path: "/",
+          maxAge: 1000 * 60 * 10, // 10 minutes
+        })
+        .cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+      return res.json({ message: "Login successful", data:{email: emailData[0].email, username: emailData[0].username} });
+  
+
+     //generate token and refresh token
+  } catch (error) {
+    return res.status(500).json({ message: "Error during PIN login" });
+  }
+}
+
   static async logout(req, res) {
      try {
       // clear the token cookie and refreshToken

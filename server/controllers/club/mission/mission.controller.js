@@ -1,6 +1,6 @@
 const { desc, eq } = require("drizzle-orm");
 const {db, MissionVissionTable} = require("../../tables");
-const { validMissionToClient, validMission } = require("../club.utils");
+const { validMissionToClient, validMission, singleMissionToClient } = require("../club.utils");
 
 class MissionController{
     static async getMissions(req, res){
@@ -24,7 +24,7 @@ class MissionController{
             // fetch the entry with its id
             const newEntry = await db.select().from(MissionVissionTable).where(eq(MissionVissionTable.id, req.params.id));
 
-            return res.status(200).json({ message: 'Mission updated successfully.' , data: validMissionToClient(newEntry)  });
+            return res.status(200).json({ message: 'Mission updated successfully.' , data: singleMissionToClient(newEntry[0])  });
         } catch (error) {
             return res.status(500).json({ message: 'An error occurred while updating the mission.' , data: [] });
         }
@@ -56,7 +56,7 @@ class MissionController{
                 //fetch the last entry, new entry
 
                 const newMission = await db.select().from(MissionVissionTable).where(eq(MissionVissionTable.isDeleted, false)).orderBy(desc(MissionVissionTable.created_at)).limit(1)
-                return res.status(201).json({ message: 'Mission created successfully.' , data: validMissionToClient(newMission) });
+                return res.status(201).json({ message: 'Mission created successfully.' , data: singleMissionToClient(newMission[0]) });
         
           } catch (error) {
             return res.status(500).json({ message: 'An error occurred while creating the mission.' , data: [] });

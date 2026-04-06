@@ -1,6 +1,6 @@
 const { eq, desc } = require("drizzle-orm");
 const {db,programTitlesTable,programsTable} = require("../tables");
-const { validTitlesToClient, validTitle, programsToClient, validProgram,programToDb } = require("./program.utils");
+const { validTitlesToClient, validTitle, programsToClient, validProgram,programToDb, singleProgramToClient } = require("./program.utils");
 const {generateBlurImage} = require("ayan-pkg")
 class ProgramsController {
     //TODO data msimatch with fe
@@ -30,7 +30,7 @@ class ProgramsController {
             await db.update(programsTable).set(programToDb(req.body)).where(eq(programsTable.id, req.params.id));
 
             //return the req body instead of fetch ,
-           res.status(200).json({ message: "Program updated successfully", data:programsToClient([req.body]) });
+           res.status(200).json({ message: "Program updated successfully", data:singleProgramToClient({...req.body, id: req.params.id}) });
 
            if(!req.fileUrl) return; // if image is not updated, no need to generate blur
              //generate blur
@@ -96,6 +96,19 @@ class ProgramsController {
         }
     }
 
+    static async getProgramBySlug(req, res) {
+        try {
+            const { slug } = req.params;
+            const program = await db.select().from(programsTable).where(eq(programsTable.slug, slug)).limit(1);
+            if (!program || program.length === 0) {
+                return res.status(404).json({ message: "Program not found", data: [] });
+            }
+            return res.status(200).json({ message: "Program fetched successfully", data: singleProgramToClient(program[0]) });
+        } catch (error) {
+            return res.status(500).json({ message: "Error fetching program", data:[] });
+        }
+    }
+
 
     //Titles go here
     static async getProgramTitles(req, res) {
@@ -120,7 +133,7 @@ class ProgramsController {
             
             await db.update(programTitlesTable).set({ title: req.body.title.toLowerCase() }).where(eq(programTitlesTable.id, id));
 
-            return res.status(200).json({ message: "Program title updated successfully", data:validTitlesToClient([req.body]) });
+            return res.status(200).json({ message: "Program title updated successfully", data:{ id, title: req.body.title } });
 
 
 
@@ -131,16 +144,16 @@ class ProgramsController {
     static async deleteProgramTitles(req, res) {
         try {
             if(!req.params.id) return res.status(400).json({ message: "Program title id is required", data:[] });
-            if(!validTitle(req.body)) return res.status(400).json({ message: "Invalid program title data", data:[] });
 
             //check if it exists
             const existingTitle = await db.select().from(programTitlesTable).where(eq(programTitlesTable.id, req.params.id));
             if(!existingTitle) return res.status(404).json({ message: "Program title not found", data:[] });
 
             await db.update(programTitlesTable).set({ isDeleted: true }).where(eq(programTitlesTable.id, req.params.id));
-            return res.status(200).json({ message: "Program title deleted successfully", data:validTitlesToClient([req.body]) });
+            return res.status(200).json({ message: "Program title deleted successfully", data:[] });
 
         } catch (error) {
+            console.error("error deleting prog title",error);
             return res.status(500).json({ message: "Error deleting program title", data:[] });
         }
     }
@@ -159,7 +172,7 @@ class ProgramsController {
 
             const newTitle = await db.select().from(programTitlesTable).orderBy(desc(programTitlesTable.created_at)).limit(1);
 
-            return res.status(201).json({ message: "Program title created successfully", data:validTitlesToClient(newTitle) });
+            return res.status(201).json({ message: "Program title created successfully", data:{id: newTitle[0].id, title: newTitle[0].title} });
         } catch (error) {
             return res.status(500).json({ message: "Error creating program title", data:[] });
         }

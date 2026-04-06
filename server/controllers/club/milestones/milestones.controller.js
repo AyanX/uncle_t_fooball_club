@@ -1,6 +1,6 @@
 const { eq, desc } = require("drizzle-orm");
 const {db,clubMilestonesTable} = require("../../tables");
-const { validMilestoneToClient, validMilestone } = require("../club.utils");
+const { validMilestoneToClient, validMilestone, singleMilestoneToClient } = require("../club.utils");
 
 class MilestonesController {
     // Controller methods for milestones
@@ -36,7 +36,7 @@ class MilestonesController {
 
             const newMilestone = await db.select().from(clubMilestonesTable).where(eq(clubMilestonesTable.isDeleted, false)).orderBy(desc(clubMilestonesTable.created_at)).limit(1)
 
-            return res.status(201).json({ message: "Milestone created successfully", data: validMilestoneToClient(newMilestone) });
+            return res.status(201).json({ message: "Milestone created successfully", data: singleMilestoneToClient(newMilestone[0]) });
         } catch (error) {
             return res.status(500).json({ message: "Error creating milestone", data:[] });
         }
@@ -59,7 +59,7 @@ class MilestonesController {
 
             const { title, content, year } = req.body;
             await db.update(clubMilestonesTable).set({ title, content, year }).where(eq(clubMilestonesTable.id, req.params.id))
-            return res.status(200).json({ message: "Milestone updated successfully", validMilestoneToClient: validMilestoneToClient([{ id: req.params.id, title, content, year }]) });
+            return res.status(200).json({ message: "Milestone updated successfully", data: singleMilestoneToClient({ id: req.params.id, title, content, year }) });
         } catch (error) {
             return res.status(500).json({ message: "Error updating milestone", data:[] });
         }

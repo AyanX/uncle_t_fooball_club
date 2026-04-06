@@ -5,11 +5,12 @@ const {
   validNewsCategory,
   validNewsToClient,
   validNews,
+  singleNewsToClient,
 } = require("./news.utils");
 
 const {generateBlurImage}= require("ayan-pkg")
 
-//TODO
+//TODO  when a cate name is changed, news update
 class NewsController {
   static async getNewsCategories(req, res) {
     try {
@@ -20,7 +21,7 @@ class NewsController {
         .orderBy(desc(newsCategory.created_at));
       if (categories.length === 0) {
         return res
-          .status(404)
+          .status(200)
           .json({ data: [], message: "No news categories found" });
       }
 
@@ -66,7 +67,7 @@ class NewsController {
       return res
         .status(201)
         .json({
-          data: validNewsCategoryToClient(newCategory),
+          data: {id: newCategory[0].id, category: newCategory[0].category, image: newCategory[0].image},
           message: "News category added successfully",
         });
     } catch (error) {
@@ -86,7 +87,7 @@ class NewsController {
         if(!id || isNaN(parseInt(id))){
             return res.status(400).json({data: [], message: "Invalid news category id"});
         }
-        const imageUrl = req.fileUrl || "";
+        const imageUrl = req.fileUrl || req.body.image || "";
         const {category} = req.body;
 
         //check if category exists
@@ -103,12 +104,67 @@ class NewsController {
             return res.status(404).json({data: [], message: "News category not found after update"});
         }
 
-        return res.status(200).json({data: validNewsCategoryToClient(updatedCategory), message: "News category updated successfully"});
+        return res.status(200).json({data: {id: updatedCategory[0].id, category: updatedCategory[0].category, image: updatedCategory[0].image}, message: "News category updated successfully"});
 
     } catch (error) {
+  
         return res.status(500).json({ data: [], message: "Error updating news category" });
     }
   }
+
+  static async getNewsBySlug(req, res) {
+    try {
+      const { slug } = req.params;
+      const news = await db
+        .select()
+        .from(newsTable)
+        .where(eq(newsTable.slug, slug))
+        .limit(1);
+      if (news.length === 0) {
+        return res.status(404).json({ data: [], message: "News not found" });
+      }
+    
+
+      return res.status(200).json({ data: {id: news[0].id, slug: news[0].slug,
+title: news[0].title,
+excerpt: news[0].excerpt,
+content: news[0].content,
+image: news[0].image,
+blur_image: news[0].blur_image,
+category: news[0].category,
+author: news[0].author,
+date: news[0].date,
+readTime: news[0].readTime,
+featured: news[0].featured === 1 ? true : false
+
+
+       }, message: "News fetched successfully" });
+    } catch (error) {
+      return res.status(500).json({ data: [], message: "Error fetching news by slug" });
+    }
+  }
+
+  static async addFeatured(req, res) {
+    try {
+      if(!req.params.id || isNaN(parseInt(req.params.id))){
+          return res.status(400).json({data: [], message: "Invalid news id"});
+      }
+      const {id} = req.params;
+      //check if news exists
+      const existingNews = await db.select().from(newsTable).where(eq(newsTable.id, parseInt(id)));
+      if(existingNews.length === 0){
+          return res.status(404).json({data: [], message: "News not found"});
+      }
+
+      await db.update(newsTable).set({featured: 1}).where(eq(newsTable.id, parseInt(id)));
+      existingNews[0].featured = 1;
+
+      return res.status(200).json({data: singleNewsToClient(existingNews[0]), message: "News marked as featured successfully"});
+    } catch (error) {
+      return res.status(500).json({ data: [], message: "Error adding featured news" });
+    }
+  }
+
 
   static async deleteNewsCategory(req, res) {
     try {
@@ -132,7 +188,23 @@ class NewsController {
   }
 
   static async getNews(req, res) {
-    return res.status(200).json({data: [], message: "Get news endpoint"});
+    try {
+      const news = await db
+        .select()
+        .from(newsTable)
+        .where(eq(newsTable.isDeleted, false))
+        .orderBy(desc(newsTable.created_at));
+      if (news.length === 0) {
+        return res.status(404).json({ data: [], message: "No news found" });
+      }
+
+      return res
+        .status(200)
+        .json({ data: validNewsToClient(news), message: "News fetched successfully" });
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      return res.status(500).json({ data: [], message: "Error fetching news" });
+    }
   }
 
   static async addNews(req, res) {
@@ -146,7 +218,11 @@ class NewsController {
           return res.status(400).json({data: [], message: "News image is required"});
       }
 
+      req.body.featured = req.body.featured === true ? 1 : 0;
+
       const {slug, title, excerpt, content, category, author, date, readTime, featured} = req.body;
+
+
 
       await db.insert(newsTable).values({slug, title, excerpt, content, image, blur_image:image , category, author, date: new Date(date), readTime, featured: featured === "true"});
 
@@ -156,7 +232,7 @@ class NewsController {
           return res.status(404).json({data: [], message: "News not found after insertion"});
       }
 
-       res.status(201).json({data: validNewsToClient(insertedNews), message: "News added successfully"});
+       res.status(201).json({data: singleNewsToClient(insertedNews[0]), message: "News added successfully"});
       
       //generate blur
 
@@ -172,9 +248,80 @@ class NewsController {
     }
   }
 
-  static async updateNews(req, res) {}
+  static async updateNews(req, res) {
+    try {
+      if(!validNews(req.body)){
+          return res.status(400).json({data: [], message: "Invalid news data"});
+      }
 
-  static async deleteNews(req, res) {}
+      const {id} = req.params;
+      if(!id || isNaN(parseInt(id))){
+          return res.status(400).json({data: [], message: "Invalid news id"});
+      }
+
+      const existingNews = await db.select().from(newsTable).where(eq(newsTable.id, parseInt(id)));
+      if(existingNews.length === 0){
+          return res.status(404).json({data: [], message: "News not found"});
+      }
+
+      const image = req.fileUrl || existingNews[0].image;
+
+      const {slug, title, excerpt, content, category, author, date, readTime, featured} = req.body;
+
+      await db.update(newsTable).set({
+        slug,
+        title,
+        excerpt,
+        content,
+        image,
+        blur_image: image,
+        category,
+        author,
+        date,
+        readTime,
+        featured:featured === true ? 1 : 0,
+       }).where(eq(newsTable.id, parseInt(id)));
+
+       //return req.body  news 
+
+      res.status(200).json({data: {id: parseInt(id), slug, title, excerpt, content, image, blur_image: image, category, author, date, readTime, featured:featured === true ? 1 : 0}, message: "News updated successfully"});
+
+      if(!req.fileUrl)return
+
+      //generate blur in background
+      const blur = await generateBlurImage(image);
+      if(blur){
+        await db.update(newsTable).set({blur_image: blur}).where(eq(newsTable.id, parseInt(id)));
+      }
+
+      return
+
+    } catch (error) {
+      return res.status(500).json({ data: [], message: "Error updating news" });
+    }
+  }
+
+  static async deleteNews(req, res) {
+      try {
+    if(!req.params.id || isNaN(parseInt(req.params.id))){
+        return res.status(400).json({data: [], message: "Invalid news id"});
+    }
+    const {id} = req.params;
+
+    //check if news exists
+    const existingNews = await db.select().from(newsTable).where(eq(newsTable.id, parseInt(id)));
+    if(existingNews.length === 0){
+        return res.status(404).json({data: [], message: "News not found"});
+    }
+
+    await db.update(newsTable).set({isDeleted: true}).where(eq(newsTable.id, parseInt(id)));
+
+    return res.status(200).json({data: [], message: "News deleted successfully"});
+  } catch (error) {
+    return res.status(500).json({ data: [], message: "Error deleting news" });
+  }
+  }
+
 }
 
 module.exports = NewsController;

@@ -28,6 +28,9 @@ const programTitleRouter = require('./routers/programs/titles/titles.router');
 const clicksRouter = require('./routers/clicks/clicks.router');
 const useAuth = require('./utils/useAuth');
 const AuthCheck = require('./controllers/authChecker/auth');
+const TeamNameRouter = require('./controllers/teamName/teamName');
+const messagesRouter = require('./routers/messages/messages.router');
+const AdminController = require('./controllers/admin/admin.controller');
 
 
 
@@ -55,8 +58,13 @@ app.use("/api/admin",adminRouter)
 
 app.use("/api/programs", programsRouter )
 
-app.use("/click", clicksRouter)
+app.use("/api/views", clicksRouter)
 
+app.use("/api/messages", messagesRouter)
+
+app.use("/api/teamname", TeamNameRouter)
+
+app.use("/api/login-with-pin", AdminController.loginWithPin)
 
 app.use("/api/auth", useAuth, AuthCheck.checkAuth)
 

@@ -200,6 +200,12 @@ class GalleryController {
             // send the data with the response
             res.status(200).json({ message: 'Gallery category updated successfully', data:{id: categoryId, title: req.body.title} });
 
+            //scroll through galleries in db, update the category field for those with the same category as old title to new title, and update blur in background
+            await db.update(galleryTable).set({
+                category: req.body.title
+            }).where(eq(galleryTable.category, category[0].title));
+
+
             return;
         } catch (error) {
             return res.status(500).json({ error: 'Failed to update gallery category', data: null });

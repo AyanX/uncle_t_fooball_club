@@ -10,6 +10,14 @@ const validStatToClient = stats => {
     }))
 }
 
+const singleStatToClient = stat => {
+    return {
+        id: stat.id,
+        label: stat.label,
+        value: stat.value,
+        icon: stat.icon
+     }}
+
 const validMilestone = (milestone) => {
     return milestone.title && milestone.content && milestone.year
 }
@@ -21,6 +29,16 @@ const validMilestoneToClient = milestones => {
         content: milestone.content,
         year: milestone.year
     }))
+}
+
+
+const singleMilestoneToClient = milestone => {
+    return {
+        id: milestone.id,
+        title: milestone.title,
+        content: milestone.content,
+        year: milestone.year
+     }
 }
 
 const validMission = (mission) => {
@@ -36,6 +54,14 @@ const validMissionToClient = missions => {
 }
 
 
+const singleMissionToClient = mission => {
+    return {
+        id: mission.id,
+        title: mission.title,
+        content: mission.content,
+     }  }
+
+
 const validManagement = (management) => {
     return management.name && management.role
 }
@@ -49,16 +75,28 @@ const validManagementToClient =( managements, fakeId=0) => {
     }))
 }
 
+const singleManagementToClient = (management) => {
+    return {
+        id: management.id,
+        name: management.name,
+        role: management.role,
+        image: management.image,
+        blur_image: management.blur_image
+     }}
+
 
 
 module.exports = {
     validStat,
+    singleManagementToClient,
     validMission,
     validMissionToClient,
     validStatToClient,
     validMilestone,
     validMilestoneToClient,
     validManagement,
-    validManagementToClient
-
+    singleStatToClient,
+    validManagementToClient,
+    singleMilestoneToClient,
+    singleMissionToClient
 }

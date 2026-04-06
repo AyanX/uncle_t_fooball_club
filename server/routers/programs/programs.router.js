@@ -10,4 +10,6 @@ programsRouter.put("/:id",upload, ProgramsController.updateProgram);
 programsRouter.delete("/:id", ProgramsController.deleteProgram);
 
 
+programsRouter.get("/:slug", ProgramsController.getProgramBySlug);
+
 module.exports= programsRouter;

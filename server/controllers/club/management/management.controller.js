@@ -1,6 +1,6 @@
 const { eq, desc } = require("drizzle-orm");
 const {db, managementTable} = require("../../tables");
-const { validManagementToClient, validManagement } = require("../club.utils");
+const { validManagementToClient, validManagement, singleManagementToClient } = require("../club.utils");
 
 const {generateBlurImage} = require("ayan-pkg")
 
@@ -42,7 +42,7 @@ class ManagementController{
             await db.update(managementTable).set(newManagement).where(eq(managementTable.id, req.params.id));
             // res with req.body
 
-            res.status(200).json({ message: "Management data updated successfully", data: validManagementToClient([newManagement], +req.params.id) });
+            res.status(200).json({ message: "Management data updated successfully", data: singleManagementToClient({ id: req.params.id, ...newManagement }) });
 
             //generate blur
             const blur = generateBlurImage(image)
@@ -96,7 +96,7 @@ class ManagementController{
 
             const insertedManagement = await db.select().from(managementTable).where(eq(managementTable.isDeleted, false)).orderBy(desc(managementTable.created_at)).limit(1)
 
-         res.status(201).json({ message: "Management data created successfully", data: validManagementToClient(insertedManagement) });
+         res.status(201).json({ message: "Management data created successfully", data: singleManagementToClient(insertedManagement[0]) });
 
             // generate a blur
 

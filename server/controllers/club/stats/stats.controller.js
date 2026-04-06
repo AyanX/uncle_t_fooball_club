@@ -1,6 +1,6 @@
 const { desc, eq } = require("drizzle-orm");
 const {db,clubStatsTable} = require("../../tables");
-const { validStatToClient, validStat } = require("../club.utils");
+const { validStatToClient, validStat, singleStatToClient } = require("../club.utils");
 
 class StatsController {
     static async getStats(req, res) {
@@ -30,7 +30,7 @@ class StatsController {
             //fetch the latest entry stat
             const newStat = await db.select().from(clubStatsTable).where(eq(clubStatsTable.isDeleted, false)).orderBy(desc(clubStatsTable.created_at)).limit(1);
 
-            return res.status(201).json({ message: "Stat created successfully", data:validStatToClient(newStat) });
+            return res.status(201).json({ message: "Stat created successfully", data:singleStatToClient(newStat[0]) });
         } catch (error) {
             return res.status(500).json({ message: "Error creating stats", data:[] });
         }
@@ -58,7 +58,7 @@ class StatsController {
             //fetch the updated stat
             const updatedStat = await db.select().from(clubStatsTable).where(eq(clubStatsTable.id, id)).limit(1)
 
-            return res.status(200).json({ message: "Stat updated successfully", data:validStatToClient(updatedStat) });
+            return res.status(200).json({ message: "Stat updated successfully", data:singleStatToClient(updatedStat[0]) });
         } catch (error) {
             return res.status(500).json({ message: "Error updating stats", data:[] });
         }
