@@ -1,4 +1,3 @@
-// UpcomingFixtures.tsx — Next matches strip on the home page
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -32,7 +31,6 @@ const UpcomingFixtures: React.FC<Props> = ({ fixtures, loading }) => {
           <Loader color="#C9A84C" />
         ) : (
           <div className={styles.grid}>
-            {/* Upcoming */}
             <div className={styles.col}>
               <h3 className={styles.colLabel}>Upcoming</h3>
               <div className={styles.list}>
@@ -66,7 +64,6 @@ const UpcomingFixtures: React.FC<Props> = ({ fixtures, loading }) => {
               </div>
             </div>
 
-            {/* Recent results */}
             <div className={styles.col}>
               <h3 className={styles.colLabel}>Recent Results</h3>
               <div className={styles.list}>

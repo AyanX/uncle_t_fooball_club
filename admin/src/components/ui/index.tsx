@@ -1,9 +1,9 @@
-// components/ui/index.tsx — Shared UI primitives (updated)
+
 import React, { ReactNode, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertTriangle, Upload, Trash2, Pencil } from 'lucide-react';
 
-// ── Modal ─────────────────────────────────────────────────
+
 interface ModalProps { open: boolean; onClose: () => void; title: string; children: ReactNode; size?: 'sm'|'md'|'lg'; }
 export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, size = 'md' }) => {
   const maxW = size === 'sm' ? 440 : size === 'lg' ? 860 : 620;
@@ -28,7 +28,7 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, si
   );
 };
 
-// ── Confirm Dialog ────────────────────────────────────────
+
 interface ConfirmProps { open:boolean; onClose:()=>void; onConfirm:()=>void; title?:string; message?:string; confirmLabel?:string; loading?:boolean; }
 export const ConfirmDialog: React.FC<ConfirmProps> = ({ open,onClose,onConfirm,title='Are you sure?',message='This action cannot be undone.',confirmLabel='Delete',loading=false }) => (
   <AnimatePresence>
@@ -58,7 +58,7 @@ export const ConfirmDialog: React.FC<ConfirmProps> = ({ open,onClose,onConfirm,t
   </AnimatePresence>
 );
 
-// ── Field wrapper ─────────────────────────────────────────
+
 export const Field: React.FC<{label:string;required?:boolean;error?:string;children:ReactNode;hint?:string}> = ({label,required,error,children,hint}) => (
   <div style={{display:'flex',flexDirection:'column',gap:6}}>
     <label style={{fontFamily:'Montserrat,sans-serif',fontSize:11,fontWeight:700,letterSpacing:'0.12em',textTransform:'uppercase',color:'#0A142F'}}>
@@ -96,7 +96,7 @@ export const Select: React.FC<React.SelectHTMLAttributes<HTMLSelectElement>> = (
   />
 );
 
-// ── Btn ───────────────────────────────────────────────────
+
 type BtnVariant = 'primary'|'secondary'|'danger'|'ghost'|'warning';
 const btnStyles: Record<BtnVariant, React.CSSProperties> = {
   primary:   {background:'#C8102E',color:'#fff',border:'2px solid #C8102E'},
@@ -121,14 +121,14 @@ export const Btn: React.FC<BtnProps> = ({variant='primary',loading,children,styl
   </button>
 );
 
-// ── Badge ─────────────────────────────────────────────────
+
 export const Badge: React.FC<{text:string;color?:string}> = ({text,color='#C8102E'}) => (
   <span style={{display:'inline-block',padding:'2px 10px',borderRadius:999,fontFamily:'Montserrat,sans-serif',fontSize:11,fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',background:color+'18',color}}>
     {text}
   </span>
 );
 
-// ── Toggle ────────────────────────────────────────────────
+
 export const Toggle: React.FC<{checked:boolean;onChange:(v:boolean)=>void;label?:string}> = ({checked,onChange,label}) => (
   <label style={{display:'inline-flex',alignItems:'center',gap:10,cursor:'pointer',userSelect:'none'}}>
     <div onClick={()=>onChange(!checked)} style={{width:42,height:24,borderRadius:12,background:checked?'#C8102E':'#d1d5db',position:'relative',transition:'background 0.2s',flexShrink:0}}>
@@ -138,7 +138,7 @@ export const Toggle: React.FC<{checked:boolean;onChange:(v:boolean)=>void;label?
   </label>
 );
 
-// ── Image Input with preview ──────────────────────────────
+
 interface ImageInputProps {
   currentUrl?: string;
   onFileSelect: (file: File | null) => void;
@@ -208,7 +208,7 @@ export const ImageInput: React.FC<ImageInputProps> = ({ currentUrl, onFileSelect
   );
 };
 
-// ── Page header helper ────────────────────────────────────
+
 export const PageHeader: React.FC<{ title: string; sub?: string; actions?: ReactNode }> = ({ title, sub, actions }) => (
   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 24 }}>
     <div>
@@ -219,7 +219,7 @@ export const PageHeader: React.FC<{ title: string; sub?: string; actions?: React
   </div>
 );
 
-// ── Table ─────────────────────────────────────────────────
+
 export const Table: React.FC<{ headers: string[]; children: ReactNode; }> = ({ headers, children }) => (
   <div style={{ width: '100%', overflowX: 'auto', borderRadius: 12, border: '1px solid rgba(10,20,47,0.07)', background: '#fff' }}>
     <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 500 }}>
@@ -247,7 +247,7 @@ export const TD: React.FC<{ children: ReactNode; style?: React.CSSProperties }> 
   <td style={{ padding: '12px 16px', fontFamily: 'Inter,sans-serif', fontSize: 14, color: '#0A142F', verticalAlign: 'middle', ...style }}>{children}</td>
 );
 
-// ── Action buttons row (always visible, no hover) ─────────
+
 export const ActionBtns: React.FC<{ onEdit?: () => void; onDelete?: () => void; extra?: ReactNode }> = ({ onEdit, onDelete, extra }) => (
   <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
     {extra}
@@ -268,14 +268,14 @@ export const ActionBtns: React.FC<{ onEdit?: () => void; onDelete?: () => void; 
   </div>
 );
 
-// ── Skeleton loader ───────────────────────────────────────
+
 export const Skeleton: React.FC<{ h?: number; r?: number }> = ({ h = 60, r = 8 }) => (
   <div style={{ height: h, borderRadius: r, background: 'linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.4s infinite' }}>
     <style>{`@keyframes shimmer{to{background-position:-200% 0}}`}</style>
   </div>
 );
 
-// ── Section card ──────────────────────────────────────────
+
 export const SectionCard: React.FC<{ title?: string; actions?: ReactNode; children: ReactNode; style?: React.CSSProperties }> = ({ title, actions, children, style }) => (
   <div style={{ background: '#fff', borderRadius: 16, padding: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.06)', border: '1px solid rgba(10,20,47,0.07)', ...style }}>
     {(title || actions) && (
@@ -288,7 +288,7 @@ export const SectionCard: React.FC<{ title?: string; actions?: ReactNode; childr
   </div>
 );
 
-// ── Form grid ─────────────────────────────────────────────
+
 export const FormGrid: React.FC<{ children: ReactNode; cols?: 1|2|3 }> = ({ children, cols = 2 }) => (
   <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 16, alignItems: 'start' }}>
     {children}

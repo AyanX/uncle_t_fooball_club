@@ -1,6 +1,6 @@
-// Programs/index.tsx — No slug input (auto-generated). Title from dropdown of programTitles.
-// Titles already used by another programme are excluded from the dropdown.
-// If no titles exist, empty state prompts user to create one first.
+
+
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Check, X, AlertCircle, BookOpen, Tag } from 'lucide-react';
@@ -13,7 +13,7 @@ import ImageInput from '@/components/ui/ImageInput';
 import BlurImage from '@/components/ui/BlurImage';
 import styles from './Programs.module.scss';
 
-// Slug auto-generated — never exposed to user
+
 const toSlug = (t: string) =>
   t.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').slice(0, 80);
 
@@ -30,7 +30,7 @@ const emptyPF: PF = {
   image: '', color: '#C8102E', stats: [], highlights: [],
 };
 
-// ── Inline editable highlight list ───────────────────────
+
 const EditableList: React.FC<{
   items: string[];
   onChange: (v: string[]) => void;
@@ -183,7 +183,7 @@ const ProgramForm: React.FC<{
         />
       </div>
 
-      {/* Title — dropdown of available (unused) titles */}
+      {}
       <Field label="Programme Title" required>
         {availableTitles.length === 0 ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'rgba(200,16,46,0.05)', border: '1.5px solid rgba(200,16,46,0.2)', borderRadius: 8 }}>
@@ -238,7 +238,7 @@ const ProgramForm: React.FC<{
   );
 };
 
-// ── Programme Titles manager ──────────────────────────────
+
 const TitleManager: React.FC<{
   titles: ProgramTitle[];
   usedTitles: string[];
@@ -385,7 +385,7 @@ const Programs: React.FC = () => {
 
   const handleSave = async () => {
     if (!form.title) { error('Please select a programme title'); return; }
-    // Ensure slug is generated from title
+    
     const payload = { ...form, slug: form.slug || toSlug(form.title) };
     setSaving(true);
     try {
@@ -456,7 +456,7 @@ const Programs: React.FC = () => {
         </Btn>
       </div>
 
-      {/* No titles warning */}
+      {}
       {programTitles.length === 0 && !loading && (
         <div className={styles.noTitlesWarning}>
           <AlertCircle size={18} />
@@ -467,7 +467,7 @@ const Programs: React.FC = () => {
         </div>
       )}
 
-      {/* Programme cards grid */}
+      {}
       {!loading && programs.length > 0 && (
         <div className={styles.grid}>
           {programs.map((prog, i) => (
@@ -504,7 +504,7 @@ const Programs: React.FC = () => {
         </div>
       )}
 
-      {/* Programme Titles manager — always at bottom */}
+      {}
       <TitleManager
         titles={programTitles}
         usedTitles={programs.map(p => p.title)}
@@ -512,7 +512,7 @@ const Programs: React.FC = () => {
         onDelete={handleDeleteTitle}
       />
 
-      {/* Add/Edit Modal */}
+      {}
       <Modal
         open={addOpen || !!editItem}
         onClose={() => { setAddOpen(false); setEditItem(null); }}

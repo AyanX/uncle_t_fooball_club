@@ -1,4 +1,4 @@
-// Settings/index.tsx — Credentials, Socials, Stats, Mission/Vision, Milestones, Management
+
 import React, { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Save, Eye, EyeOff, Globe, Users, Trophy, BookOpen, Key, User, Mail, Lock } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';
@@ -12,12 +12,12 @@ import ImageInput from '@/components/ui/ImageInput';
 import { buildFormData } from '@/services/api';
 import styles from './Settings.module.scss';
 
-// ─── Credentials Panel ───────────────────────────────────
+
 const CredentialsPanel: React.FC = () => {
   const { user, updateUser } = useAuth();
   const { success, error } = useToast();
 
-  // Username
+  
   const [username, setUsername] = useState(user?.username || '');
   const [savingUser, setSavingUser] = useState(false);
 
@@ -93,7 +93,7 @@ const CredentialsPanel: React.FC = () => {
 
   return (
     <div className={styles.credsGrid}>
-      {/* Username */}
+      {}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><User size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Username</h4></div>
         <p className={styles.credDesc}>Displayed in the admin navbar and sidebar</p>
@@ -105,7 +105,7 @@ const CredentialsPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Email */}
+      {}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><Mail size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Email Address</h4></div>
         <p className={styles.credDesc}>Used for admin login and notifications</p>
@@ -117,7 +117,7 @@ const CredentialsPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Password */}
+      {}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><Lock size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Password</h4></div>
         <p className={styles.credDesc}>Minimum 6 characters. Current password required.</p>
@@ -143,7 +143,7 @@ const CredentialsPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* PIN */}
+      {}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><Key size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Security PIN</h4></div>
         <p className={styles.credDesc}>4–8 digit numeric PIN for quick actions</p>
@@ -210,7 +210,7 @@ const SocialsPanel: React.FC = () => {
   return (
     <div className={styles.panel}>
       <div className={styles.panelTitleRow}><Globe size={16}/><h3 className={styles.panelTitle}>Contact & Social Info</h3></div>
-      {/* Club Name */}
+      {}
       <div className={styles.clubNameRow}>
         <div style={{flex:1}}>
           <Field label="Club Name">
@@ -323,7 +323,7 @@ const StatsPanel: React.FC = () => {
   );
 };
 
-// ─── Mission/Vision (edit-only, exactly 2 entries) ───────
+
 const MissionPanel: React.FC = () => {
   const { missionVision, setMissionVision } = useAdminData();
   const { success, error } = useToast();
@@ -374,7 +374,7 @@ const MissionPanel: React.FC = () => {
   );
 };
 
-// ─── Milestones Panel ─────────────────────────────────────
+
 const MilestonesPanel: React.FC = () => {
   const { milestones, setMilestones } = useAdminData();
   const { success, error } = useToast();
@@ -452,7 +452,7 @@ const MilestonesPanel: React.FC = () => {
   );
 };
 
-// ─── Management Panel (full width) ───────────────────────
+
 const ManagementPanel: React.FC = () => {
   const { management, setManagement } = useAdminData();
   const { success, error } = useToast();
@@ -532,7 +532,7 @@ const ManagementPanel: React.FC = () => {
   );
 };
 
-// ─── Main Settings Page ───────────────────────────────────
+
 const TABS = [
   { id: 'credentials', label: 'Credentials', icon: <Key size={15}/> },
   { id: 'contact',     label: 'Contact & Socials', icon: <Globe size={15}/> },
@@ -547,7 +547,7 @@ const Settings: React.FC = () => {
   return (
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>Settings</h1>
-      {/* Horizontal tab bar */}
+      {}
       <div className={styles.tabBar}>
         {TABS.map(t => (
           <button key={t.id} className={`${styles.tab} ${active === t.id ? styles.tabActive : ''}`} onClick={() => setActive(t.id)}>

@@ -1,4 +1,3 @@
-// MissionVision.tsx — Mission & Vision fetched from context (api /club/mission)
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Star, Zap, Shield } from 'lucide-react';

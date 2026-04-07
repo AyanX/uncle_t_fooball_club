@@ -1,4 +1,4 @@
-// router/index.tsx — Admin router with auth guards, error boundaries, 404 handling
+
 import React, { Suspense, lazy } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -44,7 +44,7 @@ const GuestGuard: React.FC = () => {
 };
 
 const router = createBrowserRouter([
-  // Public
+  
   {
     element: <GuestGuard/>,
     errorElement: <ErrorPage/>,
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       { path: '/login', element: <Page><Login/></Page> },
     ],
   },
-  // Protected — all admin pages inside AdminLayout
+  
   {
     element: <AuthGuard/>,
     errorElement: <ErrorPage/>,
@@ -71,13 +71,13 @@ const router = createBrowserRouter([
           { path: '/partners',      element: <Page><Partners/></Page>    },
           { path: '/settings',      element: <Page><Settings/></Page>    },
           { path: '/messages',      element: <Page><Messages/></Page>    },
-          // Catch-all inside admin — show 404
+          
           { path: '*',             element: <NotFound/>                  },
         ],
       },
     ],
   },
-  // Unauthenticated catch-all → redirect to login
+  
   { path: '*', element: <Navigate to="/login" replace/> },
 ]);
 

@@ -1,4 +1,3 @@
-// Fixtures/index.tsx — Fixtures page with fans attendance display
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Calendar, Users } from 'lucide-react';
@@ -50,7 +49,6 @@ const FixtureRow: React.FC<{ fixture: Fixture; index: number }> = ({ fixture, in
           <span className={styles.detailItem}><Clock size={13} /> {fixture.time}</span>
         )}
         <span className={styles.detailItem}><MapPin size={13} /> {fixture.venue}</span>
-        {/* Show fans attendance if completed and fans > 0 */}
         {fixture.status === 'completed' && fixture.fans > 0 && (
           <span className={`${styles.detailItem} ${styles.fans}`}>
             <Users size={13} /> {fixture.fans.toLocaleString()} fans attended

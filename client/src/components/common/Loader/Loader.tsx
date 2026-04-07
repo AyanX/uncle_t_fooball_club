@@ -12,7 +12,7 @@ interface LoaderProps {
 const Loader: React.FC<LoaderProps> = ({
   size = 60,
   fullHeight = false,
-  color = '#F1C40F', // brand gold
+  color = '#F1C40F',
 }) => (
   <div className={`${styles.loader} ${fullHeight ? styles.fullHeight : ''}`}>
     <PuffLoader color={color} size={size} speedMultiplier={0.9} />

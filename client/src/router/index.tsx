@@ -1,4 +1,3 @@
-// router/index.tsx — Lazy-loaded pages with Suspense + PuffLoader
 import React, { Suspense, lazy } from "react";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import Navbar from "@/components/common/Navbar/Navbar";

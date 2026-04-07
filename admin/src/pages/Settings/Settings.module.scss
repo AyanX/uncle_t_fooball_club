@@ -2,7 +2,7 @@
 
 .pageTitle { font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
 
-// ── Horizontal tab bar ────────────────────────────────────
+
 .tabBar {
   display: flex; flex-wrap: wrap; gap: $space-2;
   border-bottom: 2px solid rgba($color-primary, 0.08);
@@ -28,7 +28,7 @@
 
 .tabContent { width: 100%; }
 
-// ── Credentials grid ──────────────────────────────────────
+
 .credsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -62,7 +62,7 @@
   border-top: 1px solid rgba($color-primary, 0.07);
 }
 
-// ── Full-width panel ──────────────────────────────────────
+
 .panel {
   background: $color-white; border-radius: $radius-xl; padding: $space-7;
   box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
@@ -76,14 +76,14 @@
 .panelDesc { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: -$space-2; }
 .panelFooter { display: flex; justify-content: flex-end; padding-top: $space-4; border-top: 1px solid rgba($color-primary, 0.08); }
 
-// Full-width form grid
+
 .fullGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: $space-5;
 }
 
-// Stats grid
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -106,13 +106,13 @@
   &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.04); }
 }
 
-// Always-visible action buttons (no hover needed)
+
 .alwaysActions {
   display: flex; gap: $space-2; justify-content: center; flex-wrap: wrap;
   margin-top: $space-2;
 }
 
-// List items (mission/vision + milestones)
+
 .listItems { display: flex; flex-direction: column; gap: $space-3; }
 
 .listItem {
@@ -141,7 +141,7 @@
   &:hover { border-color: $color-secondary; color: $color-secondary; background: rgba($color-secondary, 0.04); }
 }
 
-// Management grid
+
 .mgmtGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -187,7 +187,7 @@
 .formGrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
 .modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary, 0.08); }
 
-// Club name row
+
 .clubNameRow {
   display: flex;
   align-items: flex-start;

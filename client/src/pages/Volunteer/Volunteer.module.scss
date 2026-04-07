@@ -1,6 +1,5 @@
 .container { @include container; }
 
-// ── Why volunteer ─────────────────────────────────────────
 .whySection { @include section-padding; background: $color-off-white; }
 
 .areasGrid {
@@ -40,7 +39,6 @@
 
 .areaCheck { position: absolute; top: $space-4; right: $space-4; color: $color-secondary; }
 
-// ── Form section ──────────────────────────────────────────
 .formSection { @include section-padding; background: $color-white; }
 
 .formCard { max-width: 760px; }

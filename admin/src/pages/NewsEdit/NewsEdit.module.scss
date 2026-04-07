@@ -64,7 +64,7 @@
 .metaKey { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; text-transform: uppercase; letter-spacing: 0.08em; }
 .metaVal { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; color: $color-secondary; }
 
-// ── Rich content editor additions ────────────────────────
+
 .contentEditorWrap { display: flex; flex-direction: column; gap: $space-4; }
 
 .editorToolbar {

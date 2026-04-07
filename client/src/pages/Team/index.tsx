@@ -1,4 +1,3 @@
-// Team/index.tsx — Full squad listing with All / First Team filter + first_team bool
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';

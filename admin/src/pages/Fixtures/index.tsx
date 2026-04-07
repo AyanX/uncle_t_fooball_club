@@ -1,4 +1,4 @@
-// Fixtures/index.tsx — dynamic teamname, fixed date/fans/scores inputs
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Calendar, MapPin, Users } from 'lucide-react';
@@ -16,8 +16,8 @@ const statusColors: Record<string, string> = {
   upcoming: '#2563eb', completed: '#16a34a', live: '#C8102E',
 };
 
-// helper — converts a server date string like "2026-04-08" to exactly "2026-04-08"
-// HTML <input type="date"> needs value in YYYY-MM-DD; guard against ISO timestamps
+
+
 const toDateValue = (d?: string): string => {
   if (!d) return '';
   // If it's a full ISO string (e.g. 2026-04-08T00:00:00.000Z) slice to date part
@@ -126,7 +126,7 @@ const Fixtures: React.FC = () => {
     setAddOpen(true);
   };
 
-  // When editing, copy ALL existing fields including date and scores
+  
   const openEdit = (f: Fixture) => {
     setForm({
       homeTeam:    f.homeTeam    || '',

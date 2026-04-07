@@ -1,4 +1,3 @@
-// Stats.tsx — Club statistics fetched from API via context
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Calendar, Users, Globe } from 'lucide-react';

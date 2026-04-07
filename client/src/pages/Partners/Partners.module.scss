@@ -1,7 +1,6 @@
 .section { @include section-padding; background: $color-off-white; }
 .container { @include container; }
 
-// ── Tier groups ───────────────────────────────────────────
 .tierGroup { margin-bottom: $space-16; &:last-child { margin-bottom: 0; } }
 
 .tierHeader {
@@ -68,7 +67,6 @@
 
 .ctaBtn { @include btn-primary; }
 
-// Conditional external link (only shown if partner.website exists)
 .extLink {
   display: flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: $radius-md;

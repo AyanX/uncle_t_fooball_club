@@ -1,4 +1,3 @@
-// Partners/index.tsx — partnerTiers from context (no standalone fetch)
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Star } from 'lucide-react';

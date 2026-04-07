@@ -1,4 +1,4 @@
-// AdminLayout.tsx — fixed sidebar + sticky topbar + full-width content
+
 import React, { useState } from 'react';
 import { NavLink, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -47,7 +47,7 @@ const SidebarInner: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
         </button>
       )}
 
-      {/* Brand */}
+      {}
       <div className={styles.sidebarBrand}>
         <div className={styles.logoMark}>K</div>
         <div className={styles.brandText}>
@@ -56,7 +56,7 @@ const SidebarInner: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
         </div>
       </div>
 
-      {/* Nav */}
+      {}
       <nav className={styles.sidebarNav}>
         <span className={styles.navSection}>Navigation</span>
         {navItems.map(item => (
@@ -73,7 +73,7 @@ const SidebarInner: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
         ))}
       </nav>
 
-      {/* Footer */}
+      {}
       <div className={styles.sidebarFooter}>
         <div className={styles.userCard}>
           <div className={styles.userAvatar}>
@@ -105,12 +105,12 @@ const AdminLayout: React.FC = () => {
 
   return (
     <div className={styles.root}>
-      {/* Desktop fixed sidebar */}
+      {}
       <aside className={styles.sidebar}>
         <SidebarInner />
       </aside>
 
-      {/* Mobile backdrop */}
+      {}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -122,7 +122,7 @@ const AdminLayout: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Mobile drawer */}
+      {}
       <AnimatePresence>
         {mobileOpen && (
           <motion.aside
@@ -135,9 +135,9 @@ const AdminLayout: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Main */}
+      {}
       <div className={styles.main}>
-        {/* Sticky topbar */}
+        {}
         <header className={styles.topbar}>
           <button className={styles.hamburger} onClick={() => setMobileOpen(true)} aria-label="Open menu">
             <Menu size={20} />
@@ -155,7 +155,7 @@ const AdminLayout: React.FC = () => {
           </div>
         </header>
 
-        {/* Page content */}
+        {}
         <main className={styles.content}>
           <Outlet />
         </main>

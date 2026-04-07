@@ -41,7 +41,6 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  // Lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -53,7 +52,6 @@ const Navbar: React.FC = () => {
     <>
       <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.inner}>
-          {/* Logo */}
           <Link to="/" className={styles.logo} onClick={closeMobile}>
             <div className={styles.logoMark}><span className={styles.logoK}>U</span></div>
             <div className={styles.logoText}>
@@ -62,7 +60,6 @@ const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop nav */}
           <ul className={styles.desktopNav}>
             {navItems.map((item) => (
               <li key={item.path} className={styles.navItem}
@@ -102,7 +99,6 @@ const Navbar: React.FC = () => {
             ))}
           </ul>
 
-          {/* Actions */}
           <div className={styles.actions}>
             <Link to="/contact" className={styles.ctaBtn}>Join the Movement</Link>
             <button className={styles.hamburger} onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation">
@@ -117,7 +113,6 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile overlay backdrop */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -131,7 +126,6 @@ const Navbar: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Mobile drawer — slides in from right, fixed position, full height */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div

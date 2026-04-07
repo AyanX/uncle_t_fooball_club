@@ -1,4 +1,4 @@
-// Dashboard/index.tsx — responsive overview with news views section
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
     { label: 'Partners',   count: partners.length,  icon: <Handshake size={20} />, path: '/partners', color: '#0891b2' },
   ];
 
-  // News with view counts, sorted highest first
+  
   const newsWithViews = news
     .map(n => ({ ...n, viewCount: newsViews.find(v => v.newsId === n.id)?.views ?? 0 }))
     .sort((a, b) => b.viewCount - a.viewCount)
@@ -37,7 +37,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Stat cards */}
+      {}
       <div className={styles.statCards}>
         {statCards.map((c, i) => (
           <motion.div key={c.label} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.06 }}>
@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
         ))}
       </div>
 
-      {/* Club stats band */}
+      {}
       {stats.length > 0 && (
         <div className={styles.clubStats}>
           {stats.map(s => (
@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      {/* News views — sorted by highest */}
+      {}
       <div className={styles.section}>
         <div className={styles.secHead}>
           <div className={styles.secTitleRow}>
@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Two-col: recent news + upcoming fixtures */}
+      {}
       <div className={styles.twoCol}>
         <div className={styles.section}>
           <div className={styles.secHead}>

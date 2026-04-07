@@ -1,4 +1,3 @@
-// ProgramDetail/index.tsx — Individual programme detail page
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -39,7 +38,6 @@ const ProgramDetail: React.FC = () => {
 
   return (
     <main className={styles.page}>
-      {/* Back nav */}
       <div className={styles.backBand}>
         <div className={styles.container}>
           <Link to="/programs" className={styles.backBtn}>
@@ -48,7 +46,6 @@ const ProgramDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero */}
       <section
         className={styles.hero}
         style={{ '--prog-color': program.color } as React.CSSProperties}
@@ -73,7 +70,6 @@ const ProgramDetail: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats band */}
       <section
         className={styles.statsBand}
         style={{ '--prog-color': program.color } as React.CSSProperties}
@@ -97,11 +93,9 @@ const ProgramDetail: React.FC = () => {
         </div>
       </section>
 
-      {/* Description + highlights */}
       <section className={styles.bodySection}>
         <div className={styles.container}>
           <div className={styles.bodyGrid}>
-            {/* Long description */}
             <motion.div
               className={styles.description}
               initial={{ opacity: 0, y: 24 }}
@@ -114,7 +108,6 @@ const ProgramDetail: React.FC = () => {
               <p className={styles.descText}>{program.longDescription}</p>
             </motion.div>
 
-            {/* Highlights */}
             <motion.div
               className={styles.highlights}
               initial={{ opacity: 0, y: 24 }}

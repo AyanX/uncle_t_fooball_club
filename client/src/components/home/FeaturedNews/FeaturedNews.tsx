@@ -1,4 +1,3 @@
-// FeaturedNews.tsx — Latest news: featured large card + side list; click tracking via context
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';

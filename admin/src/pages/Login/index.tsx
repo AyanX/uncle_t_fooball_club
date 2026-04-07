@@ -1,4 +1,4 @@
-// pages/Login/index.tsx — Password login + PIN login option
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      {/* Left panel */}
+      {}
       <div className={styles.left}>
         <div className={styles.leftContent}>
           <div className={styles.brand}>
@@ -73,11 +73,11 @@ const Login: React.FC = () => {
         </div>
       </div>
 
-      {/* Right panel */}
+      {}
       <div className={styles.right}>
         <motion.div className={styles.card} initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.5 }}>
 
-          {/* Mode toggle tabs */}
+          {}
           <div className={styles.modeTabs}>
             <button
               className={`${styles.modeTab} ${mode==='password' ? styles.modeActive : ''}`}
@@ -105,7 +105,7 @@ const Login: React.FC = () => {
               </div>
 
               <form className={styles.form} onSubmit={handleSubmit}>
-                {/* Email — shared between both modes */}
+                {}
                 <div className={styles.field}>
                   <label className={styles.label}>Email Address</label>
                   <div className={styles.inputWrap}>

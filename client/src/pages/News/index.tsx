@@ -1,4 +1,3 @@
-// News/index.tsx — Categories from context (no standalone fetch)
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';

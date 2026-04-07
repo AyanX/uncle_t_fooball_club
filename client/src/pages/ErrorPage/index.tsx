@@ -1,4 +1,3 @@
-// ErrorPage/index.tsx — Generic error boundary fallback page
 import React from 'react';
 import { Link, useRouteError, isRouteErrorResponse } from 'react-router-dom';
 import { motion } from 'framer-motion';

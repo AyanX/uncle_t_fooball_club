@@ -1,4 +1,3 @@
-// Home/index.tsx — Homepage: Hero → MissionVision → HomePrograms → News → Fixtures → Gallery → Partners
 import React from 'react';
 import Hero             from '@/components/home/Hero/Hero';
 import MissionVision    from '@/components/home/MissionVision/MissionVision';

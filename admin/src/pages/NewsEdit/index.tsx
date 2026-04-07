@@ -1,4 +1,4 @@
-// NewsEdit/index.tsx — route /news/:title — rich text editor, blur_image, proper response handling
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Pencil, Check, X, Save, Star, Trash2, Eye, Bold } from 'lucide-react';
@@ -12,8 +12,7 @@ const toDateValue = (d?: string): string => { if (!d) return ''; return d.slice(
 import ImageInput from '@/components/ui/ImageInput';
 import styles from './NewsEdit.module.scss';
 
-// ── HTML ↔ plain text conversions ────────────────────────
-/** Convert HTML content from server to user-readable plain text */
+
 function htmlToPlain(html: string): string {
   if (!html) return '';
   return html
@@ -74,9 +73,9 @@ const InlineField: React.FC<{ label:string; value:string; onSave:(v:string)=>voi
   );
 };
 
-// ── Rich plain-text content editor ───────────────────────
+
 const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void }> = ({ value, onSave }) => {
-  // value is HTML from server; we display as plain text to user
+  
   const [plain, setPlain]     = useState(() => htmlToPlain(value));
   const [boldActive, setBold] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -85,7 +84,7 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
   useEffect(() => { setPlain(htmlToPlain(value)); }, [value]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // When bold is active, wrap typed char or selection in **
+    
     if (boldActive && e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
       const ta = textareaRef.current!;
@@ -95,7 +94,7 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
       const char   = e.key;
       const next   = `${before}**${char}**${after}`;
       setPlain(next);
-      // Move cursor inside the closing **
+      
       requestAnimationFrame(() => {
         ta.selectionStart = ta.selectionEnd = ss + 3;
       });
@@ -107,7 +106,7 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
     if (!ta) { setBold(v => !v); return; }
     const { selectionStart: ss, selectionEnd: se } = ta;
     if (ss !== se) {
-      // Wrap selected text
+      
       const selected = plain.slice(ss, se);
       const next = plain.slice(0, ss) + `**${selected}**` + plain.slice(se);
       setPlain(next);
@@ -138,7 +137,7 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
 
       {editing ? (
         <div className={styles.contentEditorWrap}>
-          {/* Toolbar */}
+          {}
           <div className={styles.editorToolbar}>
             <button
               className={`${styles.toolbarBtn} ${boldActive ? styles.toolbarActive : ''}`}
@@ -263,7 +262,7 @@ const NewsEdit: React.FC = () => {
 
       <div className={styles.layout}>
         <div className={styles.main}>
-          {/* Hero preview */}
+          {}
           <div className={styles.heroPreview} style={{ backgroundImage: heroImage ? `url(${heroImage})` : undefined }}>
             <div className={styles.heroOverlay}/>
             <div className={styles.heroContent}>
@@ -277,7 +276,7 @@ const NewsEdit: React.FC = () => {
             <InlineField label="Slug"     value={article.slug}    onSave={v=>update('slug',v)}/>
             <InlineField label="Excerpt"  value={article.excerpt} onSave={v=>update('excerpt',v)} multiline/>
 
-            {/* Article image with blur placeholder */}
+            {}
             <div className={styles.inlineField}>
               <span className={styles.inlineLabel}>Article Image</span>
               <ImageInput
@@ -289,7 +288,7 @@ const NewsEdit: React.FC = () => {
               />
             </div>
 
-            {/* Rich plain-text content editor */}
+            {}
             <ContentEditor value={article.content} onSave={v=>update('content',v)}/>
           </div>
         </div>

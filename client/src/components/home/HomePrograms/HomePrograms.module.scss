@@ -74,7 +74,7 @@
 
 .bento {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;          // col 1 = big card n col 2 is right stack
+  grid-template-columns: 1.35fr 1fr;
   grid-template-rows: auto auto auto;
   gap: $space-4;
 
@@ -272,7 +272,6 @@
   .cardDark:hover & { opacity: 1; transform: translateX(0); }
 }
 
-// ── Arts & Creativity — light card ───────────────────────
 .cardLight {
   grid-column: 1;
   background: $color-white;
@@ -315,7 +314,6 @@
   @include truncate(3);
 }
 
-// ── Leadership — wide red card ────────────────────────────
 .cardRed {
   grid-column: 2;
   background: $color-secondary;
@@ -376,7 +374,6 @@
   .cardRed:hover & { gap: $space-3; }
 }
 
-// ── Community Libraries ───────────────────────────────────
 .cardLibrary {
   grid-column: 1;
   background: $color-white;

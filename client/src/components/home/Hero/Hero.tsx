@@ -18,19 +18,16 @@ const item = {
 
 const Hero: React.FC = () => (
   <section className={styles.hero}>
-    {/* Background */}
     <div className={styles.bg}>
       <img src={HERO_IMAGE} alt="Football stadium — Uncle T-FC" className={styles.bgImg} />
       <div className={styles.bgOverlay} />
       <div className={styles.bgGradient} />
     </div>
 
-    {/* Pitch deco */}
     <div className={styles.pitchDeco} aria-hidden>
       <div className={styles.halFCircle} />
     </div>
 
-    {/* Main content */}
     <div className={styles.container}>
       <motion.div className={styles.content} variants={container} initial="hidden" animate="show">
 
@@ -49,7 +46,6 @@ const Hero: React.FC = () => (
           discipline, mentorship, and opportunity.
         </motion.p>
 
-        {/* Next match strip */}
         <motion.div className={styles.matchStrip} variants={item}>
           <div className={styles.matchLabel}>
             <Calendar size={13} />
@@ -74,7 +70,6 @@ const Hero: React.FC = () => (
       </motion.div>
     </div>
 
-    {/* Scroll hint */}
     <motion.div
       className={styles.scrollHint}
       animate={{ y: [0, 8, 0] }}

@@ -1,4 +1,3 @@
-// NotFound/index.tsx — 404 page
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -14,10 +13,8 @@ const NotFound: React.FC = () => (
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        {/* Big 404 */}
         <div className={styles.number} aria-hidden>404</div>
 
-        {/* Pitch circle deco */}
         <div className={styles.circle} aria-hidden />
 
         <h1 className={styles.title}>Page Not Found</h1>

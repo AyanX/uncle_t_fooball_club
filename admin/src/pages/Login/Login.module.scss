@@ -84,7 +84,7 @@
   background: $color-secondary; flex-shrink: 0;
 }
 
-// Right panel
+
 .right {
   width: 480px; min-height: 100vh;
   background: $color-off-white;
@@ -172,7 +172,7 @@
   color: $color-text-muted; font-style: italic;
 }
 
-// ── Mode tabs ─────────────────────────────────────────────
+
 .modeTabs {
   display: flex; gap: $space-2; margin-bottom: $space-6;
   background: $color-off-white; border-radius: $radius-lg;

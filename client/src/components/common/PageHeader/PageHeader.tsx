@@ -1,4 +1,3 @@
-// PageHeader.tsx — Hero banner for interior pages
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './PageHeader.module.scss';
@@ -28,7 +27,6 @@ const PageHeader: React.FC<PageHeaderProps> = ({ eyebrow, title, subtitle, image
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
       </motion.div>
     </div>
-    {/* Decorative pitch lines */}
     <div className={styles.lines}>
       <div className={styles.lineH} />
       <div className={styles.circle} />

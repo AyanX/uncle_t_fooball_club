@@ -1,6 +1,5 @@
 .container { @include container; }
 
-// ── Impact band ───────────────────────────────────────────
 .impactBand { background: $color-primary; padding: $space-12 0; }
 
 .impactStat {
@@ -15,7 +14,6 @@
 
 .impactLabel { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.52); letter-spacing: 0.1em; text-transform: uppercase; }
 
-// ── Main section ──────────────────────────────────────────
 .section { @include section-padding; background: $color-off-white; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: $space-6; }
@@ -73,7 +71,6 @@
   .card:hover & { gap: $space-3; }
 }
 
-// ── CTA banner ────────────────────────────────────────────
 .ctaBanner { @include section-padding; background: $color-primary; }
 
 .ctaContent { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: $space-5; text-align: center; }
@@ -90,7 +87,6 @@
 
 .ctaBtnOutline { @include btn-outline-white; border-radius: $radius-sm; }
 
-// Fetched programme title filter
 .sectionHeader {
   display: flex;
   flex-wrap: wrap;

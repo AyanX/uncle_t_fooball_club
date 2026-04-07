@@ -1,4 +1,3 @@
-// Volunteer/index.tsx — Volunteer sign-up page (replaces Join)
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Heart, Users, Globe, Zap } from 'lucide-react';
@@ -52,7 +51,6 @@ const Volunteer: React.FC = () => {
         image="https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
-      {/* Why volunteer */}
       <section className={styles.whySection}>
         <div className={styles.container}>
           <SectionTitle eyebrow="Make an Impact" title="Why Volunteer?" subtitle="Your time and skills can transform lives. Here's what volunteering with Uncle T FC looks like." align="center" />
@@ -77,7 +75,6 @@ const Volunteer: React.FC = () => {
         </div>
       </section>
 
-      {/* Application form */}
       <section className={styles.formSection}>
         <div className={styles.container}>
           <div className={styles.formCard}>

@@ -1,7 +1,7 @@
-// Messages.module.scss — Android-style messages split view
+
 .page {
   display: flex;
-  height: calc(100vh - 60px - 48px);  // fill below topbar, account for content padding
+  height: calc(100vh - 60px - 48px);  
   gap: 0;
   background: $color-white;
   border-radius: $radius-xl;
@@ -10,7 +10,7 @@
   border: 1px solid rgba($color-primary, 0.07);
 }
 
-// ── List pane ─────────────────────────────────────────────
+
 .listPane {
   width: 360px;
   flex-shrink: 0;
@@ -21,21 +21,21 @@
 
   @include xl { width: 320px; }
 
-  // On mobile: full width, hidden when detail is shown
+  
   @include lg {
     width: 100%;
     flex-shrink: 1;
   }
 }
 
-// Mobile: list slides away when detail is shown
+
 .listHidden {
   @include lg {
     display: none;
   }
 }
 
-// Desktop: detail always visible
+
 .detailDesktopOnly {
   @include lg {
     display: none;
@@ -73,7 +73,7 @@
   line-height: 1.4;
 }
 
-// Search bar
+
 .searchWrap {
   position: relative;
   padding: $space-3 $space-4;
@@ -106,7 +106,7 @@
   &:focus { border-color: $color-secondary; }
 }
 
-// List
+
 .list {
   flex: 1;
   overflow-y: auto;
@@ -141,7 +141,7 @@
 
 .emptyIcon { color: rgba($color-primary, 0.15); }
 
-// List item — Android messages style
+
 .listItem {
   display: flex;
   align-items: flex-start;
@@ -237,7 +237,7 @@
 
 .listItemUnread .listPreview { color: $color-text-secondary; }
 
-// ── Detail pane ───────────────────────────────────────────
+
 .detailPane {
   flex: 1;
   min-width: 0;
@@ -279,7 +279,7 @@
   color: $color-primary; flex-shrink: 0; transition: all $transition-fast;
   &:hover { background: rgba($color-primary, 0.12); }
 
-  // On desktop, hide the back button (list always visible)
+  
   @include min-lg { display: none; }
 }
 
@@ -309,7 +309,7 @@
   &:hover { background: $color-secondary; color: $color-white; }
 }
 
-// Sender meta card
+
 .detailMeta {
   display: flex;
   align-items: flex-start;
@@ -352,7 +352,7 @@
   &:hover { text-decoration: underline; }
 }
 
-// Subject line
+
 .detailSubject {
   margin: $space-4 $space-6 0;
   font-family: $font-display;
@@ -370,7 +370,7 @@
   @include sm { margin: $space-3 $space-4 0; }
 }
 
-// Message body
+
 .detailBody {
   flex: 1;
   margin: $space-4 $space-6;

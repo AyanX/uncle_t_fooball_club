@@ -1,4 +1,3 @@
-// Contact/index.tsx — Uses fetched socials from context for contact details
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
@@ -48,7 +47,6 @@ const Contact: React.FC = () => {
     } catch { setStatus('error'); }
   };
 
-  // Format open hours from context
   const hours = socials.open_hours && socials.close_hours
     ? `${socials.open_hours} – ${socials.close_hours}`
     : 'Mon – Fri, 8:00 – 17:00';
@@ -75,7 +73,6 @@ const Contact: React.FC = () => {
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.layout}>
-            {/* Info panel */}
             <motion.div className={styles.infoPanel} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <h3 className={styles.infoTitle}>Get in Touch</h3>
               <div className={styles.infoAccent} />
@@ -98,7 +95,6 @@ const Contact: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Form panel */}
             <motion.div className={styles.formPanel} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
               <h3 className={styles.formTitle}>Send a Message</h3>
 

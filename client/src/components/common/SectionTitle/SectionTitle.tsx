@@ -1,4 +1,3 @@
-// SectionTitle.tsx — Reusable section header with gold accent line
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './SectionTitle.module.scss';

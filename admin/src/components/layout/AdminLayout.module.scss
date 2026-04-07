@@ -1,8 +1,8 @@
-// AdminLayout.module.scss — fixed sidebar, full-width content on ALL screen sizes
+
 $sidebar-w: 248px;
 $topbar-h:  60px;
 
-// Root must be 100vw so main can fill remaining space after sidebar margin
+
 .root {
   display: flex;
   min-height: 100vh;
@@ -11,7 +11,7 @@ $topbar-h:  60px;
   background: $color-off-white;
 }
 
-// ── Sidebar (fixed, not in flow) ──────────────────────────
+
 .sidebar {
   width: $sidebar-w;
   height: 100vh;
@@ -59,7 +59,7 @@ $topbar-h:  60px;
   &:hover { background: rgba($color-secondary,0.2); color: $color-white; }
 }
 
-// ── Brand ─────────────────────────────────────────────────
+
 .sidebarBrand {
   display: flex; align-items: center; gap: $space-3;
   padding: $space-5 $space-5 $space-4;
@@ -86,7 +86,7 @@ $topbar-h:  60px;
   letter-spacing: 0.16em; text-transform: uppercase; color: $color-gold; line-height: 1;
 }
 
-// ── Nav ───────────────────────────────────────────────────
+
 .sidebarNav {
   flex: 1; padding: $space-4 $space-3;
   display: flex; flex-direction: column; gap: 2px;
@@ -115,7 +115,7 @@ $topbar-h:  60px;
 .navIcon { color: rgba(255,255,255,0.4); flex-shrink: 0; transition: color $transition-fast; }
 .navLabel { flex: 1; }
 
-// ── Footer ────────────────────────────────────────────────
+
 .sidebarFooter {
   padding: $space-4 $space-4 $space-5;
   border-top: 1px solid rgba(255,255,255,0.07);
@@ -133,7 +133,7 @@ $topbar-h:  60px;
   font-family: $font-display; font-weight: $font-weight-black; font-size: $font-size-sm; color: $color-white;
 }
 
-// Username stacked ABOVE email
+
 .userInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .userName {
   font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
@@ -153,11 +153,11 @@ $topbar-h:  60px;
   &:hover { background: rgba($color-secondary,0.12); color: $color-secondary; border-color: rgba($color-secondary,0.25); }
 }
 
-// ── Main — KEY FIX: margin pushes content right of fixed sidebar ──
-// On desktop (> 1024px): sidebar is fixed 248px, main gets margin-left
-// On mobile (≤ 1024px): sidebar hidden, main takes full width with no margin
+
+
+
 .main {
-  // Takes full remaining width — margin-left accounts for fixed sidebar
+  
   margin-left: $sidebar-w;
   flex: 1;
   min-width: 0;
@@ -167,7 +167,7 @@ $topbar-h:  60px;
   flex-direction: column;
   min-height: 100vh;
 
-  // On mobile, sidebar is hidden so NO margin and FULL width
+  
   @include lg {
     margin-left: 0 !important;
     max-width: 100% !important;
@@ -175,7 +175,7 @@ $topbar-h:  60px;
   }
 }
 
-// ── Topbar (sticky) ───────────────────────────────────────
+
 .topbar {
   height: $topbar-h;
   background: $color-white;
@@ -222,7 +222,7 @@ $topbar-h:  60px;
   @include sm { display: none; }
 }
 
-// ── Content area ──────────────────────────────────────────
+
 .content {
   flex: 1;
   width: 100%;

@@ -1,5 +1,3 @@
-// HomePrograms.tsx — Bento-grid layout matching the reference design
-// Large card (sports), 2 medium right cards, wide bottom-left, red leadership, small libraries
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -11,7 +9,6 @@ import styles from './HomePrograms.module.scss';
 
 interface Props { programs: Program[]; loading: boolean; }
 
-// Icon map for small cards
 const iconMap: Record<string, React.ReactNode> = {
   Leaf:     <Leaf size={28} />,
   Heart:    <Heart size={28} />,
@@ -21,7 +18,6 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
-  // Ordered: sports(0), environment(1), health(2), arts(3), leadership(4), libraries(5)
   const sports     = programs[0];
   const enviro     = programs[1];
   const health     = programs[2];
@@ -32,7 +28,6 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        {/* Section header */}
         <div className={styles.header}>
           <div>
             <span className={styles.eyebrow}>Beyond the Pitch</span>
@@ -48,7 +43,6 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
         {loading ? <Loader /> : (
           <div className={styles.bento}>
 
-            {/* ── Large featured card: Sports Academy ─────────────── */}
             {sports && (
               <motion.div
                 className={`${styles.card} ${styles.cardFeatured}`}
@@ -84,7 +78,6 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               </motion.div>
             )}
 
-            {/* ── Right column: Environment + Health ──────────────── */}
             <div className={styles.rightCol}>
               {[enviro, health].map((prog, i) =>
                 prog ? (
@@ -109,7 +102,6 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               )}
             </div>
 
-            {/* ── Arts & Creativity — light card ──────────────────── */}
             {arts && (
               <motion.div
                 className={`${styles.card} ${styles.cardLight}`}
@@ -126,7 +118,6 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               </motion.div>
             )}
 
-            {/* ── Leadership — wide red card ───────────────────────── */}
             {leadership && (
               <motion.div
                 className={`${styles.card} ${styles.cardRed}`}
@@ -146,7 +137,6 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               </motion.div>
             )}
 
-            {/* ── Libraries — small light card ────────────────────── */}
             {libraries && (
               <motion.div
                 className={`${styles.card} ${styles.cardLibrary}`}

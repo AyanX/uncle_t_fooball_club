@@ -20,7 +20,6 @@ const Footer: React.FC = () => {
     <footer className={styles.footer}>
       <div className={styles.top}>
         <div className={styles.container}>
-          {/* Brand */}
           <div className={styles.brand}>
             <Link to="/" className={styles.logo}>
               <div className={styles.logoMark}><span>U</span></div>
@@ -39,7 +38,6 @@ const Footer: React.FC = () => {
             )}
           </div>
 
-          {/* Quick links */}
           <div className={styles.linksCol}>
             <h4 className={styles.colTitle}>Club</h4>
             <ul className={styles.linkList}>
@@ -58,7 +56,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Contact from fetched socials */}
           <div className={styles.linksCol}>
             <h4 className={styles.colTitle}>Contact</h4>
             <ul className={styles.contactList}>
