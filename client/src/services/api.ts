@@ -117,5 +117,11 @@ export const api = {
       name: string; email: string; phone_number: string;
       area: string; message?: string;
     }) => http.post<ApiResponse<{ id: number }>>('/volunteer/apply', data),
+
+    /** Submit membership application */
+    joinApplication: (data: {
+      name: string; email: string; phone_number: string;
+      membership_type: string; message?: string;
+    }) => http.post<ApiResponse<{ id: number }>>('/join/apply', data),
   },
 };
