@@ -1,8 +1,20 @@
+// Programs.module.scss
 .page { display: flex; flex-direction: column; gap: $space-6; width: 100%; }
 .pageHeader { @include flex-between; flex-wrap: wrap; gap: $space-4; }
 .pageTitle { font-family: $font-display; font-size: clamp(#{$font-size-xl},3vw,#{$font-size-2xl}); font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
 .pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
 
+// No-titles warning banner
+.noTitlesWarning {
+  display: flex; align-items: center; gap: $space-3;
+  padding: $space-4 $space-5; background: rgba($color-secondary, 0.06);
+  border: 1.5px solid rgba($color-secondary, 0.25); border-radius: $radius-lg;
+  font-family: $font-body; font-size: $font-size-sm; color: $color-secondary;
+  svg { flex-shrink: 0; }
+  strong { font-weight: $font-weight-bold; }
+}
+
+// Programme cards grid
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -10,18 +22,9 @@
   @include sm { grid-template-columns: 1fr; }
 }
 
-.addSlot {
-  border: 2px dashed rgba($color-secondary,0.35); border-radius: $radius-xl;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: $space-3; cursor: pointer; min-height: 300px;
-  color: rgba($color-secondary,0.6); background: rgba($color-secondary,0.03); transition: all $transition-base;
-  span { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; }
-  &:hover { background: rgba($color-secondary,0.07); border-color: $color-secondary; color: $color-secondary; }
-}
-
 .card {
   background: $color-white; border-radius: $radius-xl; overflow: hidden;
-  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07);
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
   border-top: 3px solid var(--prog-color, #{$color-secondary});
   transition: box-shadow $transition-base, transform $transition-spring;
   &:hover { transform: translateY(-3px); box-shadow: $shadow-xl; }
@@ -29,7 +32,6 @@
 
 .cardImg {
   position: relative; height: 180px; overflow: hidden; background: $color-primary-dark;
-  img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
   .card:hover & img { transform: scale(1.04); }
 }
 
@@ -37,7 +39,6 @@
 .colorAccent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
 
 .cardBody { padding: $space-5 $space-5 $space-6; display: flex; flex-direction: column; gap: $space-2; }
-
 .tagline { font-family: $font-body; font-size: $font-size-xs; font-weight: $font-weight-semibold; letter-spacing: 0.12em; text-transform: uppercase; color: var(--prog-color, #{$color-secondary}); }
 .title { font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.01em; line-height: $line-height-snug; }
 .desc { font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; @include truncate(3); flex: 1; }
@@ -47,7 +48,6 @@
 .statVal { font-family: $font-display; font-size: $font-size-lg; font-weight: $font-weight-black; line-height: 1; }
 .statLbl { font-family: $font-body; font-size: 10px; color: $color-text-muted; text-transform: uppercase; letter-spacing: 0.06em; }
 
-// Always-visible
 .cardActions { display: flex; gap: $space-2; padding-top: $space-3; border-top: 1px solid rgba($color-primary,0.07); }
 .iconBtn {
   flex: 1; height: 32px; border-radius: $radius-md; border: none; cursor: pointer;
@@ -58,24 +58,67 @@
   &.danger:hover { background: $color-secondary; color: $color-white; }
 }
 
-.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
-.modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary,0.08); }
-
 // ── Programme Titles section ──────────────────────────────
-.titlesSection { background: $color-white; border-radius: $radius-xl; padding: $space-6; box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07); }
-.titlesHead { @include flex-between; margin-bottom: $space-4; flex-wrap: wrap; gap: $space-3; }
+.titlesSection {
+  background: $color-white; border-radius: $radius-xl; padding: $space-6;
+  box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07);
+}
+
+.titlesHead { @include flex-between; margin-bottom: $space-5; flex-wrap: wrap; gap: $space-3; }
 .titlesLabel { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-primary; letter-spacing: 0.06em; }
+
 .titlesList { display: flex; flex-wrap: wrap; gap: $space-2; }
-.titleChip { display: flex; align-items: center; gap: $space-2; padding: $space-2 $space-3; background: $color-off-white; border-radius: $radius-full; border: 1px solid rgba($color-primary,0.1); font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.05em; color: $color-primary; }
-.chipBtn { width: 22px; height: 22px; border-radius: $radius-sm; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba($color-primary,0.07); color: $color-primary; transition: all $transition-fast; &:hover { background: $color-primary; color: $color-white; } &.danger { background: rgba($color-secondary,0.1); color: $color-secondary; } &.danger:hover { background: $color-secondary; color: $color-white; } }
-.titleAddChip { display: flex; align-items: center; gap: $space-2; padding: $space-2 $space-4; border: 2px dashed rgba($color-secondary,0.3); border-radius: $radius-full; font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.05em; color: rgba($color-secondary,0.6); cursor: pointer; transition: all $transition-fast; &:hover { border-color: $color-secondary; color: $color-secondary; } }
 
-// ── Editable list (stats + highlights) ───────────────────
+.titleChip {
+  display: flex; align-items: center; gap: $space-2;
+  padding: $space-2 $space-3; background: $color-off-white;
+  border-radius: $radius-full; border: 1px solid rgba($color-primary,0.1);
+  font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
+  text-transform: uppercase; letter-spacing: 0.05em; color: $color-primary;
+  svg { color: $color-secondary; }
+}
+
+.titleInUse { border-color: rgba($color-secondary,0.3); background: rgba($color-secondary,0.04); }
+
+.inUseBadge {
+  font-size: 9px; font-family: $font-display; font-weight: $font-weight-bold;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: $color-secondary; color: $color-white;
+  border-radius: $radius-full; padding: 1px $space-2;
+}
+
+.titleEditInput {
+  padding: $space-1 $space-3; background: $color-white;
+  border: 2px solid $color-secondary; border-radius: $radius-md;
+  font-family: $font-body; font-size: $font-size-sm; color: $color-primary;
+  outline: none; min-width: 140px;
+  box-shadow: 0 0 0 2px rgba($color-secondary,0.1);
+}
+
+.titleAddRow { display: flex; align-items: center; gap: $space-2; }
+
+.titleAddChip {
+  display: flex; align-items: center; gap: $space-2;
+  padding: $space-2 $space-4; border: 2px dashed rgba($color-secondary,0.3);
+  border-radius: $radius-full; font-family: $font-display; font-size: $font-size-xs;
+  font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.05em;
+  color: rgba($color-secondary,0.6); cursor: pointer; transition: all $transition-fast;
+  &:hover { border-color: $color-secondary; color: $color-secondary; }
+}
+
+.chipBtn {
+  width: 22px; height: 22px; border-radius: $radius-sm; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-primary,0.07); color: $color-primary; transition: all $transition-fast;
+  &:hover { background: $color-primary; color: $color-white; }
+  &.danger { background: rgba($color-secondary,0.1); color: $color-secondary; }
+  &.danger:hover { background: $color-secondary; color: $color-white; }
+}
+
+// ── Editable lists ────────────────────────────────────────
 .editableList { display: flex; flex-direction: column; gap: $space-3; }
-
 .editableListLabel { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase; color: $color-primary; }
-
-.listItems { display: flex; flex-direction: column; gap: $space-2; border: 1.5px solid rgba($color-primary,0.1); border-radius: $radius-lg; overflow: hidden; }
+.listItems { display: flex; flex-direction: column; gap: 0; border: 1.5px solid rgba($color-primary,0.1); border-radius: $radius-lg; overflow: hidden; }
 
 .listRow {
   display: flex; align-items: center; gap: $space-3; padding: $space-3 $space-4;
@@ -84,33 +127,53 @@
 }
 
 .listItemText { flex: 1; font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; }
-
 .statDisplay { flex: 1; display: flex; align-items: center; gap: $space-4; }
 .statVal { font-family: $font-display; font-size: $font-size-base; font-weight: $font-weight-black; color: $color-secondary; }
 .statLblSmall { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; }
-
 .listItemActions { display: flex; gap: $space-1; flex-shrink: 0; }
-.listActionBtn { width: 26px; height: 26px; border-radius: $radius-sm; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba($color-primary,0.06); color: $color-primary; transition: all $transition-fast; &:hover { background: $color-primary; color: $color-white; } &.danger { background: rgba($color-secondary,0.08); color: $color-secondary; } &.danger:hover { background: $color-secondary; color: $color-white; } }
 
 .listEditRow { display: flex; align-items: center; gap: $space-2; flex: 1; padding: $space-2 $space-4; background: $color-off-white; }
-
 .statEditRow { display: flex; align-items: center; gap: $space-2; flex: 1; padding: $space-2 $space-4; background: $color-off-white; flex-wrap: wrap; }
 
 .listEditInput {
   flex: 1; min-width: 0; padding: $space-2 $space-3;
-  background: $color-white; border: 2px solid $color-secondary;
-  border-radius: $radius-md; font-family: $font-body; font-size: $font-size-sm;
-  color: $color-primary; outline: none; box-shadow: 0 0 0 2px rgba($color-secondary,0.1);
+  background: $color-white; border: 2px solid $color-secondary; border-radius: $radius-md;
+  font-family: $font-body; font-size: $font-size-sm; color: $color-primary; outline: none;
+  box-shadow: 0 0 0 2px rgba($color-secondary,0.1);
 }
 
-.listSaveBtn { width: 28px; height: 28px; border-radius: $radius-md; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #16a34a; color: $color-white; flex-shrink: 0; transition: all $transition-fast; &:hover { background: #15803d; } }
-.listCancelBtn { width: 28px; height: 28px; border-radius: $radius-md; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba($color-primary,0.08); color: $color-text-secondary; flex-shrink: 0; transition: all $transition-fast; &:hover { background: rgba($color-primary,0.15); } }
+.listActionBtn {
+  width: 26px; height: 26px; border-radius: $radius-sm; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-primary,0.06); color: $color-primary; transition: all $transition-fast;
+  &:hover { background: $color-primary; color: $color-white; }
+  &.danger { background: rgba($color-secondary,0.08); color: $color-secondary; }
+  &.danger:hover { background: $color-secondary; color: $color-white; }
+}
+
+.listSaveBtn {
+  width: 28px; height: 28px; border-radius: $radius-md; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: #16a34a; color: $color-white; flex-shrink: 0;
+  transition: all $transition-fast; &:hover { background: #15803d; }
+  &:disabled { opacity: 0.6; cursor: default; }
+}
+
+.listCancelBtn {
+  width: 28px; height: 28px; border-radius: $radius-md; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-primary,0.08); color: $color-text-secondary; flex-shrink: 0;
+  transition: all $transition-fast; &:hover { background: rgba($color-primary,0.15); }
+}
 
 .listAddBtn {
   display: flex; align-items: center; gap: $space-2; padding: $space-3 $space-4;
   background: rgba($color-secondary,0.04); border: none; cursor: pointer;
   font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
   letter-spacing: 0.08em; text-transform: uppercase; color: $color-secondary;
-  transition: all $transition-fast; text-align: left;
+  transition: all $transition-fast; text-align: left; width: 100%;
   &:hover { background: rgba($color-secondary,0.09); }
 }
+
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: $space-5; @include sm { grid-template-columns: 1fr; } }
+.modalFooter { display: flex; justify-content: flex-end; gap: $space-3; margin-top: $space-7; padding-top: $space-5; border-top: 1px solid rgba($color-primary,0.08); }

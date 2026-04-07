@@ -24,7 +24,7 @@ const HomeGallery: React.FC<Props> = ({ gallery, loading }) => {
         <div className={styles.header}>
           <div>
             <span className={styles.eyebrow}><Camera size={14} /> Gallery</span>
-            <h2 className={styles.title}>Life at Kilimanjaro FC</h2>
+            <h2 className={styles.title}>Life at Uncle T-FC</h2>
           </div>
           <Link to="/gallery" className={styles.seeAll}>View All Photos <ArrowRight size={16} /></Link>
         </div>

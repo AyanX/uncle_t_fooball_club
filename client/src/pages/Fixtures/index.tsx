@@ -12,7 +12,7 @@ import styles from './Fixtures.module.scss';
 type Tab = 'upcoming' | 'completed';
 
 const FixtureRow: React.FC<{ fixture: Fixture; index: number }> = ({ fixture, index }) => {
-  const isKFC = (t: string) => t === 'Kilimanjaro FC';
+  const isKFC = (t: string) => t === 'Uncle T FC';
   const won =
     (isKFC(fixture.homeTeam) && (fixture.homeScore ?? 0) > (fixture.awayScore ?? 0)) ||
     (isKFC(fixture.awayTeam) && (fixture.awayScore ?? 0) > (fixture.homeScore ?? 0));
@@ -74,7 +74,7 @@ const Fixtures: React.FC = () => {
       <PageHeader
         eyebrow="Schedule"
         title="Fixtures & Results"
-        subtitle="All upcoming matches and recent results for Kilimanjaro FC across all competitions."
+        subtitle="All upcoming matches and recent results for Uncle T FC across all competitions."
         image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
       <section className={styles.section}>

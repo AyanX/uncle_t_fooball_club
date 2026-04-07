@@ -16,6 +16,7 @@ const Gallery    = lazy(() => import('@/pages/Gallery/index'));
 const Programs   = lazy(() => import('@/pages/Programs/index'));
 const Partners   = lazy(() => import('@/pages/Partners/index'));
 const Settings   = lazy(() => import('@/pages/Settings/index'));
+const Messages   = lazy(() => import('@/pages/Messages/index'));
 
 const Spinner = () => (
   <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'60vh' }}>
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
           { path: '/programs',      element: <Page><Programs/></Page>    },
           { path: '/partners',      element: <Page><Partners/></Page>    },
           { path: '/settings',      element: <Page><Settings/></Page>    },
+          { path: '/messages',      element: <Page><Messages/></Page>    },
           // Catch-all inside admin — show 404
           { path: '*',             element: <NotFound/>                  },
         ],

@@ -6,9 +6,10 @@ dist/
 build/
 build
 README.md
-
+ .vite
 .vite
 gh
 .gitignore
 
 ls.sh
+

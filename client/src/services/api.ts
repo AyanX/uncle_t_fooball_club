@@ -1,8 +1,4 @@
-// =============================================================================
-// api.ts — Centralised Axios API service for Kilimanjaro FC
-// Every API response shape: { data: T, message: string }
-// Player fetched by numeric :id, not by slug/name
-// =============================================================================
+
 import axios, { AxiosResponse } from 'axios';
 import {
   dummyPlayers, dummyNews, dummyNewsCategories, dummyFixtures,
@@ -25,7 +21,7 @@ const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem('kfc_token');
+  const token = localStorage.getItem('kFC_token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -108,13 +104,13 @@ export const api = {
   post: {
     /** Track news/gallery click — POST /click/:id */
     trackClick: (id: number): Promise<void> =>
-      http.post(`/click/${id}`).then(() => undefined).catch(() => undefined),
+      http.post(`/views/${id}`).then(() => undefined).catch(() => undefined),
 
     /** Submit contact form */
     contact: (formData: {
       name: string; phone_number: string; email: string;
       message: string; location: string; subject: string;
-    }) => http.post<ApiResponse<{ id: number }>>('/contact', formData),
+    }) => http.post<ApiResponse<{ id: number }>>('/messages', formData),
 
     /** Submit volunteer application */
     volunteerApplication: (data: {

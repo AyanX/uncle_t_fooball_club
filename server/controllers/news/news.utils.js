@@ -69,8 +69,9 @@ const singleNewsToClient = (item) => {
 
 
 const validNews = (news) => {
-    return news.slug && news.title && news.excerpt && news.content && news.category && news.author && 
-    news.date && news.readTime && news.featured
+    return news.slug && news.title && news.excerpt &&
+     news.content && news.category && news.author && 
+    news.date && news.readTime
 }
 
 

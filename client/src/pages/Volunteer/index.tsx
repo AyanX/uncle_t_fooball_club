@@ -48,14 +48,14 @@ const Volunteer: React.FC = () => {
       <PageHeader
         eyebrow="Get Involved"
         title="Volunteer With Us"
-        subtitle="Join hundreds of passionate volunteers helping Kilimanjaro FC make a real difference in communities across East Africa."
+        subtitle="Join hundreds of passionate volunteers helping Uncle T FC make a real difference in communities across East Africa."
         image="https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
       {/* Why volunteer */}
       <section className={styles.whySection}>
         <div className={styles.container}>
-          <SectionTitle eyebrow="Make an Impact" title="Why Volunteer?" subtitle="Your time and skills can transform lives. Here's what volunteering with Kilimanjaro FC looks like." align="center" />
+          <SectionTitle eyebrow="Make an Impact" title="Why Volunteer?" subtitle="Your time and skills can transform lives. Here's what volunteering with Uncle T FC looks like." align="center" />
           <div className={styles.areasGrid}>
             {AREAS.map((area, i) => (
               <motion.div
@@ -87,7 +87,7 @@ const Volunteer: React.FC = () => {
               <motion.div className={styles.successMsg} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
                 <CheckCircle size={56} className={styles.successIcon} />
                 <h3 className={styles.successTitle}>Application Received!</h3>
-                <p className={styles.successText}>Thank you for signing up to volunteer with Kilimanjaro FC. Our team will contact you shortly.</p>
+                <p className={styles.successText}>Thank you for signing up to volunteer with Uncle T FC. Our team will contact you shortly.</p>
               </motion.div>
             ) : (
               <div className={styles.form}>

@@ -4,7 +4,7 @@ import { NavLink, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Newspaper, Users, Calendar, Image,
-  Target, Handshake, Settings, LogOut, Menu, X,
+  Target, Handshake, Settings, LogOut, Menu, X, MessageSquare,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -18,6 +18,7 @@ const navItems = [
   { path: '/gallery',   icon: <Image size={17} />,           label: 'Gallery' },
   { path: '/programs',  icon: <Target size={17} />,          label: 'Programmes' },
   { path: '/partners',  icon: <Handshake size={17} />,       label: 'Partners' },
+  { path: '/messages',  icon: <MessageSquare size={17} />,   label: 'Messages' },
   { path: '/settings',  icon: <Settings size={17} />,        label: 'Settings' },
 ];
 

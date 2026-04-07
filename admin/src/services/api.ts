@@ -14,7 +14,7 @@ export const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9
 const http = axios.create({
   baseURL: BASE_URL,
   timeout: 12000,
-  withCredentials: true,   // ← sends & stores cookies cross-origin
+  withCredentials: true,  
 });
 
 http.interceptors.request.use((config) => {
@@ -46,17 +46,17 @@ const dummyViews = [
   { id: 5, newsId: 5, views: 310 },  { id: 6, newsId: 6, views: 198 },
 ];
 
+
+// Dummy messages for fallback
+const dummyMessages: any[] = [];
+
 const dummyAdminProfile = { username: 'admin', email: 'admin@kilimanjaro-fc.com' };
 
 export const api = {
   auth: {
-    // Verify session via GET /auth — 200+ or 300+ = logged in, else not
+    // Verify session via GET /auth — 200 = logged in, else not
     verify: async (): Promise<any> => {
-      try {
-        const r = await http.get('/auth', { validateStatus: () => true });
-        if (r.status >= 200) return r.data?.data ?? null;
-        return null;
-      }
+      try { const r = await http.get('/auth'); return r.data?.data ?? null; }
       catch { return null; }
     },
     login: (email: string, password: string) =>
@@ -98,6 +98,8 @@ export const api = {
     milestones:        () => safe(() => http.get('/club/milestones'), dummyMilestones),
     management:        () => safe(() => http.get('/club/management'), dummyManagement),
     socials:           () => safe(() => http.get('/socials'), dummySocials),
+    messages:          () => safe(() => http.get('/messages'), dummyMessages),
+    teamname:          () => safe(() => http.get('/teamname'), { name: 'Kilimanjaro FC' }),
   },
 
   post: {
@@ -134,6 +136,8 @@ export const api = {
     missionVision: (id: number, data: Record<string, any>) => http.put(`/club/mission/${id}`, JSON.stringify(data)),
     management:    (id: number, data: FormData | Record<string, any>) => http.put(`/club/management/${id}`, data),
     socials:       (data: Record<string, any>) => http.put('/socials', JSON.stringify(data)),
+    teamname:      (data: { name: string }) => http.put('/teamname', JSON.stringify(data)),
+    messageRead:   (id: number) => http.put(`/messages/read/${id}`, {}),
     programTitle:  (id: number, data: Record<string, any>) => http.put(`/programmes/titles/${id}`, JSON.stringify(data)),
   },
 
@@ -152,6 +156,7 @@ export const api = {
     management:   (id: number) => http.delete(`/club/management/${id}`),
     missionVision:(id: number) => http.delete(`/club/mission/${id}`),
     programTitle: (id: number) => http.delete(`/programmes/titles/${id}`),
+    message:      (id: number) => http.delete(`/messages/${id}`),
   },
 };
 

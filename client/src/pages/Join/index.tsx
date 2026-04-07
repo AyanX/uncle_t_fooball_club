@@ -96,7 +96,7 @@ const Join: React.FC = () => {
       <PageHeader
         eyebrow="Membership"
         title="Join the Club"
-        subtitle="Become part of the Kilimanjaro FC family. Choose the membership that's right for you."
+        subtitle="Become part of the Uncle T FC family. Choose the membership that's right for you."
         image="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
@@ -161,7 +161,7 @@ const Join: React.FC = () => {
               <div className={styles.successMsg}>
                 <CheckCircle size={40} className={styles.successIcon} />
                 <h3>Application Received!</h3>
-                <p>Thank you for joining Kilimanjaro FC. We'll contact you shortly to complete your membership.</p>
+                <p>Thank you for joining Uncle T FC. We'll contact you shortly to complete your membership.</p>
               </div>
             ) : (
               <div className={styles.form}>

@@ -73,7 +73,7 @@ const Partners: React.FC = () => {
       <section className={styles.joinCta}>
         <div className={styles.container}>
           <h2 className={styles.ctaTitle}>Become a Partner</h2>
-          <p className={styles.ctaText}>Join the growing family of organisations supporting Kilimanjaro FC and transforming lives through sport.</p>
+          <p className={styles.ctaText}>Join the growing family of organisations supporting Uncle T FC and transforming lives through sport.</p>
           <Link to="/contact" className={styles.ctaBtn}>Get in Touch</Link>
         </div>
       </section>

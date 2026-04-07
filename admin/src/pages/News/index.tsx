@@ -14,6 +14,9 @@ import styles from './News.module.scss';
 
 type NewsFormData = Omit<NewsItem, 'id' | 'blur_image'>;
 
+// Normalize date string to YYYY-MM-DD for <input type="date">
+const toDateValue = (d?: string): string => { if (!d) return ''; return d.slice(0, 10); };
+
 const toSlug = (t: string) => t.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,80);
 
 const emptyNews: NewsFormData = {
@@ -58,7 +61,7 @@ const NewsForm: React.FC<{
         </Select>
       </Field>
       <Field label="Author"><Input value={value.author} onChange={e=>set('author',e.target.value)} placeholder="Author name"/></Field>
-      <Field label="Date"><Input type="date" value={value.date} onChange={e=>set('date',e.target.value)}/></Field>
+      <Field label="Date"><Input type="date" value={toDateValue(value.date)} onChange={e=>set('date',e.target.value)}/></Field>
       <Field label="Read Time (min)"><Input type="number" value={value.readTime} onChange={e=>set('readTime',+e.target.value)} min={1}/></Field>
       <div style={{gridColumn:'1/-1'}}>
         <Field label="Excerpt" required>
@@ -120,7 +123,7 @@ const News: React.FC = () => {
   const getViews = (id:number) => newsViews.find(v=>v.newsId===id)?.views ?? 0;
 
   const openAdd  = () => { setNewsForm({...emptyNews, date:new Date().toISOString().slice(0,10)}); setNewsImageFile(null); setAddOpen(true); };
-  const openEdit = (item:NewsItem) => { setNewsForm({...item}); setNewsImageFile(null); setEditItem(item); };
+  const openEdit = (item:NewsItem) => { setNewsForm({...item, date: toDateValue(item.date)}); setNewsImageFile(null); setEditItem(item); };
 
   // Featured toggle via POST /news/features/:id
   const toggleFeatured = async (item: NewsItem) => {

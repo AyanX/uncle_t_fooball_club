@@ -173,7 +173,10 @@ const CredentialsPanel: React.FC = () => {
 
 // ─── Socials Panel (full width) ──────────────────────────
 const SocialsPanel: React.FC = () => {
-  const { socials, setSocials } = useAdminData();
+  const { socials, setSocials, teamname, setTeamname } = useAdminData();
+  const [clubName, setClubName] = useState(teamname);
+  const [savingClub, setSavingClub] = useState(false);
+  React.useEffect(() => { setClubName(teamname); }, [teamname]);
   const { success, error } = useToast();
   const [form, setForm] = useState({ ...socials });
   const [saving, setSaving] = useState(false);
@@ -207,6 +210,27 @@ const SocialsPanel: React.FC = () => {
   return (
     <div className={styles.panel}>
       <div className={styles.panelTitleRow}><Globe size={16}/><h3 className={styles.panelTitle}>Contact & Social Info</h3></div>
+      {/* Club Name */}
+      <div className={styles.clubNameRow}>
+        <div style={{flex:1}}>
+          <Field label="Club Name">
+            <Input value={clubName} onChange={e => setClubName(e.target.value)} placeholder="Kilimanjaro FC"/>
+          </Field>
+          <p style={{fontFamily:'Inter,sans-serif',fontSize:12,color:'#718096',marginTop:6}}>Used in fixtures to identify your team for wins/losses tracking</p>
+        </div>
+        <div style={{flexShrink:0,marginTop:24}}>
+          <Btn loading={savingClub} onClick={async () => {
+            if (!clubName.trim()) return;
+            setSavingClub(true);
+            try {
+              const res = await api.put.teamname({ name: clubName.trim() });
+              setTeamname(clubName.trim());
+              success(res.data?.message || 'Club name updated');
+            } catch { error('Failed to update club name'); }
+            finally { setSavingClub(false); }
+          }}><Save size={13}/> Save Club Name</Btn>
+        </div>
+      </div>
       <div className={styles.fullGrid}>
         {leftFields.map(([k,label,ph]) => (
           <Field key={k} label={label}>

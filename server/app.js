@@ -31,6 +31,7 @@ const AuthCheck = require('./controllers/authChecker/auth');
 const TeamNameRouter = require('./controllers/teamName/teamName');
 const messagesRouter = require('./routers/messages/messages.router');
 const AdminController = require('./controllers/admin/admin.controller');
+const NewsController = require('./controllers/news/news.controller');
 
 
 
@@ -40,7 +41,11 @@ app.get("/", (req, res) => {
 
 app.use("/api/players", playersRouter);
 
+app.get("/api/news/categories", NewsController.getNewsCategories)
+
 app.use("/api/news", newsRouter)
+
+
 
 app.use("/api/fixtures", fixturesRouter);
 

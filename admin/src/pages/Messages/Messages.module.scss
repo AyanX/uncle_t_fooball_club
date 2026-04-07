@@ -1,0 +1,435 @@
+// Messages.module.scss — Android-style messages split view
+.page {
+  display: flex;
+  height: calc(100vh - 60px - 48px);  // fill below topbar, account for content padding
+  gap: 0;
+  background: $color-white;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.07);
+}
+
+// ── List pane ─────────────────────────────────────────────
+.listPane {
+  width: 360px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba($color-primary, 0.08);
+  background: $color-white;
+
+  @include xl { width: 320px; }
+
+  // On mobile: full width, hidden when detail is shown
+  @include lg {
+    width: 100%;
+    flex-shrink: 1;
+  }
+}
+
+// Mobile: list slides away when detail is shown
+.listHidden {
+  @include lg {
+    display: none;
+  }
+}
+
+// Desktop: detail always visible
+.detailDesktopOnly {
+  @include lg {
+    display: none;
+  }
+}
+
+.listHeader {
+  padding: $space-5 $space-5 $space-3;
+  border-bottom: 1px solid rgba($color-primary, 0.07);
+  flex-shrink: 0;
+}
+
+.listTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-family: $font-display;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: -0.01em;
+
+  svg { color: $color-secondary; }
+}
+
+.unreadBadge {
+  background: $color-secondary;
+  color: $color-white;
+  border-radius: $radius-full;
+  padding: 2px $space-2;
+  font-family: $font-display;
+  font-size: 11px;
+  font-weight: $font-weight-bold;
+  line-height: 1.4;
+}
+
+// Search bar
+.searchWrap {
+  position: relative;
+  padding: $space-3 $space-4;
+  border-bottom: 1px solid rgba($color-primary, 0.06);
+  flex-shrink: 0;
+}
+
+.searchIcon {
+  position: absolute;
+  left: calc(#{$space-4} + #{$space-3});
+  top: 50%;
+  transform: translateY(-50%);
+  color: $color-text-muted;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: $space-3 $space-4 $space-3 $space-8;
+  background: $color-off-white;
+  border: 1.5px solid rgba($color-primary, 0.1);
+  border-radius: $radius-full;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-primary;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &::placeholder { color: $color-text-muted; }
+  &:focus { border-color: $color-secondary; }
+}
+
+// List
+.list {
+  flex: 1;
+  overflow-y: auto;
+  @include hide-scrollbar;
+}
+
+.loadingList { display: flex; flex-direction: column; gap: 1px; padding: $space-3; }
+.skeletonRow {
+  height: 76px;
+  border-radius: $radius-lg;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.emptyList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  padding: $space-16 $space-6;
+  text-align: center;
+
+  p {
+    font-family: $font-body;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+}
+
+.emptyIcon { color: rgba($color-primary, 0.15); }
+
+// List item — Android messages style
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-4 $space-5;
+  cursor: pointer;
+  border-bottom: 1px solid rgba($color-primary, 0.05);
+  transition: background $transition-fast;
+  position: relative;
+}
+
+.listItemActive {
+  background: rgba($color-secondary, 0.06) !important;
+  border-left: 3px solid $color-secondary;
+  padding-left: calc(#{$space-5} - 3px);
+}
+
+.listItemUnread {
+  background: rgba($color-primary, 0.02);
+}
+
+.listAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $color-secondary;
+  color: $color-white;
+  font-family: $font-display;
+  font-weight: $font-weight-black;
+  font-size: $font-size-base;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.unreadDot {
+  position: absolute;
+  top: 0; right: 0;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: $color-secondary;
+  border: 2px solid $color-white;
+}
+
+.listBody { flex: 1; min-width: 0; }
+
+.listTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.listName {
+  font-family: $font-display;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: 0.02em;
+  @include truncate(1);
+}
+
+.listItemUnread .listName { color: $color-primary; font-weight: $font-weight-black; }
+
+.listTime {
+  font-family: $font-body;
+  font-size: 11px;
+  color: $color-text-muted;
+  flex-shrink: 0;
+  margin-left: $space-2;
+}
+
+.listItemUnread .listTime { color: $color-secondary; font-weight: $font-weight-semibold; }
+
+.listSubject {
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  @include truncate(1);
+  margin-bottom: 2px;
+}
+
+.listPreview {
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+  @include truncate(1);
+}
+
+.listItemUnread .listPreview { color: $color-text-secondary; }
+
+// ── Detail pane ───────────────────────────────────────────
+.detailPane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: $color-off-white;
+
+  @include lg {
+    width: 100%;
+  }
+}
+
+.detailContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-4 $space-6;
+  background: $color-white;
+  border-bottom: 1px solid rgba($color-primary, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  flex-shrink: 0;
+
+  @include sm { padding: $space-4; }
+}
+
+.backBtn {
+  width: 36px; height: 36px; border-radius: $radius-md;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-primary, 0.06); border: none; cursor: pointer;
+  color: $color-primary; flex-shrink: 0; transition: all $transition-fast;
+  &:hover { background: rgba($color-primary, 0.12); }
+
+  // On desktop, hide the back button (list always visible)
+  @include min-lg { display: none; }
+}
+
+.detailHeaderInfo { flex: 1; min-width: 0; }
+
+.detailHeaderName {
+  display: block;
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: $font-weight-black;
+  text-transform: uppercase;
+  color: $color-primary;
+  @include truncate(1);
+}
+
+.detailHeaderTime {
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+}
+
+.deleteBtn {
+  width: 36px; height: 36px; border-radius: $radius-md;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($color-secondary, 0.08); border: none; cursor: pointer;
+  color: $color-secondary; flex-shrink: 0; transition: all $transition-fast;
+  &:hover { background: $color-secondary; color: $color-white; }
+}
+
+// Sender meta card
+.detailMeta {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-4;
+  padding: $space-6;
+  background: $color-white;
+  margin: $space-4 $space-6 0;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.07);
+
+  @include sm { margin: $space-3 $space-4 0; padding: $space-4; }
+}
+
+.metaAvatar {
+  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+  background: $color-secondary; color: $color-white;
+  font-family: $font-display; font-weight: $font-weight-black;
+  font-size: $font-size-xl;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba($color-secondary, 0.25);
+}
+
+.metaInfo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: $space-2; }
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+
+  svg { color: $color-secondary; flex-shrink: 0; }
+}
+
+.metaLink {
+  color: $color-secondary;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+// Subject line
+.detailSubject {
+  margin: $space-4 $space-6 0;
+  font-family: $font-display;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  color: $color-primary;
+  letter-spacing: -0.01em;
+  padding: $space-4 $space-5;
+  background: $color-white;
+  border-radius: $radius-lg;
+  border-left: 4px solid $color-secondary;
+  box-shadow: $shadow-sm;
+
+  @include sm { margin: $space-3 $space-4 0; }
+}
+
+// Message body
+.detailBody {
+  flex: 1;
+  margin: $space-4 $space-6;
+  padding: $space-6;
+  background: $color-white;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba($color-primary, 0.07);
+
+  @include sm { margin: $space-3 $space-4; padding: $space-5; }
+
+  p {
+    font-family: $font-body;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    line-height: $line-height-loose;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.replyBtn {
+  margin: 0 $space-6 $space-6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: $space-4 $space-6;
+  background: $color-secondary;
+  color: $color-white;
+  border-radius: $radius-lg;
+  font-family: $font-display;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all $transition-base;
+
+  &:hover { background: $color-secondary-dark; transform: translateY(-2px); box-shadow: $shadow-red; }
+
+  @include sm { margin: 0 $space-4 $space-4; }
+}
+
+.detailEmpty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  padding: $space-16;
+  text-align: center;
+
+  p {
+    font-family: $font-body;
+    font-size: $font-size-base;
+    color: $color-text-muted;
+  }
+}
+
+.detailEmptyIcon { color: rgba($color-primary, 0.1); }

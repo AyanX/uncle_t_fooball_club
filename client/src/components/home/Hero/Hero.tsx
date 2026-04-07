@@ -20,14 +20,14 @@ const Hero: React.FC = () => (
   <section className={styles.hero}>
     {/* Background */}
     <div className={styles.bg}>
-      <img src={HERO_IMAGE} alt="Football stadium — Kilimanjaro FC" className={styles.bgImg} />
+      <img src={HERO_IMAGE} alt="Football stadium — Uncle T-FC" className={styles.bgImg} />
       <div className={styles.bgOverlay} />
       <div className={styles.bgGradient} />
     </div>
 
     {/* Pitch deco */}
     <div className={styles.pitchDeco} aria-hidden>
-      <div className={styles.halfCircle} />
+      <div className={styles.halFCircle} />
     </div>
 
     {/* Main content */}
@@ -56,7 +56,7 @@ const Hero: React.FC = () => (
             <span>Wednesday, October 15</span>
           </div>
           <div className={styles.matchInfo}>
-            <span className={styles.matchTeams}>Kilimanjaro FC vs City Rovers FC</span>
+            <span className={styles.matchTeams}>Uncle T-FC vs City Rovers FC</span>
             <span className={styles.matchMeta}>
               <MapPin size={12} /> Union 7 Arena &bull; Premier League
             </span>

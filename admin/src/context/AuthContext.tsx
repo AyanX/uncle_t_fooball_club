@@ -1,8 +1,12 @@
-// context/AuthContext.tsx — Session verified via GET /auth on mount (no localStorage)
+// context/AuthContext.tsx — Session via GET /auth + profile via GET /admin/profile
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '@/services/api';
 
-export interface AuthUser { email: string; token: string; username: string; }
+export interface AuthUser {
+  email: string;
+  token: string;
+  username: string;
+}
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -24,29 +28,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Verify session by hitting GET /auth — server validates cookie/token
-    // If 200+: user is logged in. If <200 or error: not logged in.
-    api.auth.verify()
-      .then(u => { if (u) setUser(u); })
-      .catch(() => { /* not authenticated */ })
-      .finally(() => setLoading(false));
+    // 1. Verify session via GET /auth
+    // 2. Fetch real profile (username, email) via GET /admin/profile
+    const init = async () => {
+      try {
+        const authData = await api.auth.verify();
+        if (!authData) { setLoading(false); return; }
+
+        // Session valid — fetch full profile for accurate username/email
+        const profile = await api.auth.getProfile().catch(() => null);
+
+        setUser({
+          email:    profile?.email    || authData?.email    || '',
+          token:    authData?.token   || localStorage.getItem('admin_token') || '',
+          username: profile?.username || authData?.username || 'Admin',
+        });
+      } catch {
+        /* not authenticated — stays null */
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
 
     // 403 on any request → force logout
     const onForbidden = async () => {
       await api.auth.logout().catch(() => {});
+      localStorage.removeItem('admin_token');
       setUser(null);
     };
     window.addEventListener('admin:forbidden', onForbidden as any);
     return () => window.removeEventListener('admin:forbidden', onForbidden as any);
   }, []);
 
-  const _applyUser = (d: any, fallbackEmail?: string) => {
+  const _applyUser = async (d: any, fallbackEmail?: string) => {
+    // After login, also fetch profile to get real username
+    const profile = await api.auth.getProfile().catch(() => null);
     const u: AuthUser = {
-      email:    d.email    || fallbackEmail || '',
+      email:    profile?.email    || d.email    || fallbackEmail || '',
       token:    d.token    || '',
-      username: d.username || 'admin',
+      username: profile?.username || d.username || 'Admin',
     };
-    // Only store token (not user data) — session is cookie-based
     if (u.token) localStorage.setItem('admin_token', u.token);
     setUser(u);
     return u;
@@ -54,12 +77,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const res = await api.auth.login(email, password);
-    _applyUser(res.data?.data ?? res.data, email);
+    await _applyUser(res.data?.data ?? res.data, email);
   };
 
   const loginWithPin = async (email: string, pin: string) => {
     const res = await api.auth.loginWithPin(email, pin);
-    _applyUser(res.data?.data ?? res.data, email);
+    await _applyUser(res.data?.data ?? res.data, email);
   };
 
   const logout = async () => {

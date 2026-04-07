@@ -23,7 +23,7 @@ const FeaturedNews: React.FC<Props> = ({ news, loading }) => {
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <SectionTitle eyebrow="Latest From The Club" title="News & Updates" subtitle="Stay up to date with everything happening at Kilimanjaro FC." />
+          <SectionTitle eyebrow="Latest From The Club" title="News & Updates" subtitle="Stay up to date with everything happening at Uncle T-FC." />
           <Link to="/news" className={styles.seeAll}>All News <ArrowRight size={16} /></Link>
         </div>
 

@@ -19,7 +19,7 @@ const About: React.FC = () => {
     <main>
       <PageHeader
         eyebrow="Our Story"
-        title="About Kilimanjaro FC"
+        title="About Uncle T FC"
         subtitle="Born on the slopes of Africa's greatest mountain. Built on community, ambition, and an unshakeable belief in African football."
         image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />

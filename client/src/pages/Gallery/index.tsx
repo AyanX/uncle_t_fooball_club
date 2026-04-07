@@ -58,7 +58,7 @@ const Gallery: React.FC = () => {
   return (
     <main>
       <PageHeader
-        eyebrow="Photo Gallery" title="Life at Kilimanjaro FC"
+        eyebrow="Photo Gallery" title="Life at Uncle T FC"
         subtitle="Matchdays, training sessions, community events, and the moments that define who we are."
         image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />

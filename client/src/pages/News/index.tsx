@@ -22,7 +22,7 @@ const News: React.FC = () => {
       <PageHeader
         eyebrow="Latest"
         title="News & Updates"
-        subtitle="Stay up to date with all the latest from Kilimanjaro FC."
+        subtitle="Stay up to date with all the latest from Uncle T FC."
         image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
       <section className={styles.section}>

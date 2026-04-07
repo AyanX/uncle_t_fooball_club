@@ -28,7 +28,7 @@ const Programs: React.FC = () => {
       <PageHeader
         eyebrow="Beyond the Pitch"
         title="Our Programmes"
-        subtitle="Football is our platform. Community is our purpose. Discover how Kilimanjaro FC is transforming lives."
+        subtitle="Football is our platform. Community is our purpose. Discover how Uncle T FC is transforming lives."
         image="https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 

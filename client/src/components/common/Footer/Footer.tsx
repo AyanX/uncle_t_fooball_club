@@ -23,9 +23,9 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div className={styles.brand}>
             <Link to="/" className={styles.logo}>
-              <div className={styles.logoMark}><span>K</span></div>
+              <div className={styles.logoMark}><span>U</span></div>
               <div className={styles.logoText}>
-                <span className={styles.logoName}>Kilimanjaro</span>
+                <span className={styles.logoName}>Uncle T</span>
                 <span className={styles.logoSub}>Football Club</span>
               </div>
             </Link>
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
 
       <div className={styles.bottom}>
         <div className={styles.bottomInner}>
-          <p className={styles.copy}>&copy; {year} Kilimanjaro FC. All rights reserved.</p>
+          <p className={styles.copy}>&copy; {year} Uncle T-FC. All rights reserved.</p>
           <div className={styles.legal}>
             <Link to="/contact" className={styles.legalLink}>Privacy Policy</Link>
             <Link to="/contact" className={styles.legalLink}>Terms of Use</Link>

@@ -68,7 +68,7 @@ const Partners: React.FC = () => {
     if (!form.name) { error('Partner name required'); return; }
     setSaving(true);
     try {
-      const payload = buildFormData({...form}, imageFile, 'image');
+      const payload = buildFormData({...form}, imageFile, 'logo');
       if (editItem) {
         const res = await api.put.partner(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...form };

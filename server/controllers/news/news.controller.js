@@ -19,6 +19,7 @@ class NewsController {
         .from(newsCategory)
         .where(eq(newsCategory.isDeleted, false))
         .orderBy(desc(newsCategory.created_at));
+
       if (categories.length === 0) {
         return res
           .status(200)
@@ -251,7 +252,7 @@ featured: news[0].featured === 1 ? true : false
   static async updateNews(req, res) {
     try {
       if(!validNews(req.body)){
-          return res.status(400).json({data: [], message: "Invalid news data"});
+          return res.status(400).json({data: [], message: "Invalid news data to update news"});
       }
 
       const {id} = req.params;

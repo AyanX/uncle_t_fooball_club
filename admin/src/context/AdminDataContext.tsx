@@ -21,6 +21,7 @@ interface AdminData {
   stats: ClubStat[]; missionVision: MissionVisionItem[];
   milestones: Milestone[]; management: Management[]; socials: SocialInfo;
   newsViews: NewsView[];
+  teamname: string;
   loading: boolean;
 }
 
@@ -42,6 +43,7 @@ interface AdminDataContextType extends AdminData {
   setManagement: (v: Management[]) => void;
   setSocials: (v: SocialInfo) => void;
   setNewsViews: (v: NewsView[]) => void;
+  setTeamname: (v: string) => void;
 }
 
 const AdminDataContext = createContext<AdminDataContextType>({} as AdminDataContextType);
@@ -54,7 +56,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     gallery: dummyGallery, galleryCategories: dummyGalleryCategories,
     stats: dummyClubStats, missionVision: dummyMissionVision,
     milestones: dummyMilestones, management: dummyManagement, socials: dummySocials,
-    newsViews: [], loading: true,
+    newsViews: [], teamname: 'Kilimanjaro FC', loading: true,
   });
 
   const fetchAll = useCallback(async () => {
@@ -62,20 +64,21 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     const [
       players, news, newsCategories, fixtures, programs, programTitles,
       partners, partnerTiers, gallery, galleryCategories,
-      stats, missionVision, milestones, management, socials, newsViews,
+      stats, missionVision, milestones, management, socials, newsViews, teamnameRes,
     ] = await Promise.all([
       api.get.players(), api.get.news(), api.get.newsCategories(),
       api.get.fixtures(), api.get.programs(), api.get.programTitles(),
       api.get.partners(), api.get.partnerTiers(),
       api.get.gallery(), api.get.galleryCategories(),
       api.get.stats(), api.get.missionVision(), api.get.milestones(),
-      api.get.management(), api.get.socials(), api.get.newsViews(),
+      api.get.management(), api.get.socials(), api.get.newsViews(), api.get.teamname(),
     ]);
     setData({
       players, news, newsCategories, fixtures, programs, programTitles,
       partners, partnerTiers, gallery, galleryCategories,
       stats, missionVision, milestones, management, socials,
       newsViews: newsViews as NewsView[],
+      teamname: (teamnameRes as any)?.name || 'Kilimanjaro FC',
       loading: false,
     });
   }, []);
@@ -97,6 +100,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
       setMissionVision: make('missionVision'), setMilestones: make('milestones'),
       setManagement: make('management'), setSocials: make('socials'),
       setNewsViews: make('newsViews'),
+      setTeamname: (v: string) => setData(p => ({ ...p, teamname: v })),
     }}>
       {children}
     </AdminDataContext.Provider>

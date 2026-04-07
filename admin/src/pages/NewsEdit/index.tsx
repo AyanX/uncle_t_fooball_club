@@ -7,6 +7,8 @@ import { useToast } from '@/context/ToastContext';
 import { api, buildFormData } from '@/services/api';
 import { NewsItem } from '@/data/dummyData';
 import { Field, Input, Textarea, Select, Btn, Toggle, ConfirmDialog } from '@/components/ui';
+
+const toDateValue = (d?: string): string => { if (!d) return ''; return d.slice(0, 10); };
 import ImageInput from '@/components/ui/ImageInput';
 import styles from './NewsEdit.module.scss';
 
@@ -302,7 +304,7 @@ const NewsEdit: React.FC = () => {
               </Select>
             </Field>
             <Field label="Author"><Input value={article.author} onChange={e=>update('author',e.target.value)}/></Field>
-            <Field label="Publish Date"><Input type="date" value={article.date} onChange={e=>update('date',e.target.value)}/></Field>
+            <Field label="Publish Date"><Input type="date" value={toDateValue(article.date)} onChange={e=>update('date',e.target.value)}/></Field>
             <Field label="Read Time (min)"><Input type="number" value={article.readTime} onChange={e=>update('readTime',+e.target.value)} min={1}/></Field>
             <Toggle checked={article.featured} onChange={v=>update('featured',v)} label="Featured"/>
             <div className={styles.metaRow}>

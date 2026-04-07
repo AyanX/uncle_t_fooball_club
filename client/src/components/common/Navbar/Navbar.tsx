@@ -56,9 +56,9 @@ const Navbar: React.FC = () => {
         <div className={styles.inner}>
           {/* Logo */}
           <Link to="/" className={styles.logo} onClick={closeMobile}>
-            <div className={styles.logoMark}><span className={styles.logoK}>K</span></div>
+            <div className={styles.logoMark}><span className={styles.logoK}>U</span></div>
             <div className={styles.logoText}>
-              <span className={styles.logoName}>Kilimanjaro</span>
+              <span className={styles.logoName}>Uncle T</span>
               <span className={styles.logoSub}>Football Club</span>
             </div>
           </Link>
@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
 
           {/* Actions */}
           <div className={styles.actions}>
-            <Link to="/volunteer" className={styles.ctaBtn}>Join the Movement</Link>
+            <Link to="/contact" className={styles.ctaBtn}>Join the Movement</Link>
             <button className={styles.hamburger} onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation">
               <AnimatePresence mode="wait" initial={false}>
                 {mobileOpen
@@ -144,8 +144,8 @@ const Navbar: React.FC = () => {
           >
             <div className={styles.mobileHeader}>
               <Link to="/" className={styles.mobileLogo} onClick={closeMobile}>
-                <div className={styles.mobileLogoMark}><span>K</span></div>
-                <span className={styles.mobileLogoName}>Kilimanjaro FC</span>
+                <div className={styles.mobileLogoMark}><span>U</span></div>
+                <span className={styles.mobileLogoName}>Uncle T-FC</span>
               </Link>
               <button className={styles.closeBtn} onClick={closeMobile} aria-label="Close menu">
                 <X size={20} />
