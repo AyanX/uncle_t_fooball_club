@@ -1,4 +1,4 @@
-// HomeGallery.tsx — News-style layout: featured large + side list; click tracking via context
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';

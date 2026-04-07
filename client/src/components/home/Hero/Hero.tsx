@@ -1,4 +1,4 @@
-// Hero.tsx — Full-screen hero with new brand image and colors
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -67,7 +67,7 @@ const Hero: React.FC = () => (
           <Link to="/programs" className={styles.btnPrimary}>
             Explore Our Impact <ChevronRight size={18} />
           </Link>
-          <Link to="/join" className={styles.btnGold}>
+          <Link to="/contact" className={styles.btnGold}>
             <Play size={14} fill="currentColor" /> Join the Academy
           </Link>
         </motion.div>

@@ -1,4 +1,4 @@
-// BlurImage.tsx — Progressive image loading with blur placeholder
+
 import React, { useState } from 'react';
 import styles from './BlurImage.module.scss';
 

@@ -1,6 +1,4 @@
-// Navbar.module.scss — Fully responsive with backdrop + spring drawer
 
-// ── Base nav bar ──────────────────────────────────────────
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -26,7 +24,6 @@
   gap: $space-4;
 }
 
-// ── Logo ──────────────────────────────────────────────────
 .logo {
   display: flex; align-items: center; gap: $space-3;
   text-decoration: none; flex-shrink: 0; min-width: 0;
@@ -57,7 +54,6 @@
   color: $color-gold; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1;
 }
 
-// ── Desktop nav ───────────────────────────────────────────
 .desktopNav {
   display: flex; align-items: center; gap: $space-1;
   list-style: none; flex: 1; justify-content: center;
@@ -101,7 +97,6 @@
   &:hover, &.active { color: $color-gold; background: rgba($color-gold, 0.08); }
 }
 
-// ── Actions (CTA + hamburger) ─────────────────────────────
 .actions { display: flex; align-items: center; gap: $space-3; flex-shrink: 0; }
 
 .ctaBtn {
@@ -127,7 +122,6 @@
   span { display: flex; align-items: center; justify-content: center; }
 }
 
-// ── Mobile — backdrop ─────────────────────────────────────
 .backdrop {
   position: fixed; inset: 0;
   background: rgba($color-primary-dark, 0.6);
@@ -135,7 +129,6 @@
   z-index: $z-navbar - 1;
 }
 
-// ── Mobile — drawer ───────────────────────────────────────
 .mobileMenu {
   position: fixed;
   top: 0; right: 0; bottom: 0;
@@ -232,7 +225,7 @@
   &.active { color: $color-gold; }
 }
 
-// Footer CTA
+
 .mobileFooter {
   padding: $space-5;
   border-top: 1px solid rgba(255,255,255,0.08);

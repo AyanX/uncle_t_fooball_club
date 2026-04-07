@@ -1,4 +1,4 @@
-// Footer.tsx — Uses fetched socials from context for contact info and social links
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Twitter, Instagram, Facebook, Youtube } from 'lucide-react';

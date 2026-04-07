@@ -1,4 +1,4 @@
-// App.tsx — Root application component: wraps the router with global data provider
+
 import React from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { AppProvider } from '@/context/AppContext';

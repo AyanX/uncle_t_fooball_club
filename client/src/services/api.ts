@@ -20,11 +20,6 @@ const http = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-http.interceptors.request.use((config) => {
-  const token = localStorage.getItem('kFC_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
 
 async function safeFetch<T>(
   fetcher: () => Promise<AxiosResponse<ApiResponse<T>>>,
@@ -40,7 +35,7 @@ async function safeFetch<T>(
 
 export const api = {
   get: {
-    // Players — fetch by numeric id for individual profile
+    // Players.. id for individual profile
     players: (): Promise<Player[]> =>
       safeFetch(() => http.get<ApiResponse<Player[]>>('/players'), dummyPlayers),
     player: (id: number): Promise<Player | undefined> =>

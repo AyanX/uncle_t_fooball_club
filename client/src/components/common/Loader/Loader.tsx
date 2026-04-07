@@ -1,4 +1,4 @@
-// Loader.tsx — Section-level PuffLoader spinner (brand gold)
+
 import React from 'react';
 import { PuffLoader } from 'react-spinners';
 import styles from './Loader.module.scss';

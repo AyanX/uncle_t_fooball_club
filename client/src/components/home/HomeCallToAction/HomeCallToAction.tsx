@@ -1,4 +1,4 @@
-// HomeCallToAction.tsx — "Ready to Make a Difference?" CTA section (bottom of home)
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -26,7 +26,7 @@ const HomeCallToAction: React.FC = () => (
           shaping lives through sport.
         </p>
         <div className={styles.btns}>
-          <Link to="/join"    className={styles.btnPrimary}>Join the Academy</Link>
+          <Link to="/contact"    className={styles.btnPrimary}>Join the Academy</Link>
           <Link to="/contact" className={styles.btnOutline}>Support the Club</Link>
         </div>
       </motion.div>

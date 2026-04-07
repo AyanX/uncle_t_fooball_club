@@ -1,5 +1,4 @@
-// Navbar.tsx — Fixed responsive navbar with smooth framer-motion drawer animation
-// Mobile: full-screen overlay drawer animated from right with spring
+
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
