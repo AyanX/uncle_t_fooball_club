@@ -12,7 +12,7 @@ import {
   MissionVisionItem, Milestone, Management, SocialInfo, TeamName,
 } from '@/data/dummyData';
 
-const BASE_URL = 'https://api.uncletfootballclub.com/api';
+const BASE_URL ="http://localhost:9000/api";  // Change to actual backe
 
 interface ApiResponse<T> { data: T; message: string; }
 
@@ -69,7 +69,7 @@ export const api = {
         dummyPrograms.find((pr) => pr.slug === slug),
       ),
     programTitles: (): Promise<ProgramTitle[]> =>
-      safeFetch(() => http.get<ApiResponse<ProgramTitle[]>>('/programmes/titles'), dummyProgramTitles),
+      safeFetch(() => http.get<ApiResponse<ProgramTitle[]>>('/programmes/titles/unused'), dummyProgramTitles),
 
     // Partners
     partners: (): Promise<Partner[]> =>
@@ -103,7 +103,7 @@ export const api = {
   post: {
     /** Track news/gallery click — POST /click/:id */
     trackClick: (id: number): Promise<void> =>
-      http.post(`/click/${id}`).then(() => undefined).catch(() => undefined),
+      http.post(`/views/${id}`).then(() => undefined).catch(() => undefined),
 
     /** Submit contact form */
     contact: (formData: {

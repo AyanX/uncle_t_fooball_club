@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());  
 app.use(
   cors({
-    origin: ["https://uncletfootballclub.com","https://admin.uncletfootballclub.com"],
+    origin: ["https://uncletfootballclub.com","https://admin.uncletfootballclub.com", "http://localhost:3000", "http://localhost:5174", "http://localhost:5173"],
     credentials: true,
   })
 );

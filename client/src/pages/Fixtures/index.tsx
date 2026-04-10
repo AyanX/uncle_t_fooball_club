@@ -15,8 +15,11 @@ const FixtureRow: React.FC<{ fixture: Fixture; index: number; teamName: string }
   const won =
     (isKFC(fixture.homeTeam) && (fixture.homeScore ?? 0) > (fixture.awayScore ?? 0)) ||
     (isKFC(fixture.awayTeam) && (fixture.awayScore ?? 0) > (fixture.homeScore ?? 0));
-  const drew = fixture.homeScore === fixture.awayScore;
 
+
+    
+  const drew = fixture.homeScore === fixture.awayScore;
+  console.log("My team:", teamName, "Fixture:", fixture.homeTeam, fixture.awayTeam, "Scores:", fixture.homeScore, fixture.awayScore, "Won?", won, "Drew?", drew);
   return (
     <motion.div className={styles.row} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.38, delay: index * 0.06 }}>
       <span className={styles.comp}>{fixture.competition}</span>

@@ -16,4 +16,6 @@ programTitleRouter.post("/titles",useAuth, ProgramsController.createProgramTitle
 programTitleRouter.put("/titles/:id", useAuth, ProgramsController.updateProgramTitles);
 programTitleRouter.delete("/titles/:id", useAuth, ProgramsController.deleteProgramTitles);
 
+programTitleRouter.get("/titles/unused", ProgramsController.clientProgramUnusedTitles)
+
 module.exports= programTitleRouter;

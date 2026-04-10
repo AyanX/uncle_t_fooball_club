@@ -33,8 +33,24 @@ const ProgramDetail: React.FC = () => {
     });
   }, [slug, navigate]);
 
+
+
+
   if (loading) return <Loader fullHeight />;
   if (!program)  return null;
+
+
+const getIcon = (iconName?: string) => {
+  if (iconName && iconMap[iconName]) {
+    return iconMap[iconName];
+  }
+
+  // fallback random icon
+  const icons = Object.values(iconMap);
+  const randomIndex = Math.floor(Math.random() * icons.length);
+
+  return icons[randomIndex];
+};
 
   return (
     <main className={styles.page}>
@@ -64,7 +80,7 @@ const ProgramDetail: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className={styles.iconWrap}>{iconMap[program.icon]}</div>
+            <div className={styles.iconWrap}>{getIcon(program.icon)}</div>
             <span className={styles.eyebrow}>{program.tagline}</span>
             <h1 className={styles.title}>{program.title}</h1>
             <p className={styles.subtitle}>{program.description}</p>

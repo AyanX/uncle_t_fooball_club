@@ -12,7 +12,7 @@ class AdminController{
                 return res.status(404).json({message: "Admin profile not found", data:null});
             }
 
-            return res.status(200).json({message: "Admin profile fetched successfully", data: {email: profile[0].email, username: profile[0].username}});
+            return res.status(200).json({message: "Admin profile fetched successfully", data: {email: profile[0].email, username: profile[0].username.toUpperCase()}});
         }
         catch(error){
             console.error("Error fetching admin profile:", error);
@@ -32,7 +32,7 @@ class AdminController{
 
             const newProfile = {
                 email,
-                username: req.body.username
+                username: req.body.username.toUpperCase()
             }
 
 

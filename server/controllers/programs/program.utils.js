@@ -60,7 +60,7 @@ const programsToClient = (programs) => {
 const safeParse = (data) => {
   try {
     if (typeof data !== "string") return data;
-    if (data.includes("[object Object]")) return []; // Handle corrupted stringify
+    if (data.includes("[object Object]")) return []; 
     return JSON.parse(data);
   } catch (err) {
     console.warn("JSON parse failed:", data);
@@ -85,6 +85,26 @@ const singleProgramToClient = (program,xId) => {
   };
 };
 
+const safeStringify = (data, fallback = "[]") => {
+  try {
+    // null / undefined
+    if (data == null) return fallback;
+
+    // already string
+    if (typeof data === "string") {
+      // check if it's valid JSON
+      JSON.parse(data); // will throw if invalid
+      return data; // ✅ already stringified properly
+    }
+
+    // object / array
+    return JSON.stringify(data);
+  } catch (err) {
+    console.warn("Stringify failed, using fallback:", data);
+    return fallback;
+  }
+};
+
 
 const programToDb = (program) => {
   return {
@@ -98,9 +118,9 @@ const programToDb = (program) => {
     icon: program.icon,
     color: program.color,
 
-    stats: JSON.stringify(program.stats),
+    stats:safeStringify(program.stats),
 
-    highlights: JSON.stringify(program.highlights),
+    highlights: safeStringify(program.highlights)
   };
 };
 

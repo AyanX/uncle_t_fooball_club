@@ -17,14 +17,6 @@ const http = axios.create({
   withCredentials: true,   
 });
 
-http.interceptors.request.use((config) => {
-  const token = localStorage.getItem('admin_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  if (!(config.data instanceof FormData)) {
-    config.headers['Content-Type'] = 'application/json';
-  }
-  return config;
-});
 
 http.interceptors.response.use(
   (res) => res,
@@ -172,7 +164,7 @@ export function buildFormData(payload: Record<string, any>, imageFile?: File | n
     } else if (typeof v === 'boolean') {
       fd.append(k, String(v));
     } else if (Array.isArray(v) || (typeof v === 'object')) {
-      // Arrays (stats, highlights) and objects must be JSON-stringified
+      // Arrays (stats, highlights) and objects must be JSON-stringified for FormData
       fd.append(k, JSON.stringify(v));
     } else {
       fd.append(k, String(v));

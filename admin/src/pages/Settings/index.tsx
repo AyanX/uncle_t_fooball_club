@@ -359,7 +359,7 @@ const StatsPanel: React.FC = () => {
             <span className={styles.statVal}>{s.value}</span>
             <span className={styles.statLbl}>{s.label}</span>
             <div className={styles.alwaysActions}>
-              <button className={styles.iconBtn} onClick={() => openEdit(s)}><Pencil size={12}/></button>
+              <button className={`${styles.iconBtn} ${styles.statsEdit}`} onClick={() => openEdit(s)}><Pencil size={12}/></button>
               <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => setDelTarget(s)}><Trash2 size={12}/></button>
             </div>
           </div>

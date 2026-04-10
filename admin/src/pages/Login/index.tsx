@@ -68,7 +68,7 @@ const Login: React.FC = () => {
       <div className={styles.left}>
         <div className={styles.leftContent}>
           <div className={styles.brand}>
-            {/* Logo: show club logo if fetched, else letter K */}
+            {/* Logo: show club logo if fetched, else letter  */}
             {logo?.image ? (
               <div className={styles.brandLogoWrap}>
                 {logo.blur_image && (
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
                 />
               </div>
             ) : (
-              <div className={styles.brandMark}><span>K</span></div>
+              <div><span></span></div>
             )}
             <div>
               <span className={styles.brandName}>Uncle T FC</span>
