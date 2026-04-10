@@ -20,12 +20,10 @@ class ProgramsController {
         .orderBy(desc(programsTable.created_at));
       if (programs.length === 0)
         return res.status(200).json({ message: "No programs found", data: [] });
-      return res
-        .status(200)
-        .json({
-          message: "Programs fetched successfully",
-          data: programsToClient(programs),
-        });
+      return res.status(200).json({
+        message: "Programs fetched successfully",
+        data: programsToClient(programs),
+      });
     } catch (error) {
       return res
         .status(500)
@@ -75,24 +73,26 @@ class ProgramsController {
 
       req.body.id = req.params.id;
       //return the req body instead of fetch ,
-      res
-        .status(200)
-        .json({
-          message: "Program updated successfully",
-          data: singleProgramToClient(updatedProgram[0]),
-        });
+      res.status(200).json({
+        message: "Program updated successfully",
+        data: singleProgramToClient(updatedProgram[0]),
+      });
 
       if (!req.fileUrl) return; // if image is not updated, no need to generate blur
       //generate blur
 
-      const blur = await generateBlurImage(image);
-      if (blur) {
-        await db
-          .update(programsTable)
-          .set({ blur_image: blur })
-          .where(eq(programsTable.id, req.params.id));
+      try {
+        const blur = await generateBlurImage(image);
+        if (blur) {
+          await db
+            .update(programsTable)
+            .set({ blur_image: blur })
+            .where(eq(programsTable.id, req.params.id));
+        }
+        return;
+      } catch (err) {
+        console.error("Error generating blur image:", err);
       }
-      return;
     } catch (error) {
       console.error("error updating prog", error);
       return res
@@ -152,14 +152,13 @@ class ProgramsController {
         .where(eq(programsTable.isDeleted, false))
         .orderBy(desc(programsTable.created_at))
         .limit(1);
-      res
-        .status(201)
-        .json({
-          message: "Program created successfully",
-          data: singleProgramToClient(programCreated[0]),
-        });
+      res.status(201).json({
+        message: "Program created successfully",
+        data: singleProgramToClient(programCreated[0]),
+      });
 
       //generate blur
+      if(!req.fileUrl) return; // if no image uploaded, skip blur generation
 
       const blur = await generateBlurImage(image);
       if (blur) {
@@ -192,12 +191,10 @@ class ProgramsController {
       if (!program || program.length === 0) {
         return res.status(404).json({ message: "Program not found", data: [] });
       }
-      return res
-        .status(200)
-        .json({
-          message: "Program fetched successfully",
-          data: singleProgramToClient(program[0]),
-        });
+      return res.status(200).json({
+        message: "Program fetched successfully",
+        data: singleProgramToClient(program[0]),
+      });
     } catch (error) {
       console.error("err occured feching prog by slug", error);
       return res
@@ -217,12 +214,10 @@ class ProgramsController {
         return res
           .status(200)
           .json({ message: "No program titles found", data: [] });
-      return res
-        .status(200)
-        .json({
-          message: "Program titles fetched successfully",
-          data: validTitlesToClient(titles),
-        });
+      return res.status(200).json({
+        message: "Program titles fetched successfully",
+        data: validTitlesToClient(titles),
+      });
     } catch (error) {
       return res
         .status(500)
@@ -257,12 +252,10 @@ class ProgramsController {
         .set({ title: req.body.title.toLowerCase() })
         .where(eq(programTitlesTable.id, id));
 
-      return res
-        .status(200)
-        .json({
-          message: "Program title updated successfully",
-          data: { id, title: req.body.title },
-        });
+      return res.status(200).json({
+        message: "Program title updated successfully",
+        data: { id, title: req.body.title },
+      });
     } catch (error) {
       return res
         .status(500)
@@ -328,12 +321,10 @@ class ProgramsController {
         .orderBy(desc(programTitlesTable.created_at))
         .limit(1);
 
-      return res
-        .status(201)
-        .json({
-          message: "Program title created successfully",
-          data: { id: newTitle[0].id, title: newTitle[0].title },
-        });
+      return res.status(201).json({
+        message: "Program title created successfully",
+        data: { id: newTitle[0].id, title: newTitle[0].title },
+      });
     } catch (error) {
       console.error("an err occured ", error);
       return res
@@ -344,29 +335,27 @@ class ProgramsController {
 
   static async clientProgramUnusedTitles(req, res) {
     try {
-    const unusedTitles = await db
-  .select()
-  .from(programTitlesTable)
-  .where(
-    and(
-      eq(programTitlesTable.isDeleted, false), 
+      const unusedTitles = await db
+        .select()
+        .from(programTitlesTable)
+        .where(
+          and(
+            eq(programTitlesTable.isDeleted, false),
 
-      inArray(
-        programTitlesTable.title,
-        db
-          .select({ title: programsTable.title })
-          .from(programsTable)
-          .where(eq(programsTable.isDeleted, false)) 
-      )
-    )
-  );
+            inArray(
+              programTitlesTable.title,
+              db
+                .select({ title: programsTable.title })
+                .from(programsTable)
+                .where(eq(programsTable.isDeleted, false)),
+            ),
+          ),
+        );
 
-      return res
-        .status(200)
-        .json({
-          message: "Unused program titles fetched successfully",
-          data: validTitlesToClient(unusedTitles),
-        });
+      return res.status(200).json({
+        message: "Unused program titles fetched successfully",
+        data: validTitlesToClient(unusedTitles),
+      });
     } catch (error) {
       console.error("an err occured ", error);
       return res
