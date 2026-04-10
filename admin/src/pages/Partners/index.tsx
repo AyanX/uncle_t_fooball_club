@@ -1,4 +1,4 @@
-
+// Partners/index.tsx — Partners grouped by tier, optimistic tier name update, always-visible actions
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, ExternalLink } from 'lucide-react';
@@ -68,7 +68,7 @@ const Partners: React.FC = () => {
     if (!form.name) { error('Partner name required'); return; }
     setSaving(true);
     try {
-      const payload = buildFormData({...form}, imageFile, 'logo');
+      const payload = buildFormData({...form}, imageFile, 'image');
       if (editItem) {
         const res = await api.put.partner(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...form };
@@ -104,10 +104,10 @@ const Partners: React.FC = () => {
     if (!tierName.trim()) { error('Tier name required'); return; }
     setSaving(true);
 
-    
+    // Optimistic: update tier name in UI immediately
     if (editTier) {
       setPartnerTiers(partnerTiers.map(t => t.id === editTier.id ? { ...t, name: tierName.trim() } : t));
-      
+      // Also update partner cards under this tier immediately
       setPartners(partners.map(p => p.tier === editTier.name ? { ...p, tier: tierName.trim() } : p));
     }
 
@@ -126,7 +126,7 @@ const Partners: React.FC = () => {
         setTierOpen(false);
       }
     } catch {
-      
+      // Rollback optimistic update on failure
       if (editTier) {
         setPartnerTiers(partnerTiers.map(t => t.id === editTier.id ? editTier : t));
         setPartners(partners.map(p => p.tier === tierName.trim() ? { ...p, tier: editTier.name } : p));
@@ -172,7 +172,7 @@ const Partners: React.FC = () => {
                 <div className={styles.tierDot} style={{ background: col }}/>
                 <h3 className={styles.tierName}>{tier.name.charAt(0).toUpperCase()+tier.name.slice(1)} Partners</h3>
                 <span className={styles.tierCount}>{tierPartners.length}</span>
-                {}
+                {/* Always-visible tier actions */}
                 <div className={styles.tierActions}>
                   <button className={styles.tierBtn} onClick={() => openEditTier(tier)} title="Edit tier name"><Pencil size={12}/></button>
                   <button className={`${styles.tierBtn} ${styles.danger}`} onClick={() => setDeleteTier(tier)} title="Delete tier"><Trash2 size={12}/></button>
@@ -180,7 +180,7 @@ const Partners: React.FC = () => {
               </div>
 
               <div className={styles.grid}>
-                {}
+                {/* Add slot for this tier */}
                 <div className={styles.addSlot} onClick={() => openAdd(tier.name)}>
                   <Plus size={20}/><span>Add {tier.name} partner</span>
                 </div>
@@ -234,7 +234,7 @@ const Partners: React.FC = () => {
         </div>
       </Modal>
 
-      {}
+      {/* Tier Modal */}
       <Modal open={tierOpen} onClose={() => setTierOpen(false)} title={editTier ? 'Edit Tier':'Add Tier'} size="sm">
         <Field label="Tier Name" required>
           <Input value={tierName} onChange={e=>setTierName(e.target.value)} placeholder="e.g. platinum"/>

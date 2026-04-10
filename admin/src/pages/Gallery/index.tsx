@@ -1,4 +1,4 @@
-
+// Gallery/index.tsx — Gallery management with ImageInput, always-visible actions, proper responses
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Star } from 'lucide-react';
@@ -168,7 +168,7 @@ const Gallery: React.FC = () => {
                 <span className={styles.tileCat}>{item.category}</span>
                 <p className={styles.tileCaption}>{item.caption}</p>
               </div>
-              {}
+              {/* Always-visible */}
               <div className={styles.tileActions}>
                 <button className={styles.tileBtn} onClick={() => openEdit(item)}><Pencil size={13}/></button>
                 <button className={`${styles.tileBtn} ${styles.danger}`} onClick={() => setDeleteTarget(item)}><Trash2 size={13}/></button>
@@ -178,7 +178,7 @@ const Gallery: React.FC = () => {
         </div>
       )}
 
-      {}
+      {/* Category chips */}
       <div className={styles.catSection}>
         <div className={styles.catHead}>
           <span className={styles.catTitle}>Gallery Categories</span>
@@ -197,7 +197,7 @@ const Gallery: React.FC = () => {
         </div>
       </div>
 
-      {}
+      {/* Modals */}
       <Modal open={addOpen||!!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Image':'Add Image'}>
         <GalleryFormEl value={form} imageFile={imageFile} onImageChange={setImageFile} categories={galleryCategories} onChange={setForm} isEdit={!!editItem}/>
         <div className={styles.modalFooter}>

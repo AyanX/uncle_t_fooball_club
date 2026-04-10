@@ -1,4 +1,3 @@
-
 .section {
   background: $color-off-white;
   padding: $space-20 0;
@@ -8,7 +7,7 @@
 
 .container { @include container; }
 
-
+// Section header
 .header {
   @include flex-between;
   align-items: flex-end;
@@ -72,12 +71,15 @@
   &:hover { border-color: $color-secondary; color: $color-secondary-dark; }
 }
 
+// Bento grid
 .bento {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
+  grid-template-columns: 1.35fr 1fr;          // col 1 = big card | col 2 = right stack
   grid-template-rows: auto auto auto;
   gap: $space-4;
 
+  // Below big card: arts + leadership + libraries
+  // right col: env + health stacked
 
   @include lg {
     grid-template-columns: 1fr 1fr;
@@ -88,7 +90,7 @@
   }
 }
 
-
+// Generic card base
 .card {
   border-radius: $radius-lg;
   overflow: hidden;
@@ -96,6 +98,7 @@
   &:hover { transform: translateY(-4px); box-shadow: $shadow-xl; }
 }
 
+// Featured (Sports Academy)
 .cardFeatured {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -208,7 +211,7 @@
   .featuredLink:hover & { gap: $space-3; }
 }
 
-
+// Right column: two dark stacked cards
 .rightCol {
   grid-column: 2;
   grid-row: 1 / 3;
@@ -272,6 +275,7 @@
   .cardDark:hover & { opacity: 1; transform: translateX(0); }
 }
 
+// Arts & Creativity: light card
 .cardLight {
   grid-column: 1;
   background: $color-white;
@@ -314,6 +318,7 @@
   @include truncate(3);
 }
 
+// Leadership: wide red card
 .cardRed {
   grid-column: 2;
   background: $color-secondary;
@@ -374,6 +379,7 @@
   .cardRed:hover & { gap: $space-3; }
 }
 
+// Community Libraries
 .cardLibrary {
   grid-column: 1;
   background: $color-white;

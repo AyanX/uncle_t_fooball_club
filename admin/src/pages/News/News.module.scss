@@ -4,7 +4,7 @@
 .pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
 .headerBtns { display: flex; gap: $space-3; flex-wrap: wrap; }
 
-
+// Views bar
 .viewsBar { background: $color-white; border-radius: $radius-xl; padding: $space-5 $space-6; box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07); }
 .viewsBarHead { display: flex; align-items: center; gap: $space-2; margin-bottom: $space-4; }
 .viewsIcon { color: $color-secondary; }
@@ -21,10 +21,10 @@
 .skeleton { height: 400px; border-radius: $radius-xl; background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
-
+// News grid matches frontend
 .newsGrid { display: grid; grid-template-columns: 1.4fr 1fr; gap: $space-6; @include lg { grid-template-columns: 1fr; } }
 
-
+// Featured card
 .featuredCard { background: $color-white; border-radius: $radius-xl; overflow: hidden; box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07); }
 .featuredImg {
   position: relative; aspect-ratio: 16/9; overflow: hidden; background: $color-primary-dark;
@@ -40,7 +40,7 @@
 .featuredTitle { font-family: $font-display; font-size: $font-size-xl; font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; line-height: $line-height-snug; letter-spacing: -0.01em; }
 .featuredExcerpt { font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose; @include truncate(3); }
 
-
+// Always-visible actions (no hover)
 .cardActions { display: flex; gap: $space-2; flex-wrap: wrap; padding-top: $space-3; border-top: 1px solid rgba($color-primary,0.07); }
 .actionBtn {
   display: flex; align-items: center; justify-content: center;
@@ -61,7 +61,7 @@
   &:hover { background: rgba($color-secondary,0.07); }
 }
 
-
+// Side list
 .sideList { display: flex; flex-direction: column; gap: $space-3; }
 .sideCard { background: $color-white; border-radius: $radius-lg; overflow: hidden; box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07); display: flex; align-items: center; gap: $space-3; padding: $space-3; }
 .sideImg { width: 88px; height: 68px; border-radius: $radius-md; overflow: hidden; flex-shrink: 0; background: $color-primary-dark; img { width: 100%; height: 100%; object-fit: cover; } @include sm { width: 68px; height: 54px; } }
@@ -72,7 +72,7 @@
 .sideViews { display: flex; align-items: center; gap: 3px; font-family: $font-body; font-size: 11px; color: $color-secondary; font-weight: $font-weight-semibold; }
 .sideActions { display: flex; flex-direction: column; gap: $space-1; flex-shrink: 0; }
 
-
+// Icon button (always visible)
 .iconBtn {
   width: 30px; height: 30px; border-radius: $radius-md; border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -85,7 +85,7 @@
 
 .emptySlot { border: 2px dashed rgba($color-secondary,0.3); border-radius: $radius-lg; display: flex; align-items: center; justify-content: center; gap: $space-3; padding: $space-5; cursor: pointer; color: rgba($color-secondary,0.6); transition: all $transition-fast; span { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; text-transform: uppercase; letter-spacing: 0.08em; } &:hover { background: rgba($color-secondary,0.06); border-color: $color-secondary; color: $color-secondary; } }
 
-
+// Categories
 .catsSection { background: $color-white; border-radius: $radius-xl; padding: $space-6; box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07); }
 .catsHead { @include flex-between; margin-bottom: $space-5; padding-bottom: $space-4; border-bottom: 1px solid rgba($color-primary,0.07); flex-wrap: wrap; gap: $space-3; }
 .catsTitle { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-primary; letter-spacing: 0.06em; }

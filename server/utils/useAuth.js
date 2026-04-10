@@ -9,10 +9,9 @@ const verifyRefreshTokenFunc = async (req, res, next) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
-    return res.status(401).json({ error: "Unauthorized" });
+    console.error("No refresh token provided , forbidden");
+    return res.status(403).json({ error: "Unauthorized" });
   }
-
-console.log("Verifying refresh token:", refreshToken);
 
   try {
     const decoded = verifyRefreshToken(refreshToken);
@@ -36,11 +35,11 @@ console.log("Verifying refresh token:", refreshToken);
       return next();
     } else {
       console.error("Invalid refresh token");
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(403).json({ error: "Unauthorized" });
     }
   } catch (e) {
     console.error("Error verifying refresh token:", e);
-     return res.status(401).json({ error: "Unauthorized" });
+     return res.status(403).json({ error: "Unauthorized" });
 
   }
 };
@@ -49,22 +48,23 @@ const useAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     if (!token) {
-        console.error("No token provided, checking refresh token");
-      //check refresh token
       return verifyRefreshTokenFunc(req, res, next);
-    } else {
-      //token exists, verify it
-      const decoded = verifyToken(token);
-      if (decoded) {
-        req.user = decoded;
-        return next();
-      }
     }
-    console.error("Invalid token");
-    verifyRefreshTokenFunc(req, res, next)
+
+    try {
+      const decoded = verifyToken(token);
+      req.user = decoded;
+      return next();
+    } catch (err) {
+      if (err.name === "TokenExpiredError") {
+        return verifyRefreshTokenFunc(req, res, next);
+      }
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
   } catch (error) {
     console.error("Authentication error:", error);
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(403).json({ error: "Unauthorized" });
   }
 };
 

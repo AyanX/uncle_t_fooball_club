@@ -203,15 +203,15 @@ class AdminController{
 
       res.cookie("token", token, {
           httpOnly: true,
-          sameSite: "lax",
-          secure: false,
+          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production",
           path: "/",
           maxAge: 1000 * 60 * 10, // 10 minutes
         })
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
+          sameSite: "strict",
           path: "/",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });

@@ -1,4 +1,4 @@
-
+// pages/News/index.tsx — news grid + categories + views + featured toggle + always-visible actions
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -14,7 +14,7 @@ import styles from './News.module.scss';
 
 type NewsFormData = Omit<NewsItem, 'id' | 'blur_image'>;
 
-
+// Normalize date string to YYYY-MM-DD for <input type="date">
 const toDateValue = (d?: string): string => { if (!d) return ''; return d.slice(0, 10); };
 
 const toSlug = (t: string) => t.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,80);
@@ -125,7 +125,7 @@ const News: React.FC = () => {
   const openAdd  = () => { setNewsForm({...emptyNews, date:new Date().toISOString().slice(0,10)}); setNewsImageFile(null); setAddOpen(true); };
   const openEdit = (item:NewsItem) => { setNewsForm({...item, date: toDateValue(item.date)}); setNewsImageFile(null); setEditItem(item); };
 
-  
+  // Featured toggle via POST /news/features/:id
   const toggleFeatured = async (item: NewsItem) => {
     try {
       const res = await api.post.toggleFeatured(item.id);
@@ -205,7 +205,7 @@ const News: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      {}
+      {/* Header */}
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>News Management</h1>
@@ -217,7 +217,7 @@ const News: React.FC = () => {
         </div>
       </div>
 
-      {}
+      {/* Views summary */}
       {newsViews.length > 0 && (
         <div className={styles.viewsBar}>
           <div className={styles.viewsBarHead}>
@@ -237,17 +237,17 @@ const News: React.FC = () => {
         </div>
       )}
 
-      {}
+      {/* Category filter */}
       <div className={styles.filters}>
         {['All', ...newsCategories.map(c=>c.category)].map(cat => (
           <button key={cat} className={`${styles.filterBtn} ${catFilter===cat ? styles.active:''}`} onClick={() => setCatFilter(cat)}>{cat}</button>
         ))}
       </div>
 
-      {}
+      {/* News grid */}
       {loading ? <div className={styles.skeleton}/> : (
         <div className={styles.newsGrid}>
-          {}
+          {/* Featured */}
           {featured ? (
             <div className={styles.featuredCard}>
               <div className={styles.featuredImg}>
@@ -263,7 +263,7 @@ const News: React.FC = () => {
                 </div>
                 <h2 className={styles.featuredTitle}>{featured.title}</h2>
                 <p className={styles.featuredExcerpt}>{featured.excerpt}</p>
-                {}
+                {/* Always-visible actions */}
                 <div className={styles.cardActions}>
                   <Link to={`/news/${encodeURIComponent(featured.title)}`} className={styles.actionBtn} title="Edit article"><Eye size={14}/></Link>
                   <button className={styles.actionBtn} onClick={() => toggleFeatured(featured)} title={featured.featured ? 'Remove featured':'Set featured'}>
@@ -281,7 +281,7 @@ const News: React.FC = () => {
             </div>
           )}
 
-          {}
+          {/* Side list */}
           <div className={styles.sideList}>
             {rest.map(item => (
               <div key={item.id} className={styles.sideCard}>
@@ -292,7 +292,7 @@ const News: React.FC = () => {
                   <span className={styles.sideMeta}>{new Date(item.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
                   {getViews(item.id) > 0 && <span className={styles.sideViews}><Eye size={11}/> {getViews(item.id).toLocaleString()}</span>}
                 </div>
-                {}
+                {/* Always-visible */}
                 <div className={styles.sideActions}>
                   <Link to={`/news/${encodeURIComponent(item.title)}`} className={styles.iconBtn} title="Edit article"><Eye size={13}/></Link>
                   <button className={styles.iconBtn} onClick={() => toggleFeatured(item)} title={item.featured ? 'Remove featured':'Set featured'}>
@@ -312,7 +312,7 @@ const News: React.FC = () => {
         </div>
       )}
 
-      {}
+      {/* Categories */}
       <div className={styles.catsSection}>
         <div className={styles.catsHead}>
           <span className={styles.catsTitle}>News Categories</span>
@@ -336,7 +336,7 @@ const News: React.FC = () => {
         </div>
       </div>
 
-      {}
+      {/* Modals */}
       <Modal open={addOpen||!!editItem} onClose={() => { setAddOpen(false); setEditItem(null); }} title={editItem ? 'Edit Article' : 'New Article'} size="lg">
         <NewsForm value={newsForm} imageFile={newsImageFile} onImageChange={setNewsImageFile} categories={newsCategories} onChange={setNewsForm} isEdit={!!editItem}/>
         <div className={styles.modalFooter}>

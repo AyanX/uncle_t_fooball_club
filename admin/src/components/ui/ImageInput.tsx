@@ -1,10 +1,10 @@
-
+// ImageInput.tsx — Smart image field with blur placeholder support
 import React, { useState, useRef } from 'react';
 import { Upload, Pencil, Trash2 } from 'lucide-react';
 
 interface ImageInputProps {
   currentUrl?: string;
-  blurUrl?: string;           
+  blurUrl?: string;           // blur_image for fade-in placeholder
   onFileChange: (file: File | null) => void;
   label?: string;
   required?: boolean;
@@ -48,7 +48,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          {}
+          {/* Blur placeholder — shown until real image loads */}
           {blurUrl && !preview && (
             <img
               src={blurUrl}
@@ -62,7 +62,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
               }}
             />
           )}
-          {}
+          {/* Real image */}
           <img
             src={displayUrl}
             alt={label}
@@ -73,11 +73,11 @@ const ImageInput: React.FC<ImageInputProps> = ({
               transition: 'opacity 0.5s ease',
             }}
           />
-          {}
+          {/* New badge */}
           {preview && (
             <span style={{ position: 'absolute', top: 8, left: 8, background: '#16a34a', color: '#fff', borderRadius: 6, padding: '2px 8px', fontSize: 11, fontFamily: 'Montserrat,sans-serif', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>New</span>
           )}
-          {}
+          {/* Hover actions */}
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(5,10,23,0.52)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, opacity: hovered ? 1 : 0, transition: 'opacity 0.2s' }}>
             <button style={{ width: 40, height: 40, borderRadius: 8, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', color: '#0A142F', transition: 'all 0.2s' }} onClick={handleEdit} title="Change image"><Pencil size={16} /></button>
             <button style={{ width: 40, height: 40, borderRadius: 8, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#C8102E', color: '#fff', transition: 'all 0.2s' }} onClick={handleRemove} title="Remove image"><Trash2 size={16} /></button>

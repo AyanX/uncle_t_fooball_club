@@ -4,6 +4,7 @@ import Navbar from "@/components/common/Navbar/Navbar";
 import Footer from "@/components/common/Footer/Footer";
 import Loader from "@/components/common/Loader/Loader";
 import ErrorPage from "@/pages/ErrorPage/index";
+import ScrollToTop from "@/components/scrollTop/scrollTop";
 
 const Home = lazy(() => import("@/pages/Home/index"));
 const About = lazy(() => import("@/pages/About/index"));
@@ -27,6 +28,7 @@ const PageSuspense: React.FC<{ children: React.ReactNode }> = ({
 const RootLayout: React.FC = () => (
   <>
     <Navbar />
+    <ScrollToTop/>
     <Outlet />
     <Footer />
   </>
@@ -134,15 +136,6 @@ const router = createBrowserRouter([
           </PageSuspense>
         ),
       },
-
-      {
-        path: "join",
-        element: (
-          <PageSuspense>
-            <Volunteer />
-          </PageSuspense>
-        ),
-      },
       {
         path: "contact",
         element: (
@@ -163,7 +156,7 @@ const router = createBrowserRouter([
         path: "*",
         element: (
           <PageSuspense>
-            <NotFound />
+            <Home />
           </PageSuspense>
         ),
       },

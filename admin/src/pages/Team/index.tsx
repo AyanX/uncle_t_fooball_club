@@ -1,4 +1,4 @@
-
+// Team/index.tsx — Squad management, first-team toggle, always-visible actions, ImageInput
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Flag, Star, Users } from 'lucide-react';
@@ -78,7 +78,7 @@ const Team: React.FC = () => {
   const openAdd  = () => { setForm({...empty}); setImageFile(null); setAddOpen(true); };
   const openEdit = (p:Player) => { setForm({...p}); setImageFile(null); setEditPlayer(p); };
 
-  
+  // Toggle first team via POST /players/first-team/:id
   const toggleFirstTeam = async (player: Player) => {
     try {
       const res = await api.post.toggleFirstTeam(player.id);
@@ -139,7 +139,7 @@ const Team: React.FC = () => {
         ))}
       </div>
 
-      {}
+      {/* Add slot at top */}
       <motion.div className={styles.addCard} onClick={openAdd} whileHover={{scale:1.01}} whileTap={{scale:0.99}}>
         <Plus size={28} className={styles.addIcon}/>
         <span className={styles.addLabel}>Add New Player</span>
@@ -151,14 +151,14 @@ const Team: React.FC = () => {
         <div className={styles.grid}>
           {filtered.map((player,i) => (
             <motion.div key={player.id} className={styles.card} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.04}}>
-              {}
+              {/* Image */}
               <div className={styles.imgWrap}>
                 {player.image && <BlurImage src={player.image} blurSrc={player.blur_image||undefined} alt={player.name} objectPosition="center top"/>}
                 <div className={styles.numberBadge}>#{player.number}</div>
                 <span className={styles.posBadge}>{player.position}</span>
                 {player.first_team && <span className={styles.firstTeamBadge}><Star size={9}/> First XI</span>}
               </div>
-              {}
+              {/* Info */}
               <div className={styles.info}>
                 <div className={styles.nameRow}>
                   <h3 className={styles.name}>{player.name}</h3>
@@ -170,7 +170,7 @@ const Team: React.FC = () => {
                   <div className={styles.stat}><span className={styles.statVal}>{player.assists}</span><span className={styles.statLbl}>A</span></div>
                   <div className={styles.stat}><span className={styles.statVal}>{player.appearances}</span><span className={styles.statLbl}>App</span></div>
                 </div>
-                {}
+                {/* Always-visible actions */}
                 <div className={styles.cardActions}>
                   <button
                     className={`${styles.actionBtn} ${player.first_team ? styles.firstTeamActive : ''}`}

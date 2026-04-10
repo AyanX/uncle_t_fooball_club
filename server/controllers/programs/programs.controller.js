@@ -1,4 +1,4 @@
-const { eq, desc } = require("drizzle-orm");
+const { eq, desc, and } = require("drizzle-orm");
 const {db,programTitlesTable,programsTable} = require("../tables");
 const { validTitlesToClient, validTitle, programsToClient, validProgram,programToDb, singleProgramToClient } = require("./program.utils");
 const {generateBlurImage} = require("ayan-pkg")
@@ -16,21 +16,19 @@ class ProgramsController {
 
     static async updateProgram(req, res) {
         try {
-            console.log("Updating program with data:", req.body, "and fileUrl:", req.fileUrl);
             if(!req.params.id) return res.status(400).json({ message: "Program id is required", data:[] });
             if(!validProgram(req.body)) return res.status(400).json({ message: "Invalid program data", data:[] });
 
-            const image = req.fileUrl || req.body.image;
-
-            if(!image) return res.status(400).json({ message: "Program image is required", data:[] });
+            const image = req.fileUrl || req.body.image || "";
 
             req.body.image = image;
             req.body.blur_image = image;
 
             await db.update(programsTable).set(programToDb(req.body)).where(eq(programsTable.id, req.params.id));
 
+             req.body.id =req.params.id
             //return the req body instead of fetch ,
-           res.status(200).json({ message: "Program updated successfully", data:singleProgramToClient({...req.body, id: req.params.id}) });
+           res.status(200).json({ message: "Program updated successfully", data:singleProgramToClient(programToDb(req.body),  req.params.id) });
 
            if(!req.fileUrl) return; // if image is not updated, no need to generate blur
              //generate blur
@@ -51,7 +49,6 @@ class ProgramsController {
     static async deleteProgram(req, res) {
         try {
             if(!req.params.id) return res.status(400).json({ message: "Program id is required", data:[] });
-            if(!validProgram(req.body)) return res.status(400).json({ message: "Invalid program data", data:[] });
 
             //check if it exists
             const existingProgram = await db.select().from(programsTable).where(eq(programsTable.id, req.params.id));
@@ -60,25 +57,29 @@ class ProgramsController {
             await db.update(programsTable).set({ isDeleted: true }).where(eq(programsTable.id, req.params.id));
             return res.status(200).json({ message: "Program deleted successfully", data:[] });
         } catch (error) {
+            console.error("error deleting prog",error);
             return res.status(500).json({ message: "Error deleting program", data:[] });
         }
     }
 
     static async createProgram(req, res) {
         try {
+        
             if(!validProgram(req.body)) return res.status(400).json({ message: "Invalid program data", data:[] });
 
             const image = req.fileUrl
-            if(!image) return res.status(400).json({ message: "Program image is required", data:[] });
 
-            req.body.image = image;
-            req.body.blur_image = image;
+           
+                req.body.image = image || ""
+            req.body.blur_image = image || ""
+            
+            
 
          await db.insert(programsTable).values(programToDb(req.body));
 
          // fetch and return it, last entry
          const programCreated = await db.select().from(programsTable).where(eq(programsTable.isDeleted, false)).orderBy(desc(programsTable.created_at)).limit(1);
-         res.status(201).json({ message: "Program created successfully", data:programsToClient(programCreated) });
+         res.status(201).json({ message: "Program created successfully", data:singleProgramToClient(programCreated[0]) });
 
             //generate blur
 
@@ -99,12 +100,15 @@ class ProgramsController {
     static async getProgramBySlug(req, res) {
         try {
             const { slug } = req.params;
-            const program = await db.select().from(programsTable).where(eq(programsTable.slug, slug)).limit(1);
+
+            //and deleed is false
+            const program = await db.select().from(programsTable).where(and(eq(programsTable.slug, slug), eq(programsTable.isDeleted, false))).limit(1);
             if (!program || program.length === 0) {
                 return res.status(404).json({ message: "Program not found", data: [] });
             }
             return res.status(200).json({ message: "Program fetched successfully", data: singleProgramToClient(program[0]) });
         } catch (error) {
+            console.error("err occured feching prog by slug", error)
             return res.status(500).json({ message: "Error fetching program", data:[] });
         }
     }
@@ -174,6 +178,7 @@ class ProgramsController {
 
             return res.status(201).json({ message: "Program title created successfully", data:{id: newTitle[0].id, title: newTitle[0].title} });
         } catch (error) {
+            console.error("an err occured ", error)
             return res.status(500).json({ message: "Error creating program title", data:[] });
         }
     }

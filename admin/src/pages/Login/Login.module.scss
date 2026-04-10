@@ -84,7 +84,7 @@
   background: $color-secondary; flex-shrink: 0;
 }
 
-
+// Right panel
 .right {
   width: 480px; min-height: 100vh;
   background: $color-off-white;
@@ -172,7 +172,7 @@
   color: $color-text-muted; font-style: italic;
 }
 
-
+// ── Mode tabs ─────────────────────────────────────────────
 .modeTabs {
   display: flex; gap: $space-2; margin-bottom: $space-6;
   background: $color-off-white; border-radius: $radius-lg;
@@ -195,8 +195,39 @@
 }
 
 .pinHint {
-  font-family: $font-body; font-size: 10px; 
+  font-family: $font-body; font-size: 10px;
   color: $color-text-muted; text-transform: none; letter-spacing: 0; margin-left: $space-1;
 }
 
 .pinInput { letter-spacing: 0.3em; font-size: $font-size-lg; text-align: center; }
+
+// Club logo on login page
+.brandLogoWrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  flex-shrink: 0;
+  // No background color — transparent
+}
+
+.brandLogoBlur {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: blur(8px);
+  transform: scale(1.1);
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.brandLogoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.45s ease;
+}

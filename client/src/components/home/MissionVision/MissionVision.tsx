@@ -8,9 +8,8 @@ import styles from './MissionVision.module.scss';
 const iconList = [<Users size={20} />, <Star size={20} />, <Zap size={20} />, <Shield size={20} />];
 
 const imageCards = [
-  { label: 'Community Action', image: 'https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { label: 'Youth Empowerment', image: 'https://images.pexels.com/photos/3622622/pexels-photo-3622622.jpeg?auto=compress&cs=tinysrgb&w=600' },
-  { label: 'Safe Spaces', image: 'https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=600' },
+  { label: 'Kids Soccer', image: 'https://ik.imagekit.io/59p9lo9mv/soccer/gettyimages-1620843583-612x612.jpg' },
+  { label: 'Youth Empowerment', image: 'https://ik.imagekit.io/59p9lo9mv/soccer/gettyimages-607728198-2048x2048.webp' },
 ];
 
 const MissionVision: React.FC = () => {

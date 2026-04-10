@@ -16,6 +16,7 @@
   &:hover { color: $color-gold; }
 }
 
+// Category hero: full-width background image with title
 .heroImg {
   position: relative;
   height: 480px;
@@ -64,6 +65,7 @@
   max-width: 800px;
 }
 
+// Article section
 .section { @include section-padding; }
 
 .layout {
@@ -93,6 +95,7 @@
   font-style: italic;
 }
 
+// Article's own image placed before the content body
 .articleImg {
   position: relative;
   @include aspect-ratio(16, 9);
@@ -115,6 +118,7 @@
   em { color: $color-text-secondary; }
 }
 
+// Sidebar
 .sidebar {
   display: flex; flex-direction: column; gap: $space-5;
   position: sticky; top: calc(#{$navbar-height} + #{$space-6});

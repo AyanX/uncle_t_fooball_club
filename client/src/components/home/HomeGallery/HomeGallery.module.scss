@@ -28,11 +28,13 @@
   &:hover { border-color: $color-secondary; }
 }
 
+// Grid: matches FeaturedNews layout
 .grid {
   display: grid; grid-template-columns: 1.4fr 1fr; gap: $space-6;
   @include lg { grid-template-columns: 1fr; }
 }
 
+// Featured card
 .featured { @include card; }
 
 .featuredLink { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; }
@@ -69,6 +71,7 @@
   .featuredLink:hover & { gap: $space-3; }
 }
 
+// Side list
 .sideList { display: flex; flex-direction: column; gap: $space-4; }
 
 .sideCard { @include card; box-shadow: $shadow-sm; }
@@ -84,6 +87,7 @@
   letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
 }
 
+// Caption always visible (no hover needed)
 .sideCaption {
   font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary;
   line-height: $line-height-snug; @include truncate(2);

@@ -1,14 +1,15 @@
 const express = require("express");
 const AdminController = require("../../controllers/admin/admin.controller");
+const useAuth = require("../../utils/useAuth");
 
 const adminRouter = express.Router();
 
 
-adminRouter.get("/profile", AdminController.getProfile);
-adminRouter.put("/username", AdminController.updateUsername);
-adminRouter.put("/password", AdminController.updatePassword);
-adminRouter.put("/email", AdminController.updateEmail);
-adminRouter.post("/pin", AdminController.updatePin);
+adminRouter.get("/profile", useAuth, AdminController.getProfile);
+adminRouter.put("/username", useAuth, AdminController.updateUsername);
+adminRouter.put("/password", useAuth, AdminController.updatePassword);
+adminRouter.put("/email", useAuth, AdminController.updateEmail);
+adminRouter.post("/pin", useAuth, AdminController.updatePin);
 
 
 adminRouter.post("/login", AdminController.login);

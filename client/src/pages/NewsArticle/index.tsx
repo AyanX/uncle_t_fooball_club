@@ -43,6 +43,7 @@ const NewsArticle: React.FC = () => {
         </div>
       </div>
 
+      {/* Category-matched hero with title overlay */}
       <div className={styles.heroImg} style={{ backgroundImage: `url(${heroImage})` }}>
         <div className={styles.heroOverlay} />
         <div className={styles.heroTitleWrap}>
@@ -67,6 +68,7 @@ const NewsArticle: React.FC = () => {
                 <span className={styles.metaItem}><Clock size={13} /> {article.readTime} min read</span>
               </div>
               <p className={styles.excerpt}>{article.excerpt}</p>
+              {/* Article image before content */}
               <div className={styles.articleImg}>
                 <BlurImage src={article.image} blur_image={article.blur_image} alt={article.title} />
               </div>

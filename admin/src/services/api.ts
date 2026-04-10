@@ -9,12 +9,12 @@ import {
   dummyMilestones, dummyManagement, dummySocials,
 } from '@/data/dummyData';
 
-export const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000/api';
+export const BASE_URL = "http://localhost:9000/api";  // Change to actual backend URL in production
 
 const http = axios.create({
   baseURL: BASE_URL,
   timeout: 12000,
-  withCredentials: true,  
+  withCredentials: true,   
 });
 
 http.interceptors.request.use((config) => {
@@ -50,7 +50,7 @@ const dummyViews = [
 // Dummy messages for fallback
 const dummyMessages: any[] = [];
 
-const dummyAdminProfile = { username: 'admin', email: 'admin@kilimanjaro-fc.com' };
+const dummyAdminProfile = { username: 'admin', email: 'admin@Uncle T-fc.com' };
 
 export const api = {
   auth: {
@@ -99,7 +99,8 @@ export const api = {
     management:        () => safe(() => http.get('/club/management'), dummyManagement),
     socials:           () => safe(() => http.get('/socials'), dummySocials),
     messages:          () => safe(() => http.get('/messages'), dummyMessages),
-    teamname:          () => safe(() => http.get('/teamname'), { name: 'Kilimanjaro FC' }),
+    teamname:          () => safe(() => http.get('/teamname'), { name: 'Uncle T FC' }),
+    logo:              () => safe(() => http.get('/logo'), null),
   },
 
   post: {
@@ -137,6 +138,7 @@ export const api = {
     management:    (id: number, data: FormData | Record<string, any>) => http.put(`/club/management/${id}`, data),
     socials:       (data: Record<string, any>) => http.put('/socials', JSON.stringify(data)),
     teamname:      (data: { name: string }) => http.put('/teamname', JSON.stringify(data)),
+    logo:          (formData: FormData) => http.put('/logo', formData),
     messageRead:   (id: number) => http.put(`/messages/read/${id}`, {}),
     programTitle:  (id: number, data: Record<string, any>) => http.put(`/programmes/titles/${id}`, JSON.stringify(data)),
   },
@@ -164,8 +166,16 @@ export function buildFormData(payload: Record<string, any>, imageFile?: File | n
   if (!imageFile) return payload;
   const fd = new FormData();
   Object.entries(payload).forEach(([k, v]) => {
-    if (v !== undefined && v !== null && k !== 'image' && k !== 'blur_image') {
-      fd.append(k, typeof v === 'boolean' ? String(v) : v instanceof File ? v : String(v));
+    if (v === undefined || v === null || k === 'image' || k === 'blur_image') return;
+    if (v instanceof File) {
+      fd.append(k, v);
+    } else if (typeof v === 'boolean') {
+      fd.append(k, String(v));
+    } else if (Array.isArray(v) || (typeof v === 'object')) {
+      // Arrays (stats, highlights) and objects must be JSON-stringified
+      fd.append(k, JSON.stringify(v));
+    } else {
+      fd.append(k, String(v));
     }
   });
   fd.append(imageKey, imageFile);

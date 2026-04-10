@@ -11,6 +11,7 @@ const galleriesToClient = (galleries) => {
 }
 
 const validGallery =(gallery)=>{
+    console.log(gallery)
     return gallery.caption && gallery.category
 }
 

@@ -16,6 +16,7 @@
   @include md { grid-template-columns: 1fr; gap: $space-10; }
 }
 
+// Left column
 .left {
   display: flex;
   flex-direction: column;
@@ -62,6 +63,7 @@
   margin-bottom: $space-2;
 }
 
+// Pillars list
 .pillars {
   display: flex;
   flex-direction: column;
@@ -110,6 +112,7 @@
   line-height: $line-height-loose;
 }
 
+// Right column: stacked image cards
 .right {
   display: flex;
   flex-direction: column;

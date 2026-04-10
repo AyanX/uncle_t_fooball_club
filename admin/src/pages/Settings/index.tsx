@@ -1,4 +1,4 @@
-
+// Settings/index.tsx — Credentials, Socials, Stats, Mission/Vision, Milestones, Management
 import React, { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Save, Eye, EyeOff, Globe, Users, Trophy, BookOpen, Key, User, Mail, Lock } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';
@@ -12,12 +12,11 @@ import ImageInput from '@/components/ui/ImageInput';
 import { buildFormData } from '@/services/api';
 import styles from './Settings.module.scss';
 
-
 const CredentialsPanel: React.FC = () => {
   const { user, updateUser } = useAuth();
   const { success, error } = useToast();
 
-  
+  // Username
   const [username, setUsername] = useState(user?.username || '');
   const [savingUser, setSavingUser] = useState(false);
 
@@ -93,7 +92,7 @@ const CredentialsPanel: React.FC = () => {
 
   return (
     <div className={styles.credsGrid}>
-      {}
+      {/* Username */}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><User size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Username</h4></div>
         <p className={styles.credDesc}>Displayed in the admin navbar and sidebar</p>
@@ -105,19 +104,19 @@ const CredentialsPanel: React.FC = () => {
         </div>
       </div>
 
-      {}
+      {/* Email */}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><Mail size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Email Address</h4></div>
         <p className={styles.credDesc}>Used for admin login and notifications</p>
         <Field label="Email">
-          <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@kilimanjaro-fc.com" />
+          <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@Uncle T-fc.com" />
         </Field>
         <div className={styles.credFooter}>
           <Btn loading={savingEmail} onClick={saveEmail}><Save size={13} /> Save Email</Btn>
         </div>
       </div>
 
-      {}
+      {/* Password */}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><Lock size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Password</h4></div>
         <p className={styles.credDesc}>Minimum 6 characters. Current password required.</p>
@@ -143,7 +142,7 @@ const CredentialsPanel: React.FC = () => {
         </div>
       </div>
 
-      {}
+      {/* PIN */}
       <div className={styles.credCard}>
         <div className={styles.credHeader}><Key size={16} className={styles.credIcon} /><h4 className={styles.credTitle}>Security PIN</h4></div>
         <p className={styles.credDesc}>4–8 digit numeric PIN for quick actions</p>
@@ -171,9 +170,69 @@ const CredentialsPanel: React.FC = () => {
   );
 };
 
-// ─── Socials Panel (full width) ──────────────────────────
+
+const LogoPanel: React.FC = () => {
+  const { logo, setLogo } = useAdminData();
+  const { success, error } = useToast();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [saving, setSaving]       = useState(false);
+  const [loaded, setLoaded]       = useState(false);
+
+  const handleSave = async () => {
+    if (!imageFile) { error('Please select an image'); return; }
+    setSaving(true);
+    try {
+      const fd = new FormData();
+      fd.append('image', imageFile);
+      const res = await api.put.logo(fd);
+      const data = res.data?.data ?? res.data;
+      const updated = { image: data.image || '', blur_image: data.blur_image || '' };
+      setLogo(updated);
+      setImageFile(null);
+      success(res.data?.message || 'Logo updated');
+    } catch { error('Failed to update logo'); }
+    finally { setSaving(false); }
+  };
+
+  return (
+    <div className={styles.credCard} style={{ gridColumn: '1/-1' }}>
+      <div className={styles.credHeader}>
+        <div style={{ width: 16, height: 16, background: '#C8102E', borderRadius: 4 }} />
+        <h4 className={styles.credTitle}>Club Logo</h4>
+      </div>
+      <p className={styles.credDesc}>Shown in the admin sidebar, topbar, and client navbar.</p>
+      {logo?.image && !imageFile && (
+        <div style={{ position: 'relative', width: 80, height: 80, borderRadius: 12, overflow: 'hidden', border: '1.5px solid rgba(10,20,47,0.1)', marginBottom: 8 }}>
+          {logo.blur_image && (
+            <img src={logo.blur_image} aria-hidden alt=""
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', filter: 'blur(10px)', transform: 'scale(1.1)', opacity: loaded ? 0 : 1, transition: 'opacity 0.4s', pointerEvents: 'none' }}
+            />
+          )}
+          <img src={logo.image} alt="Current logo" onLoad={() => setLoaded(true)}
+            style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: loaded ? 1 : 0, transition: 'opacity 0.4s' }}
+          />
+        </div>
+      )}
+      <div style={{ maxWidth: 160 }}>
+        <ImageInput
+          currentUrl={logo?.image || undefined}
+          blurUrl={logo?.blur_image || undefined}
+          onFileChange={setImageFile}
+          label="Upload New Logo"
+          aspectRatio="1/1"
+        />
+      </div>
+      <div className={styles.credFooter}>
+        <Btn loading={saving} onClick={handleSave} disabled={!imageFile}>
+          <Save size={13} /> Save Logo
+        </Btn>
+      </div>
+    </div>
+  );
+};
+
 const SocialsPanel: React.FC = () => {
-  const { socials, setSocials, teamname, setTeamname } = useAdminData();
+  const { socials, setSocials, teamname, setTeamname, logo, setLogo } = useAdminData();
   const [clubName, setClubName] = useState(teamname);
   const [savingClub, setSavingClub] = useState(false);
   React.useEffect(() => { setClubName(teamname); }, [teamname]);
@@ -195,7 +254,7 @@ const SocialsPanel: React.FC = () => {
   const leftFields: [string, string, string][] = [
     ['address',      'Address',        'National Main Stadium, Dar es Salaam'],
     ['phone_number', 'Phone Number',   '+255 123 456 789'],
-    ['email',        'Email Address',  'info@kilimanjaro-fc.com'],
+    ['email',        'Email Address',  'info@Uncle T-fc.com'],
     ['location',     'Location',       'Dar es Salaam, Tanzania'],
     ['open_day',     'Opening Day',    'Mon'],
     ['close_day',    'Closing Day',    'Fri'],
@@ -210,11 +269,11 @@ const SocialsPanel: React.FC = () => {
   return (
     <div className={styles.panel}>
       <div className={styles.panelTitleRow}><Globe size={16}/><h3 className={styles.panelTitle}>Contact & Social Info</h3></div>
-      {}
+      {/* Club Name */}
       <div className={styles.clubNameRow}>
         <div style={{flex:1}}>
           <Field label="Club Name">
-            <Input value={clubName} onChange={e => setClubName(e.target.value)} placeholder="Kilimanjaro FC"/>
+            <Input value={clubName} onChange={e => setClubName(e.target.value)} placeholder="Uncle T FC"/>
           </Field>
           <p style={{fontFamily:'Inter,sans-serif',fontSize:12,color:'#718096',marginTop:6}}>Used in fixtures to identify your team for wins/losses tracking</p>
         </div>
@@ -248,7 +307,6 @@ const SocialsPanel: React.FC = () => {
   );
 };
 
-// ─── Stats Panel (full width) ────────────────────────────
 const StatsPanel: React.FC = () => {
   const { stats, setStats } = useAdminData();
   const { success, error } = useToast();
@@ -323,7 +381,6 @@ const StatsPanel: React.FC = () => {
   );
 };
 
-
 const MissionPanel: React.FC = () => {
   const { missionVision, setMissionVision } = useAdminData();
   const { success, error } = useToast();
@@ -373,7 +430,6 @@ const MissionPanel: React.FC = () => {
     </div>
   );
 };
-
 
 const MilestonesPanel: React.FC = () => {
   const { milestones, setMilestones } = useAdminData();
@@ -451,7 +507,6 @@ const MilestonesPanel: React.FC = () => {
     </div>
   );
 };
-
 
 const ManagementPanel: React.FC = () => {
   const { management, setManagement } = useAdminData();
@@ -532,8 +587,8 @@ const ManagementPanel: React.FC = () => {
   );
 };
 
-
 const TABS = [
+  { id: 'logo',        label: 'Logo',        icon: <Key size={15}/> },
   { id: 'credentials', label: 'Credentials', icon: <Key size={15}/> },
   { id: 'contact',     label: 'Contact & Socials', icon: <Globe size={15}/> },
   { id: 'stats',       label: 'Club Stats', icon: <Trophy size={15}/> },
@@ -547,7 +602,7 @@ const Settings: React.FC = () => {
   return (
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>Settings</h1>
-      {}
+      {/* Horizontal tab bar */}
       <div className={styles.tabBar}>
         {TABS.map(t => (
           <button key={t.id} className={`${styles.tab} ${active === t.id ? styles.tabActive : ''}`} onClick={() => setActive(t.id)}>
@@ -556,6 +611,7 @@ const Settings: React.FC = () => {
         ))}
       </div>
       <div className={styles.tabContent}>
+        {active === 'logo'        && <div className={styles.credsGrid}><LogoPanel/></div>}
         {active === 'credentials' && <CredentialsPanel/>}
         {active === 'contact'     && <SocialsPanel/>}
         {active === 'stats'       && <StatsPanel/>}

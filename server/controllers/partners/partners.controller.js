@@ -259,7 +259,7 @@ try {
 
       const newTier = await db
         .select()
-        .from(partnerTiersTable).where(eq(partnerTiersTable.isDeleted, false)).orderBy(desc(partnerTiersTable.created_at))
+        .from(partnerTiersTable).where(eq(partnerTiersTable.isDeleted, false)).orderBy(desc(partnerTiersTable.created_at)).limit(1);
 
       if (newTier.length === 0) {
         return res
@@ -274,7 +274,7 @@ try {
         .status(201)
         .json({
           message: "Partner tier created successfully",
-          data: tiersToClient(newTier),
+          data: {id: newTier[0].id, name: newTier[0].name},
         });
     } catch (error) {
       return res
@@ -343,11 +343,8 @@ try {
 
       //fetch all tiers and return it
 
-      const updatedTier = await db
-        .select()
-        .from(partnerTiersTable).
-        where(eq(partnerTiersTable.isDeleted, false)).orderBy(desc(partnerTiersTable.created_at));
-
+      const updatedTier = await db.select()
+.from(partnerTiersTable).where(eq(partnerTiersTable.id, parseInt(id))).limit(1);
       if (updatedTier.length === 0) {
         return res
           .status(500)
@@ -361,7 +358,7 @@ try {
         .status(200)
         .json({
           message: "Partner tier updated successfully",
-          data: tiersToClient(updatedTier),
+          data: {id: updatedTier[0].id, name: updatedTier[0].name},
         });
     } catch (error) {
       return res

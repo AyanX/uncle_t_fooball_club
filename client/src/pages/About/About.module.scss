@@ -1,5 +1,6 @@
 .container { @include container; }
 
+// Mission
 .missionSection {
   @include section-padding;
   background: $color-off-white;
@@ -71,6 +72,7 @@
   }
 }
 
+// Values
 .valuesSection {
   @include section-padding;
   background: $color-primary;
@@ -120,6 +122,7 @@
   line-height: $line-height-loose;
 }
 
+// Timeline
 .timelineSection {
   @include section-padding;
   background: $color-off-white;
@@ -197,6 +200,7 @@
   font-size: $font-size-sm; color: $color-text-secondary; line-height: $line-height-loose;
 }
 
+// Management
 .managementSection {
   @include section-padding;
   background: $color-white;
@@ -234,5 +238,6 @@
   letter-spacing: 0.04em;
 }
 
+// Timeline modifier classes
 .left  {}
 .right {}

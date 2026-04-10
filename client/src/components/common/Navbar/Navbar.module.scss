@@ -1,18 +1,19 @@
 
+// Base nav bar
 .nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 10px; left: 0; right: 0;
   z-index: $z-navbar;
-  height: $navbar-height;
-  transition: background $transition-base, box-shadow $transition-base;
-  background: transparent;
+  // height: $navbar-height;
+  // transition: background $transition-base, box-shadow $transition-base;
+  // background: transparent;
 
-  &.scrolled {
-    background: rgba($color-primary-dark, 0.97);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow: 0 2px 24px rgba(0,0,0,0.4);
-  }
+  // &.scrolled {
+  //   background: rgba($color-primary-dark, 0.97);
+  //   backdrop-filter: blur(18px);
+  //   -webkit-backdrop-filter: blur(18px);
+  //   box-shadow: 0 2px 24px rgba(0,0,0,0.4);
+  // }
 }
 
 .inner {
@@ -24,6 +25,7 @@
   gap: $space-4;
 }
 
+// Logo
 .logo {
   display: flex; align-items: center; gap: $space-3;
   text-decoration: none; flex-shrink: 0; min-width: 0;
@@ -54,6 +56,7 @@
   color: $color-gold; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1;
 }
 
+// Desktop nav
 .desktopNav {
   display: flex; align-items: center; gap: $space-1;
   list-style: none; flex: 1; justify-content: center;
@@ -77,6 +80,7 @@
 
 .chevron { transition: transform $transition-fast; .navItem:hover & { transform: rotate(180deg); } }
 
+// Dropdown
 .dropdown {
   position: absolute; top: calc(100% + 6px); left: 0;
   min-width: 210px;
@@ -96,6 +100,11 @@
   &:hover, &.active { color: $color-gold; background: rgba($color-gold, 0.08); }
 }
 
+.dropItem {
+  color: white;
+}
+
+// Actions (CTA + hamburger)
 .actions { display: flex; align-items: center; gap: $space-3; flex-shrink: 0; }
 
 .ctaBtn {
@@ -109,7 +118,7 @@
   display: none;
   align-items: center; justify-content: center;
   width: 40px; height: 40px;
-  color: $color-white; background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: $radius-md; cursor: pointer;
   transition: background $transition-fast;
@@ -121,6 +130,7 @@
   span { display: flex; align-items: center; justify-content: center; }
 }
 
+// Mobile: backdrop
 .backdrop {
   position: fixed; inset: 0;
   background: rgba($color-primary-dark, 0.6);
@@ -128,14 +138,15 @@
   z-index: $z-navbar - 1;
 }
 
+// Mobile: drawer
 .mobileMenu {
   position: fixed;
   top: 0; right: 0; bottom: 0;
-  width: min(320px, 88vw);
-  max-height: 100dvh;
+  width: min(320px, 88vw);    // Never wider than viewport
+  max-height: 100dvh;          // Dynamic viewport height
   background: $color-primary-dark;
   border-left: 1px solid rgba($color-secondary, 0.2);
-  z-index: $z-navbar;
+  z-index:5555555555555;
   display: flex; flex-direction: column;
   overflow: hidden;
 }
@@ -173,10 +184,12 @@
   &:hover { background: rgba($color-secondary, 0.15); color: $color-white; }
 }
 
+// Mobile nav list
 .mobileNav {
   flex: 1; overflow-y: auto; padding: $space-4 0;
   -webkit-overflow-scrolling: touch;
-
+  z-index: 77777777777;
+  // Custom scrollbar
   &::-webkit-scrollbar { width: 3px; }
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb { background: rgba($color-secondary, 0.3); border-radius: $radius-full; }
@@ -205,6 +218,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
+// Sub-menu (accordion)
 .mobileSub {
   overflow: hidden;
   background: rgba(0,0,0,0.15);
@@ -221,7 +235,7 @@
   &.active { color: $color-gold; }
 }
 
-
+// Footer CTA
 .mobileFooter {
   padding: $space-5;
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -232,4 +246,34 @@
   @include btn-primary;
   width: 100%; justify-content: center;
   font-size: $font-size-sm; padding: $space-4;
+}
+
+// Logo image with blur fade-in
+.logoImgWrap {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logoBlur {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: blur(8px);
+  transform: scale(1.1);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.logoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.4s ease;
 }

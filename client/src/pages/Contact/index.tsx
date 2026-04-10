@@ -47,6 +47,7 @@ const Contact: React.FC = () => {
     } catch { setStatus('error'); }
   };
 
+  // Format open hours from context
   const hours = socials.open_hours && socials.close_hours
     ? `${socials.open_hours} – ${socials.close_hours}`
     : 'Mon – Fri, 8:00 – 17:00';
@@ -67,12 +68,13 @@ const Contact: React.FC = () => {
         eyebrow="Get In Touch"
         title="Contact Us"
         subtitle="Have a question, partnership enquiry, or want to get involved? We'd love to hear from you."
-        image="https://images.pexels.com/photos/1618200/pexels-photo-1618200.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.layout}>
+            {/* Info panel */}
             <motion.div className={styles.infoPanel} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <h3 className={styles.infoTitle}>Get in Touch</h3>
               <div className={styles.infoAccent} />
@@ -95,6 +97,7 @@ const Contact: React.FC = () => {
               </div>
             </motion.div>
 
+            {/* Form panel */}
             <motion.div className={styles.formPanel} initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
               <h3 className={styles.formTitle}>Send a Message</h3>
 

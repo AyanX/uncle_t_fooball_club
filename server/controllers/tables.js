@@ -11,6 +11,7 @@ const {
     clubStatsTable,
     clubMilestonesTable,
     MissionVissionTable,
+    logoTable,
     managementTable,
     socialsTable,
     clicksTable,
@@ -25,6 +26,7 @@ const {
 module.exports = {
   adminLoginDetails,
   clicksTable,
+  logoTable,
   teamNameTable,
   messagesTable,
   adminProfileTable,

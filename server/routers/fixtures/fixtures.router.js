@@ -1,10 +1,11 @@
 const express = require('express');
 const FixturesController = require('../../controllers/fixtures/fixtures.controller');
+const useAuth = require('../../utils/useAuth');
 const fixturesRouter = express.Router();
 
 fixturesRouter.get("/", FixturesController.getAllFixtures);
-fixturesRouter.post("/", FixturesController.createFixture);
-fixturesRouter.put("/:id", FixturesController.updateFixture);
-fixturesRouter.delete("/:id", FixturesController.deleteFixture);
+fixturesRouter.post("/", useAuth, FixturesController.createFixture);
+fixturesRouter.put("/:id", useAuth, FixturesController.updateFixture);
+fixturesRouter.delete("/:id", useAuth, FixturesController.deleteFixture);
 
 module.exports = fixturesRouter;

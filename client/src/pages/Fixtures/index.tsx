@@ -10,8 +10,8 @@ import styles from './Fixtures.module.scss';
 
 type Tab = 'upcoming' | 'completed';
 
-const FixtureRow: React.FC<{ fixture: Fixture; index: number }> = ({ fixture, index }) => {
-  const isKFC = (t: string) => t === 'Uncle T FC';
+const FixtureRow: React.FC<{ fixture: Fixture; index: number; teamName: string }> = ({ fixture, index, teamName }) => {
+  const isKFC = (t: string) => t.toLowerCase() === teamName.toLowerCase();
   const won =
     (isKFC(fixture.homeTeam) && (fixture.homeScore ?? 0) > (fixture.awayScore ?? 0)) ||
     (isKFC(fixture.awayTeam) && (fixture.awayScore ?? 0) > (fixture.homeScore ?? 0));
@@ -49,6 +49,7 @@ const FixtureRow: React.FC<{ fixture: Fixture; index: number }> = ({ fixture, in
           <span className={styles.detailItem}><Clock size={13} /> {fixture.time}</span>
         )}
         <span className={styles.detailItem}><MapPin size={13} /> {fixture.venue}</span>
+        {/* Show fans attendance if completed and fans > 0 */}
         {fixture.status === 'completed' && fixture.fans > 0 && (
           <span className={`${styles.detailItem} ${styles.fans}`}>
             <Users size={13} /> {fixture.fans.toLocaleString()} fans attended
@@ -60,7 +61,7 @@ const FixtureRow: React.FC<{ fixture: Fixture; index: number }> = ({ fixture, in
 };
 
 const Fixtures: React.FC = () => {
-  const { fixtures, loading } = useAppContext();
+  const { fixtures, loading, teamName } = useAppContext();
   const [tab, setTab] = useState<Tab>('upcoming');
 
   const upcoming  = fixtures.filter((f) => f.status === 'upcoming');
@@ -94,7 +95,7 @@ const Fixtures: React.FC = () => {
               {displayed.length === 0 ? (
                 <p className={styles.empty}>No fixtures to display.</p>
               ) : (
-                displayed.map((f, i) => <FixtureRow key={f.id} fixture={f} index={i} />)
+                displayed.map((f, i) => <FixtureRow key={f.id} fixture={f} index={i} teamName={teamName.name} />)
               )}
             </div>
           )}

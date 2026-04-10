@@ -51,21 +51,26 @@ const programsToClient = (programs) => {
       blur_image: program.blur_image,
       icon: program.icon,
       color: program.color,
-      stats:
-        typeof program.stats === "string"
-          ? JSON.parse(program.stats)
-          : program.stats,
-      highlights:
-        typeof program.highlights === "string"
-          ? JSON.parse(program.highlights)
-          : program.highlights,
+      stats:JSON.parse(program.stats),
+      highlights:JSON.parse(program.highlights)
     };
   });
 };
 
-const singleProgramToClient = (program) => {
+const safeParse = (data) => {
+  try {
+    if (typeof data !== "string") return data;
+    if (data.includes("[object Object]")) return []; // Handle corrupted stringify
+    return JSON.parse(data);
+  } catch (err) {
+    console.warn("JSON parse failed:", data);
+    return Array.isArray(data) ? data : [];
+  }
+};
+
+const singleProgramToClient = (program,xId) => {
   return {
-    id: program.id,
+    id: program.id || +xId,
     slug: program.slug,
     title: program.title,
     tagline: program.tagline,
@@ -75,16 +80,10 @@ const singleProgramToClient = (program) => {
     blur_image: program.blur_image,
     icon: program.icon,
     color: program.color,
-    stats:
-      typeof program.stats === "string"
-        ? JSON.parse(program.stats)
-        : program.stats,
-    highlights:
-      typeof program.highlights === "string"
-        ? JSON.parse(program.highlights)
-        : program.highlights,
+    stats: safeParse(program.stats),
+    highlights: safeParse(program.highlights)
   };
-}
+};
 
 
 const programToDb = (program) => {
@@ -98,7 +97,9 @@ const programToDb = (program) => {
     blur_image: program.blur_image,
     icon: program.icon,
     color: program.color,
+
     stats: JSON.stringify(program.stats),
+
     highlights: JSON.stringify(program.highlights),
   };
 };

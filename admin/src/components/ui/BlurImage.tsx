@@ -1,4 +1,4 @@
-
+// BlurImage.tsx — Image with blur placeholder fade-in for admin pages
 import React, { useState } from 'react';
 
 interface BlurImageProps {
@@ -15,7 +15,7 @@ const BlurImage: React.FC<BlurImageProps> = ({ src, blurSrc, alt, className, sty
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-      {}
+      {/* Blur placeholder */}
       {blurSrc && (
         <img
           src={blurSrc}
@@ -31,7 +31,7 @@ const BlurImage: React.FC<BlurImageProps> = ({ src, blurSrc, alt, className, sty
           }}
         />
       )}
-      {}
+      {/* Real image */}
       <img
         src={src}
         alt={alt}

@@ -1,4 +1,4 @@
-
+// pages/Messages/index.tsx — Contact messages with Android-style split view
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Trash2, Mail, MailOpen, Search, Clock, MapPin, Phone, User, MessageSquare } from 'lucide-react';
@@ -59,12 +59,12 @@ const Messages: React.FC = () => {
   const selectMessage = async (msg: Message) => {
     setSelected(msg);
     setShowDetail(true);
-    
+    // Mark as read if not already
     if (!msg.isRead) {
       try {
         await api.put.messageRead(msg.id);
         setMessages(prev => prev.map(m => m.id === msg.id ? { ...m, isRead: true } : m));
-      } catch {  }
+      } catch { /* silent fail */ }
     }
   };
 
@@ -92,9 +92,9 @@ const Messages: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      {}
+      {/* ── List pane ── */}
       <div className={`${styles.listPane} ${showDetail ? styles.listHidden : ''}`}>
-        {}
+        {/* Header */}
         <div className={styles.listHeader}>
           <div className={styles.listTitle}>
             <MessageSquare size={18} />
@@ -103,7 +103,7 @@ const Messages: React.FC = () => {
           </div>
         </div>
 
-        {}
+        {/* Search */}
         <div className={styles.searchWrap}>
           <Search size={15} className={styles.searchIcon} />
           <input
@@ -114,7 +114,7 @@ const Messages: React.FC = () => {
           />
         </div>
 
-        {}
+        {/* List */}
         <div className={styles.list}>
           {loading && (
             <div className={styles.loadingList}>
@@ -151,7 +151,7 @@ const Messages: React.FC = () => {
         </div>
       </div>
 
-      {}
+      {/* ── Detail pane ── */}
       <AnimatePresence>
         {(selected || !showDetail) && (
           <div className={`${styles.detailPane} ${!showDetail ? styles.detailDesktopOnly : ''}`}>
@@ -164,7 +164,7 @@ const Messages: React.FC = () => {
                 transition={{ duration: 0.22 }}
                 key={selected.id}
               >
-                {}
+                {/* Detail header */}
                 <div className={styles.detailHeader}>
                   <button className={styles.backBtn} onClick={() => { setShowDetail(false); }} aria-label="Back to list">
                     <ArrowLeft size={18} />
@@ -182,7 +182,7 @@ const Messages: React.FC = () => {
                   </button>
                 </div>
 
-                {}
+                {/* Sender info */}
                 <div className={styles.detailMeta}>
                   <div className={styles.metaAvatar}>{selected.name[0]?.toUpperCase()}</div>
                   <div className={styles.metaInfo}>
@@ -193,17 +193,17 @@ const Messages: React.FC = () => {
                   </div>
                 </div>
 
-                {}
+                {/* Subject */}
                 {selected.subject && (
                   <div className={styles.detailSubject}>{selected.subject}</div>
                 )}
 
-                {}
+                {/* Message body */}
                 <div className={styles.detailBody}>
                   <p>{selected.message}</p>
                 </div>
 
-                {}
+                {/* Reply link */}
                 <a href={`mailto:${selected.email}?subject=Re: ${encodeURIComponent(selected.subject || 'Your message')}`} className={styles.replyBtn}>
                   Reply via Email
                 </a>

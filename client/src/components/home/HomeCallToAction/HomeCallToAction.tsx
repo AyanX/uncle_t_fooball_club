@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -22,7 +21,7 @@ const HomeCallToAction: React.FC = () => (
         </h2>
         <p className={styles.sub}>Building the Future of African Football.</p>
         <p className={styles.desc}>
-          Join Uncle T-FC as a player, volunteer, or partner and be part of a movement
+          Join Uncle T FC as a player, volunteer, or partner and be part of a movement
           shaping lives through sport.
         </p>
         <div className={styles.btns}>

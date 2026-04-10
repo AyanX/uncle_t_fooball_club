@@ -23,8 +23,10 @@ const About: React.FC = () => {
         image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
+      {/* Stats band (fetched) */}
       <Stats />
 
+      {/* Mission & Vision (fetched) */}
       <section className={styles.missionSection}>
         <div className={styles.container}>
           {loading.clubInfo ? <Loader /> : (
@@ -48,6 +50,7 @@ const About: React.FC = () => {
         </div>
       </section>
 
+      {/* Club Milestones (fetched) */}
       <section className={styles.timelineSection}>
         <div className={styles.container}>
           <SectionTitle eyebrow="History" title="Club Milestones" />
@@ -76,6 +79,7 @@ const About: React.FC = () => {
         </div>
       </section>
 
+      {/* Management (fetched) */}
       <section className={styles.managementSection}>
         <div className={styles.container}>
           <SectionTitle eyebrow="Leadership" title="Club Management" align="center" />

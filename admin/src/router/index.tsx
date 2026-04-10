@@ -1,4 +1,4 @@
-
+// router/index.tsx — Admin router with auth guards, error boundaries, 404 handling
 import React, { Suspense, lazy } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -19,7 +19,7 @@ const Settings   = lazy(() => import('@/pages/Settings/index'));
 const Messages   = lazy(() => import('@/pages/Messages/index'));
 
 const Spinner = () => (
-  <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'60vh' }}>
+  <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'60vh',width:"100%" }}>
     <div style={{ width:36, height:36, borderRadius:'50%', border:'3px solid rgba(200,16,46,0.18)', borderTopColor:'#C8102E', animation:'spin 0.7s linear infinite' }}/>
     <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
   </div>
@@ -44,7 +44,7 @@ const GuestGuard: React.FC = () => {
 };
 
 const router = createBrowserRouter([
-  
+  // Public
   {
     element: <GuestGuard/>,
     errorElement: <ErrorPage/>,
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       { path: '/login', element: <Page><Login/></Page> },
     ],
   },
-  
+  // Protected — all admin pages inside AdminLayout
   {
     element: <AuthGuard/>,
     errorElement: <ErrorPage/>,
@@ -71,13 +71,13 @@ const router = createBrowserRouter([
           { path: '/partners',      element: <Page><Partners/></Page>    },
           { path: '/settings',      element: <Page><Settings/></Page>    },
           { path: '/messages',      element: <Page><Messages/></Page>    },
-          
+          // Catch-all inside admin — show 404
           { path: '*',             element: <NotFound/>                  },
         ],
       },
     ],
   },
-  
+  // Unauthenticated catch-all → redirect to login
   { path: '*', element: <Navigate to="/login" replace/> },
 ]);
 

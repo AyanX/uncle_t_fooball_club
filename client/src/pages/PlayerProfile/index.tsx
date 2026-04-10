@@ -9,6 +9,7 @@ import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import styles from './PlayerProfile.module.scss';
 
+// Small card shown in the "Other Players" strip at the bottom
 const RelatedPlayerCard: React.FC<{ player: Player }> = ({ player }) => (
   <motion.div
     whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.18)' }}
@@ -32,7 +33,7 @@ const RelatedPlayerCard: React.FC<{ player: Player }> = ({ player }) => (
 const PlayerProfile: React.FC = () => {
   const { player_name } = useParams<{ player_name: string }>();
   const navigate = useNavigate();
-  const { players } = useAppContext();
+  const { players } = useAppContext();           // full list from context
   const [player, setPlayer] = useState<Player | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
@@ -40,19 +41,23 @@ const PlayerProfile: React.FC = () => {
     if (!player_name) return;
     setLoading(true);
 
+    // First look up by slug in context to get the numeric id
     const found = players.find((p) => p.slug === player_name);
     if (found) {
+      // Fetch by numeric id
       api.get.player(found.id).then((p) => {
-        setPlayer(p ?? found);
+        setPlayer(p ?? found);   // fallback to context data if API fails
         setLoading(false);
       });
     } else {
+      // Not yet in context: try to infer id from dummy data
       setPlayer(undefined);
       setLoading(false);
       navigate('/404', { replace: true });
     }
   }, [player_name, players, navigate]);
 
+  // 3 related players: different position or random, excluding current
   const related = players
     .filter((p) => p.slug !== player_name)
     .sort(() => Math.random() - 0.5)
@@ -71,6 +76,7 @@ const PlayerProfile: React.FC = () => {
 
   return (
     <main className={styles.page}>
+      {/* Back button */}
       <div className={styles.backWrap}>
         <div className={styles.container}>
           <Link to="/team" className={styles.backBtn}>
@@ -79,11 +85,13 @@ const PlayerProfile: React.FC = () => {
         </div>
       </div>
 
+      {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroBg} />
         <div className={styles.heroOverlay} />
         <div className={styles.container}>
           <div className={styles.heroInner}>
+            {/* Player image — fade-up on mobile, slide-left on desktop */}
             <motion.div
               className={styles.playerImg}
               initial={{ opacity: 0, y: 32 }}
@@ -94,6 +102,7 @@ const PlayerProfile: React.FC = () => {
               <div className={styles.jerseyBadge}><span>{player.number}</span></div>
             </motion.div>
 
+            {/* Player info */}
             <motion.div
               className={styles.playerInfo}
               initial={{ opacity: 0, y: 32 }}
@@ -136,6 +145,7 @@ const PlayerProfile: React.FC = () => {
         </div>
       </section>
 
+      {/* Bio + season stats */}
       <section className={styles.bioSection}>
         <div className={styles.container}>
           <motion.div className={styles.bioCard} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
@@ -173,6 +183,7 @@ const PlayerProfile: React.FC = () => {
         </div>
       </section>
 
+      {/* Related players strip */}
       {related.length > 0 && (
         <section className={styles.relatedSection}>
           <div className={styles.container}>

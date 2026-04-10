@@ -32,10 +32,6 @@ class GalleryController {
             if(!id){
                 return res.status(400).json({ error: 'Gallery ID is required', data: null });
             }
-
-
-
-
             const galleryId = parseInt(id);
 
             //check if it exists
@@ -51,8 +47,9 @@ class GalleryController {
             }
 
             const { caption, category, featured } = req.body;
-
             //update
+
+            console.log("Updating gallery", req.body)
           
             await db.update(galleryTable).set({
                 image: image,

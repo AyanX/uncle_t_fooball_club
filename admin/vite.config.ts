@@ -21,7 +21,7 @@ export default defineConfig({
     // Proxy API requests in dev to avoid CORS issues
     proxy: {
       '/api': {
-        target: process.env.VITE_API_BASE_URL || 'https://api.kilimanjaro-fc.com',
+        target: process.env.VITE_API_BASE_URL || 'https://api.Uncle T-fc.com',
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: 'localhost',

@@ -1,4 +1,4 @@
-
+// context/AdminDataContext.tsx — single Promise.all, includes news views
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { api } from '@/services/api';
 import {
@@ -22,6 +22,7 @@ interface AdminData {
   milestones: Milestone[]; management: Management[]; socials: SocialInfo;
   newsViews: NewsView[];
   teamname: string;
+  logo: { image: string; blur_image: string } | null;
   loading: boolean;
 }
 
@@ -44,6 +45,7 @@ interface AdminDataContextType extends AdminData {
   setSocials: (v: SocialInfo) => void;
   setNewsViews: (v: NewsView[]) => void;
   setTeamname: (v: string) => void;
+  setLogo: (v: { image: string; blur_image: string } | null) => void;
 }
 
 const AdminDataContext = createContext<AdminDataContextType>({} as AdminDataContextType);
@@ -56,7 +58,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     gallery: dummyGallery, galleryCategories: dummyGalleryCategories,
     stats: dummyClubStats, missionVision: dummyMissionVision,
     milestones: dummyMilestones, management: dummyManagement, socials: dummySocials,
-    newsViews: [], teamname: 'Kilimanjaro FC', loading: true,
+    newsViews: [], teamname: 'Uncle T FC', logo: null, loading: true,
   });
 
   const fetchAll = useCallback(async () => {
@@ -64,21 +66,22 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     const [
       players, news, newsCategories, fixtures, programs, programTitles,
       partners, partnerTiers, gallery, galleryCategories,
-      stats, missionVision, milestones, management, socials, newsViews, teamnameRes,
+      stats, missionVision, milestones, management, socials, newsViews, teamnameRes, logoRes,
     ] = await Promise.all([
       api.get.players(), api.get.news(), api.get.newsCategories(),
       api.get.fixtures(), api.get.programs(), api.get.programTitles(),
       api.get.partners(), api.get.partnerTiers(),
       api.get.gallery(), api.get.galleryCategories(),
       api.get.stats(), api.get.missionVision(), api.get.milestones(),
-      api.get.management(), api.get.socials(), api.get.newsViews(), api.get.teamname(),
+      api.get.management(), api.get.socials(), api.get.newsViews(), api.get.teamname(), api.get.logo(),
     ]);
     setData({
       players, news, newsCategories, fixtures, programs, programTitles,
       partners, partnerTiers, gallery, galleryCategories,
       stats, missionVision, milestones, management, socials,
       newsViews: newsViews as NewsView[],
-      teamname: (teamnameRes as any)?.name || 'Kilimanjaro FC',
+      teamname: (teamnameRes as any)?.name || 'Uncle T FC',
+      logo: logoRes ? { image: (logoRes as any).image || '', blur_image: (logoRes as any).blur_image || '' } : null,
       loading: false,
     });
   }, []);
@@ -101,6 +104,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
       setManagement: make('management'), setSocials: make('socials'),
       setNewsViews: make('newsViews'),
       setTeamname: (v: string) => setData(p => ({ ...p, teamname: v })),
+      setLogo: (v) => setData(p => ({ ...p, logo: v })),
     }}>
       {children}
     </AdminDataContext.Provider>

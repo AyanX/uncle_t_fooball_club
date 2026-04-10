@@ -1,12 +1,38 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Twitter, Instagram, Facebook, Youtube } from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
 import styles from './Footer.module.scss';
 
+const LogoMark: React.FC<{ image?: string; blurImage?: string }> = ({ image, blurImage }) => {
+  const [loaded, setLoaded] = React.useState(false);
+
+  if (!image) return null;
+
+  return (
+    <div className={styles.logoImgWrap}>
+      {blurImage && (
+        <img
+          src={blurImage}
+          aria-hidden
+          alt=""
+          className={styles.logoBlur}
+          style={{ opacity: loaded ? 0 : 1 }}
+        />
+      )}
+      <img
+        src={image}
+        alt="Uncle T FC"
+        className={styles.logoImg}
+        onLoad={() => setLoaded(true)}
+        style={{ opacity: loaded ? 1 : 0 }}
+      />
+    </div>
+  );
+};
+
 const Footer: React.FC = () => {
-  const { socials } = useAppContext();
+  const { socials, programTitles, programs, logo } = useAppContext();
   const year = new Date().getFullYear();
 
   const socialLinks = [
@@ -20,9 +46,10 @@ const Footer: React.FC = () => {
     <footer className={styles.footer}>
       <div className={styles.top}>
         <div className={styles.container}>
+          {/* Brand */}
           <div className={styles.brand}>
             <Link to="/" className={styles.logo}>
-              <div className={styles.logoMark}><span>U</span></div>
+              <LogoMark image={logo?.image} blurImage={logo?.blur_image} />
               <div className={styles.logoText}>
                 <span className={styles.logoName}>Uncle T</span>
                 <span className={styles.logoSub}>Football Club</span>
@@ -38,6 +65,7 @@ const Footer: React.FC = () => {
             )}
           </div>
 
+          {/* Quick links */}
           <div className={styles.linksCol}>
             <h4 className={styles.colTitle}>Club</h4>
             <ul className={styles.linkList}>
@@ -50,12 +78,17 @@ const Footer: React.FC = () => {
           <div className={styles.linksCol}>
             <h4 className={styles.colTitle}>Programmes</h4>
             <ul className={styles.linkList}>
-              {[['Sports Academy','/programs/sports'],['Green Goals','/programs/environment'],['Healthy Nation','/programs/health'],['Creative Kicks','/programs/arts'],['Future Leaders','/programs/leadership'],['Reading FC','/programs/libraries']].map(([label,path]) => (
-                <li key={path}><Link to={path} className={styles.footerLink}>{label}</Link></li>
-              ))}
+              {programTitles.map((pt) => {
+                const program = programs.find(p => p.title === pt.title);
+                const path = program ? `/programs/${program.slug}` : '#';
+                return (
+                  <li key={pt.id}><Link to={path} className={styles.footerLink}>{pt.title}</Link></li>
+                );
+              })}
             </ul>
           </div>
 
+          {/* Contact from fetched socials */}
           <div className={styles.linksCol}>
             <h4 className={styles.colTitle}>Contact</h4>
             <ul className={styles.contactList}>
@@ -69,14 +102,14 @@ const Footer: React.FC = () => {
                 <li><Mail size={15} className={styles.contactIcon} /><a href={`mailto:${socials.email}`} className={styles.footerLink}>{socials.email}</a></li>
               )}
             </ul>
-            <Link to="/volunteer" className={styles.joinBtn}>Volunteer</Link>
+            {/** <Link to="/volunteer" className={styles.joinBtn}>Volunteer</Link> */}
           </div>
         </div>
       </div>
 
       <div className={styles.bottom}>
         <div className={styles.bottomInner}>
-          <p className={styles.copy}>&copy; {year} Uncle T-FC. All rights reserved.</p>
+          <p className={styles.copy}>&copy; {year} Uncle T FC. All rights reserved.</p>
           <div className={styles.legal}>
             <Link to="/contact" className={styles.legalLink}>Privacy Policy</Link>
             <Link to="/contact" className={styles.legalLink}>Terms of Use</Link>

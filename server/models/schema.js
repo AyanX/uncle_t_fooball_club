@@ -17,6 +17,13 @@ const {
   tinyint,
 } = require("drizzle-orm/mysql-core");
 
+const logoTable = mysqlTable("logo", {
+    id: int("id").primaryKey().autoincrement(),
+    image: varchar("image", { length: 255 }).notNull(),
+    blur_image: varchar("blur_image", { length: 255 }),
+    created_at: timestamp("created_at").defaultNow(),
+    modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
+})
 
 
 const player= mysqlTable("player", {
@@ -68,15 +75,7 @@ const fixturesTable = mysqlTable("fixtures", {
   modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
 });
 
-// export interface Partner {
-//   id: number;
-//   name: string;
-//   logo: string;
-//   blur_image: string;
-//   tier: string;
-//   website?: string;
-//   description: string;
-// }
+
 
 
 const partnersTable = mysqlTable("partners", {  
@@ -297,6 +296,7 @@ module.exports = {
 adminLoginDetails,
   player,
   managementTable,
+  logoTable,
   newsCategory,
   fixturesTable,
   partnersTable,

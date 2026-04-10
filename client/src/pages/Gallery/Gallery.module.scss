@@ -12,6 +12,8 @@
   &.active { background: $color-secondary; color: $color-white; border-color: $color-secondary; }
 }
 
+// Dynamic masonry grid
+// Each item uses inline gridColumn/gridRow spans computed from image aspect ratio
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -29,6 +31,7 @@
   border-radius: $radius-lg;
   background: $color-primary-dark;
 
+  // Override aspect ratio on the BlurImage wrapper so it fills the grid cell
   & > div:first-child {
     position: absolute;
     inset: 0;
@@ -39,6 +42,7 @@
   &:hover img { transform: scale(1.06); }
 }
 
+// Caption: always visible at bottom, no hover required
 .caption {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -80,6 +84,7 @@
   backdrop-filter: blur(4px);
 }
 
+// Lightbox
 .lightbox {
   position: fixed; inset: 0; background: rgba($color-primary-dark, 0.96);
   z-index: $z-modal; display: flex; align-items: center; justify-content: center;
