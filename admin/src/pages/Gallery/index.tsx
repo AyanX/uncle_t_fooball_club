@@ -1,4 +1,3 @@
-// Gallery/index.tsx — Gallery management with ImageInput, always-visible actions, proper responses
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Star } from 'lucide-react';

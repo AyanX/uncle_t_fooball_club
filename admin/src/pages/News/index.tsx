@@ -1,4 +1,3 @@
-// pages/News/index.tsx — news grid + categories + views + featured toggle + always-visible actions
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';

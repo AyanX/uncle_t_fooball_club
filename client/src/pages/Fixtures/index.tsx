@@ -5,6 +5,7 @@ import PageHeader from '@/components/common/PageHeader/PageHeader';
 import SectionTitle from '@/components/common/SectionTitle/SectionTitle';
 import Loader from '@/components/common/Loader/Loader';
 import { useAppContext } from '@/context/AppContext';
+import { Helmets } from '@/helmet';
 import { Fixture } from '@/data/dummyData';
 import styles from './Fixtures.module.scss';
 

@@ -1,6 +1,3 @@
-// Programs/index.tsx — No slug input (auto-generated). Title from dropdown of programTitles.
-// Titles already used by another programme are excluded from the dropdown.
-// If no titles exist, empty state prompts user to create one first.
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Check, X, AlertCircle, BookOpen, Tag } from 'lucide-react';
@@ -13,7 +10,6 @@ import ImageInput from '@/components/ui/ImageInput';
 import BlurImage from '@/components/ui/BlurImage';
 import styles from './Programs.module.scss';
 
-// Slug auto-generated — never exposed to user
 const toSlug = (t: string) =>
   t.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').slice(0, 80);
 

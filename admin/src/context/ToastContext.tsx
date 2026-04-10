@@ -1,4 +1,3 @@
-// context/ToastContext.tsx — Global toast notifications
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, AlertTriangle, X, Info } from 'lucide-react';
@@ -51,7 +50,6 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       info:    (m) => toast('info', m),
     }}>
       {children}
-      {/* Toast container */}
       <div style={{
         position: 'fixed', bottom: 24, right: 24,
         display: 'flex', flexDirection: 'column', gap: 10,

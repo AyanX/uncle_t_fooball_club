@@ -5,6 +5,7 @@ import PageHeader from '@/components/common/PageHeader/PageHeader';
 import SectionTitle from '@/components/common/SectionTitle/SectionTitle';
 import Loader from '@/components/common/Loader/Loader';
 import { useAppContext } from '@/context/AppContext';
+import { Helmets } from '@/helmet';
 import { Link } from 'react-router-dom';
 import styles from './Partners.module.scss';
 
@@ -13,6 +14,7 @@ const Partners: React.FC = () => {
 
   return (
     <main>
+      {Helmets.partners}
       <PageHeader
         eyebrow="Commercial"
         title="Partners & Sponsors"

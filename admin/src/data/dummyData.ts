@@ -1,8 +1,3 @@
-// =============================================================================
-// dummyData.ts — All static fallback data for Uncle T FC
-// IDs are now integers. Added: featured, first_team, fans, blur_image on mgmt
-// =============================================================================
-
 export interface Player {
   id: number;
   name: string;

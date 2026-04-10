@@ -4,16 +4,6 @@
   position: fixed;
   top: 10px; left: 0; right: 0;
   z-index: $z-navbar;
-  // height: $navbar-height;
-  // transition: background $transition-base, box-shadow $transition-base;
-  // background: transparent;
-
-  // &.scrolled {
-  //   background: rgba($color-primary-dark, 0.97);
-  //   backdrop-filter: blur(18px);
-  //   -webkit-backdrop-filter: blur(18px);
-  //   box-shadow: 0 2px 24px rgba(0,0,0,0.4);
-  // }
 }
 
 .inner {

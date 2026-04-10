@@ -4,6 +4,7 @@ import { CheckCircle, Heart, Users, Globe, Zap } from 'lucide-react';
 import { api } from '@/services/api';
 import PageHeader from '@/components/common/PageHeader/PageHeader';
 import SectionTitle from '@/components/common/SectionTitle/SectionTitle';
+import { Helmets } from '@/helmet';
 import styles from './Volunteer.module.scss';
 
 const AREAS = [
@@ -44,6 +45,7 @@ const Volunteer: React.FC = () => {
 
   return (
     <main>
+      {Helmets.volunteer}
       <PageHeader
         eyebrow="Get Involved"
         title="Volunteer With Us"

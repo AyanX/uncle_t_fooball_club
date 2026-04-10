@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle, Trophy, Leaf, Heart, Palette, Star, BookOpen } from 'lucide-react';
 import { api } from '@/services/api';
 import { Program } from '@/data/dummyData';
+import { Helmets } from '@/helmet';
 import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import styles from './ProgramDetail.module.scss';
@@ -39,8 +40,7 @@ const ProgramDetail: React.FC = () => {
   if (loading) return <Loader fullHeight />;
   if (!program)  return null;
 
-
-const getIcon = (iconName?: string) => {
+  const getIcon = (iconName?: string) => {
   if (iconName && iconMap[iconName]) {
     return iconMap[iconName];
   }
@@ -54,6 +54,7 @@ const getIcon = (iconName?: string) => {
 
   return (
     <main className={styles.page}>
+      {Helmets.programs}
       {/* Back nav */}
       <div className={styles.backBand}>
         <div className={styles.container}>

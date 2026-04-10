@@ -5,6 +5,7 @@ import { ArrowLeft, Flag, Twitter, Instagram, ArrowRight } from 'lucide-react';
 import { api } from '@/services/api';
 import { Player } from '@/data/dummyData';
 import { useAppContext } from '@/context/AppContext';
+import { Helmets } from '@/helmet';
 import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import styles from './PlayerProfile.module.scss';
@@ -76,6 +77,7 @@ const PlayerProfile: React.FC = () => {
 
   return (
     <main className={styles.page}>
+      {Helmets.playerProfile}
       {/* Back button */}
       <div className={styles.backWrap}>
         <div className={styles.container}>

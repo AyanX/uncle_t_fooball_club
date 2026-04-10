@@ -1,6 +1,3 @@
-// services/api.ts — Admin API service
-// All responses: { data: T, message: string }
-// withCredentials: true ensures cookies are sent/received
 import axios from 'axios';
 import {
   dummyPlayers, dummyNews, dummyNewsCategories, dummyFixtures,
@@ -9,12 +6,12 @@ import {
   dummyMilestones, dummyManagement, dummySocials,
 } from '@/data/dummyData';
 
-export const BASE_URL = "http://localhost:9000/api";  // Change to actual backend URL in production
+export const BASE_URL ="https://api.uncletfootballclub.com/api"
 
 const http = axios.create({
   baseURL: BASE_URL,
   timeout: 12000,
-  withCredentials: true,   
+  withCredentials: true, // send cookies with requests
 });
 
 
@@ -31,22 +28,18 @@ async function safe<T>(fetcher: () => Promise<any>, fallback: T): Promise<T> {
   catch { return fallback; }
 }
 
-// Dummy views for fallback only
 const dummyViews = [
   { id: 1, newsId: 1, views: 1540 }, { id: 2, newsId: 2, views: 892 },
   { id: 3, newsId: 3, views: 643 },  { id: 4, newsId: 4, views: 412 },
   { id: 5, newsId: 5, views: 310 },  { id: 6, newsId: 6, views: 198 },
 ];
 
-
-// Dummy messages for fallback
 const dummyMessages: any[] = [];
 
 const dummyAdminProfile = { username: 'admin', email: 'admin@Uncle T-fc.com' };
 
 export const api = {
   auth: {
-    // Verify session via GET /auth — 200 = logged in, else not
     verify: async (): Promise<any> => {
       try { const r = await http.get('/auth'); return r.data?.data ?? null; }
       catch { return null; }

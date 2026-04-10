@@ -1,4 +1,3 @@
-// pages/Messages/index.tsx — Contact messages with Android-style split view
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Trash2, Mail, MailOpen, Search, Clock, MapPin, Phone, User, MessageSquare } from 'lucide-react';

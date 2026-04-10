@@ -1,4 +1,3 @@
-// BlurImage.tsx — Image with blur placeholder fade-in for admin pages
 import React, { useState } from 'react';
 
 interface BlurImageProps {

@@ -12,7 +12,7 @@ import {
   MissionVisionItem, Milestone, Management, SocialInfo, TeamName,
 } from '@/data/dummyData';
 
-const BASE_URL ="http://localhost:9000/api";  // Change to actual backe
+const BASE_URL ="https://api.uncletfootballclub.com/api"
 
 interface ApiResponse<T> { data: T; message: string; }
 

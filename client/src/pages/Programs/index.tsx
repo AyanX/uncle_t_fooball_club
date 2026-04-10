@@ -15,6 +15,7 @@ import SectionTitle from "@/components/common/SectionTitle/SectionTitle";
 import BlurImage from "@/components/common/BlurImage/BlurImage";
 import Loader from "@/components/common/Loader/Loader";
 import { useAppContext } from "@/context/AppContext";
+import { Helmets } from "@/helmet";
 import styles from "./Programs.module.scss";
 
 const iconMap: Record<string, React.ReactNode> = {

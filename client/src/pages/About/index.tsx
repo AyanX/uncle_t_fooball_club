@@ -7,6 +7,7 @@ import Stats from '@/components/home/Stats/Stats';
 import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import { useAppContext } from '@/context/AppContext';
+import { Helmets } from '@/helmet';
 import styles from './About.module.scss';
 
 const iconList = [<Users size={28} />, <Zap size={28} />, <Star size={28} />, <Shield size={28} />];
@@ -16,6 +17,7 @@ const About: React.FC = () => {
 
   return (
     <main>
+      {Helmets.about}
       <PageHeader
         eyebrow="Our Story"
         title="About Uncle T FC"

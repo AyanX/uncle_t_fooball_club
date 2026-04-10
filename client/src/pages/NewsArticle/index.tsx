@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, Tag, Calendar, User } from 'lucide-react';
 import { api } from '@/services/api';
 import { NewsItem } from '@/data/dummyData';
+import { Helmets } from '@/helmet';
 import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import { useAppContext } from '@/context/AppContext';
@@ -37,6 +38,7 @@ const NewsArticle: React.FC = () => {
 
   return (
     <main className={styles.page}>
+      {Helmets.news}
       <div className={styles.backBand}>
         <div className={styles.container}>
           <Link to="/news" className={styles.backBtn}><ArrowLeft size={16} /> Back to News</Link>

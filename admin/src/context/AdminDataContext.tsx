@@ -1,4 +1,3 @@
-// context/AdminDataContext.tsx — single Promise.all, includes news views
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { api } from '@/services/api';
 import {

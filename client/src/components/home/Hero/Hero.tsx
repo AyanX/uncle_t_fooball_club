@@ -21,12 +21,12 @@ const Hero: React.FC = () => {
 
   // Find the next upcoming fixture, or use fallback
   const upcomingFixture = fixtures.find(f => f.status === 'upcoming') || fixtures.find(f => f.status === 'live') || fixtures.find(f => f.status === 'completed') ||{
-    date: '2024-10-15',
-    time: '15:00',
-    homeTeam: 'Uncle T FC',
-    awayTeam: 'City Rovers FC',
-    venue: 'Union 7 Arena',
-    competition: 'Premier League',
+    date: ' ',
+    time: ' ',
+    homeTeam: '  ',
+    awayTeam: '  ',
+    venue: ' ',
+    competition: ' '
   };
 
   const formatDate = (dateStr: string) => {

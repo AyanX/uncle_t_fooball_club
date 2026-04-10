@@ -1,4 +1,3 @@
-// Team/index.tsx — Squad management, first-team toggle, always-visible actions, ImageInput
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Flag, Star, Users } from 'lucide-react';

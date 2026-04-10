@@ -1,4 +1,3 @@
-// Partners/index.tsx — Partners grouped by tier, optimistic tier name update, always-visible actions
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, ExternalLink } from 'lucide-react';

@@ -1,4 +1,3 @@
-// pages/Login/index.tsx — Logo fetched pre-auth from /logo, shown in brand
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +9,6 @@ import styles from './Login.module.scss';
 
 type LoginMode = 'password' | 'pin';
 
-// Standalone logo fetch — no auth required
 const useLogo = () => {
   const [logo, setLogo] = useState<{ image: string; blur_image: string } | null>(null);
   const [loaded, setLoaded] = useState(false);

@@ -7,6 +7,7 @@ import SectionTitle from '@/components/common/SectionTitle/SectionTitle';
 import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import { useAppContext } from '@/context/AppContext';
+import { Helmets } from '@/helmet';
 import styles from './Team.module.scss';
 
 type Filter = 'All' | 'First Team' | 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward';
@@ -24,6 +25,7 @@ const Team: React.FC = () => {
 
   return (
     <main>
+      {Helmets.team}
       <PageHeader
         eyebrow="First Team"
         title="The Squad"

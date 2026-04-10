@@ -1,4 +1,3 @@
-// NewsEdit/index.tsx — route /news/:title — rich text editor, blur_image, proper response handling
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Pencil, Check, X, Save, Star, Trash2, Eye, Bold } from 'lucide-react';

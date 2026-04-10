@@ -1,4 +1,3 @@
-// ImageInput.tsx — Smart image field with blur placeholder support
 import React, { useState, useRef } from 'react';
 import { Upload, Pencil, Trash2 } from 'lucide-react';
 

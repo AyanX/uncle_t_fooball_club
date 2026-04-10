@@ -1,4 +1,3 @@
-// pages/ErrorPage/index.tsx — Runtime error boundary page
 import React from 'react';
 import { Link, useNavigate, useRouteError } from 'react-router-dom';
 import { motion } from 'framer-motion';

@@ -1,4 +1,3 @@
-// context/AuthContext.tsx — Session via GET /auth + profile via GET /admin/profile
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '@/services/api';
 
@@ -28,14 +27,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Verify session via GET /auth
-    // 2. Fetch real profile (username, email) via GET /admin/profile
     const init = async () => {
       try {
         const authData = await api.auth.verify();
         if (!authData) { setLoading(false); return; }
 
-        // Session valid — fetch full profile for accurate username/email
         const profile = await api.auth.getProfile().catch(() => null);
 
         setUser({
@@ -44,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           username: profile?.username || authData?.username || 'Admin',
         });
       } catch {
-        /* not authenticated — stays null */
+        // user stays null
       } finally {
         setLoading(false);
       }

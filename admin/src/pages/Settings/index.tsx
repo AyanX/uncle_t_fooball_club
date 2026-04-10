@@ -1,4 +1,3 @@
-// Settings/index.tsx — Credentials, Socials, Stats, Mission/Vision, Milestones, Management
 import React, { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Save, Eye, EyeOff, Globe, Users, Trophy, BookOpen, Key, User, Mail, Lock } from 'lucide-react';
 import { useAdminData } from '@/context/AdminDataContext';

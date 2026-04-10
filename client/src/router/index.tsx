@@ -5,8 +5,9 @@ import Footer from "@/components/common/Footer/Footer";
 import Loader from "@/components/common/Loader/Loader";
 import ErrorPage from "@/pages/ErrorPage/index";
 import ScrollToTop from "@/components/scrollTop/scrollTop";
+import Home from "@/pages/Home/index";
 
-const Home = lazy(() => import("@/pages/Home/index"));
+
 const About = lazy(() => import("@/pages/About/index"));
 const Team = lazy(() => import("@/pages/Team/index"));
 const PlayerProfile = lazy(() => import("@/pages/PlayerProfile/index"));
@@ -42,11 +43,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <PageSuspense>
-            <Home />
-          </PageSuspense>
-        ),
+        element:<Home />
       },
       {
         path: "about",

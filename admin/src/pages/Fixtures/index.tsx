@@ -1,4 +1,4 @@
-// Fixtures/index.tsx — dynamic teamname, fixed date/fans/scores inputs
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Pencil, Trash2, Calendar, MapPin, Users } from "lucide-react";

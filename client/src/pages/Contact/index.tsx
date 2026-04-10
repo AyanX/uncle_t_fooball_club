@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { api } from '@/services/api';
 import PageHeader from '@/components/common/PageHeader/PageHeader';
 import { useAppContext } from '@/context/AppContext';
+import { Helmets } from '@/helmet';
 import styles from './Contact.module.scss';
 
 const SUBJECTS = [

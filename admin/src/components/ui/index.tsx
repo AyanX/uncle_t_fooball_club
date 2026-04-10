@@ -1,4 +1,3 @@
-// components/ui/index.tsx — Shared UI primitives (updated)
 import React, { ReactNode, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertTriangle, Upload, Trash2, Pencil } from 'lucide-react';
