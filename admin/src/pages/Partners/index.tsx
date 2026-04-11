@@ -32,7 +32,7 @@ const PartnerFormEl: React.FC<{
       <Field label="Partner Name" required><Input value={value.name} onChange={e=>set('name',e.target.value)} placeholder="Company Name"/></Field>
       <Field label="Tier">
         <Select value={value.tier} onChange={e=>set('tier',e.target.value)}>
-          {tiers.map(t=><option key={t.id} value={t.name}>{t.name.charAt(0).toUpperCase()+t.name.slice(1)}</option>)}
+          {tiers?.map(t=><option key={t.id} value={t.name}>{t.name.charAt(0).toUpperCase()+t.name.slice(1)}</option>)}
         </Select>
       </Field>
       <Field label="Website URL"><Input value={value.website||''} onChange={e=>set('website',e.target.value)} placeholder="https://example.com (leave blank for no link)"/></Field>
@@ -71,7 +71,7 @@ const Partners: React.FC = () => {
       if (editItem) {
         const res = await api.put.partner(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...form };
-        setPartners(partners.map(p => p.id === editItem.id ? updated : p));
+        setPartners(partners?.map(p => p.id === editItem.id ? updated : p));
         success(res.data?.message || 'Partner updated');
         setEditItem(null);
       } else {
@@ -91,7 +91,7 @@ const Partners: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.partner(target.id);
-      setPartners(partners.filter(p => p.id !== target.id));
+      setPartners(partners?.filter(p => p.id !== target.id));
       success((res as any)?.data?.message || 'Partner removed');
     } catch { error('Failed to remove partner'); } finally { setDeleting(false); }
   };
@@ -105,16 +105,16 @@ const Partners: React.FC = () => {
 
     // Optimistic: update tier name in UI immediately
     if (editTier) {
-      setPartnerTiers(partnerTiers.map(t => t.id === editTier.id ? { ...t, name: tierName.trim() } : t));
+      setPartnerTiers(partnerTiers?.map(t => t.id === editTier.id ? { ...t, name: tierName.trim() } : t));
       // Also update partner cards under this tier immediately
-      setPartners(partners.map(p => p.tier === editTier.name ? { ...p, tier: tierName.trim() } : p));
+      setPartners(partners?.map(p => p.tier === editTier.name ? { ...p, tier: tierName.trim() } : p));
     }
 
     try {
       if (editTier) {
         const res = await api.put.partnerTier(editTier.id, { name: tierName.trim() });
         const updated = res.data?.data ?? { ...editTier, name: tierName.trim() };
-        setPartnerTiers(partnerTiers.map(t => t.id === editTier.id ? updated : t));
+        setPartnerTiers(partnerTiers?.map(t => t.id === editTier.id ? updated : t));
         success(res.data?.message || 'Tier updated');
         setTierOpen(false);
       } else {
@@ -127,8 +127,8 @@ const Partners: React.FC = () => {
     } catch {
       // Rollback optimistic update on failure
       if (editTier) {
-        setPartnerTiers(partnerTiers.map(t => t.id === editTier.id ? editTier : t));
-        setPartners(partners.map(p => p.tier === tierName.trim() ? { ...p, tier: editTier.name } : p));
+        setPartnerTiers(partnerTiers?.map(t => t.id === editTier.id ? editTier : t));
+        setPartners(partners?.map(p => p.tier === tierName.trim() ? { ...p, tier: editTier.name } : p));
       }
       error('Failed to save tier');
     } finally { setSaving(false); }
@@ -141,7 +141,7 @@ const Partners: React.FC = () => {
     setDeleteTier(null);
     try {
       const res = await api.delete.partnerTier(target.id);
-      setPartnerTiers(partnerTiers.filter(t => t.id !== target.id));
+      setPartnerTiers(partnerTiers?.filter(t => t.id !== target.id));
       success((res as any)?.data?.message || 'Tier deleted');
     } catch { error('Failed to delete tier'); } finally { setDeleting(false); }
   };
@@ -151,7 +151,7 @@ const Partners: React.FC = () => {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Partners & Sponsors</h1>
-          <p className={styles.pageSub}>{partners.length} partners · {partnerTiers.length} tiers</p>
+          <p className={styles.pageSub}>{partners?.length} partners · {partnerTiers?.length} tiers</p>
         </div>
         <div className={styles.headerBtns}>
           <Btn variant="secondary" onClick={openAddTier}><Plus size={14}/> Add Tier</Btn>
@@ -162,15 +162,15 @@ const Partners: React.FC = () => {
       {loading ? (
         <div className={styles.skeleton}/>
       ) : (
-        partnerTiers.map(tier => {
-          const tierPartners = partners.filter(p => p.tier === tier.name);
+        partnerTiers?.map(tier => {
+          const tierPartners = partners?.filter(p => p.tier === tier.name);
           const col = tierColors[tier.name] || '#718096';
           return (
             <div key={tier.id} className={styles.tierSection}>
               <div className={styles.tierHeader} style={{ '--tier-col': col } as any}>
                 <div className={styles.tierDot} style={{ background: col }}/>
                 <h3 className={styles.tierName}>{tier.name.charAt(0).toUpperCase()+tier.name.slice(1)} Partners</h3>
-                <span className={styles.tierCount}>{tierPartners.length}</span>
+                <span className={styles.tierCount}>{tierPartners?.length}</span>
                 {/* Always-visible tier actions */}
                 <div className={styles.tierActions}>
                   <button className={styles.tierBtn} onClick={() => openEditTier(tier)} title="Edit tier name"><Pencil size={12}/></button>
@@ -184,7 +184,7 @@ const Partners: React.FC = () => {
                   <Plus size={20}/><span>Add {tier.name} partner</span>
                 </div>
 
-                {tierPartners.map((p, i) => (
+                {tierPartners?.map((p, i) => (
                   <motion.div key={p.id} className={styles.card} initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.06}}>
                     <div className={styles.cardTop}>
                       <div className={styles.logoArea}>
@@ -217,7 +217,7 @@ const Partners: React.FC = () => {
         })
       )}
 
-      {!loading && partnerTiers.length === 0 && (
+      {!loading && partnerTiers?.length === 0 && (
         <div className={styles.emptyState}>
           <p>No partner tiers yet — add a tier to get started</p>
           <Btn onClick={openAddTier}><Plus size={14}/> Add First Tier</Btn>

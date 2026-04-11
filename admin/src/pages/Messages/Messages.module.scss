@@ -1,7 +1,7 @@
-// Messages.module.scss — Android-style messages split view
+//  kinda like Android-style messages split view
 .page {
   display: flex;
-  height: calc(100vh - 60px - 48px);  // fill below topbar, account for content padding
+  height: calc(100vh - 60px - 48px);
   gap: 0;
   background: $color-white;
   border-radius: $radius-xl;
@@ -10,7 +10,7 @@
   border: 1px solid rgba($color-primary, 0.07);
 }
 
-// ── List pane ─────────────────────────────────────────────
+//    List pane     
 .listPane {
   width: 360px;
   flex-shrink: 0;
@@ -21,14 +21,14 @@
 
   @include xl { width: 320px; }
 
-  // On mobile: full width, hidden when detail is shown
+  // On mobile: full width, hide it when detail is shown
   @include lg {
     width: 100%;
     flex-shrink: 1;
   }
 }
 
-// Mobile: list slides away when detail is shown
+// Mobile: list doesnt show up  when detail is shown
 .listHidden {
   @include lg {
     display: none;
@@ -237,7 +237,7 @@
 
 .listItemUnread .listPreview { color: $color-text-secondary; }
 
-// ── Detail pane ───────────────────────────────────────────
+//    Detail pane     
 .detailPane {
   flex: 1;
   min-width: 0;

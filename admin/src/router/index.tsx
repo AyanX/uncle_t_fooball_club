@@ -73,7 +73,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // Unauthenticated catch-all → redirect to login
+  // Unauthenticated catch→ redirect to login
   { path: '*', element: <Navigate to="/login" replace/> },
 ]);
 

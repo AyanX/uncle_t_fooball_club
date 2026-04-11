@@ -33,7 +33,7 @@ const GalleryFormEl: React.FC<{
       <Field label="Category">
         <Select value={value.category} onChange={e=>set('category',e.target.value)}>
           <option value="">Select category…</option>
-          {categories.map(c=><option key={c.id} value={c.title}>{c.title}</option>)}
+          {categories?.map(c=><option key={c.id} value={c.title}>{c.title}</option>)}
         </Select>
       </Field>
       <div/>
@@ -61,7 +61,7 @@ const Gallery: React.FC = () => {
   const [saving, setSaving]       = useState(false);
   const [deleting, setDeleting]   = useState(false);
 
-  const filtered = catFilter === 'All' ? gallery : gallery.filter(g => g.category === catFilter);
+  const filtered = catFilter === 'All' ? gallery ?? [] : gallery?.filter(g => g.category === catFilter) ?? [];
 
   const openAdd  = () => { setForm({...emptyItem}); setImageFile(null); setAddOpen(true); };
   const openEdit = (item:GalleryItem) => { setForm({...item}); setImageFile(null); setEditItem(item); };
@@ -76,7 +76,7 @@ const Gallery: React.FC = () => {
       if (editItem) {
         const res = await api.put.gallery(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...form };
-        setGallery(gallery.map(g => g.id === editItem.id ? updated : g));
+        setGallery(gallery?.map(g => g.id === editItem.id ? updated : g));
         success(res.data?.message || 'Gallery item updated');
         setEditItem(null);
       } else {
@@ -96,7 +96,7 @@ const Gallery: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.gallery(target.id);
-      setGallery(gallery.filter(g => g.id !== target.id));
+      setGallery(gallery?.filter(g => g.id !== target.id));
       success((res as any)?.data?.message || 'Image deleted');
     } catch { error('Delete failed'); } finally { setDeleting(false); }
   };
@@ -108,7 +108,7 @@ const Gallery: React.FC = () => {
       if (editCat) {
         const res = await api.put.galleryCat(editCat.id, { title: catTitle.trim() });
         const updated = res.data?.data ?? { ...editCat, title: catTitle.trim() };
-        setGalleryCategories(galleryCategories.map(c => c.id === editCat.id ? updated : c));
+        setGalleryCategories(galleryCategories?.map(c => c.id === editCat.id ? updated : c));
         success(res.data?.message || 'Category updated');
       } else {
         const res = await api.post.galleryCat({ title: catTitle.trim() });
@@ -127,19 +127,19 @@ const Gallery: React.FC = () => {
     setDeleteCat(null);
     try {
       const res = await api.delete.galleryCat(target.id);
-      setGalleryCategories(galleryCategories.filter(c => c.id !== target.id));
+      setGalleryCategories(galleryCategories?.filter(c => c.id !== target.id));
       success((res as any)?.data?.message || 'Category deleted');
     } catch { error('Failed to delete category'); } finally { setDeleting(false); }
   };
 
-  const allCats = ['All', ...galleryCategories.map(c => c.title)];
+  const allCats = ['All', ...(galleryCategories?.map(c => c.title) ?? [])];
 
   return (
     <div className={styles.page}>
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Gallery Management</h1>
-          <p className={styles.pageSub}>{gallery.length} images · {galleryCategories.length} categories</p>
+          <p className={styles.pageSub}>{gallery?.length} images · {galleryCategories?.length} categories</p>
         </div>
         <div className={styles.headerBtns}>
           <Btn variant="secondary" onClick={() => setCatOpen(true)}><Plus size={14}/> Categories</Btn>
@@ -148,7 +148,7 @@ const Gallery: React.FC = () => {
       </div>
 
       <div className={styles.filters}>
-        {allCats.map(c => (
+        {allCats?.map(c => (
           <button key={c} className={`${styles.filterBtn} ${catFilter===c ? styles.active:''}`} onClick={() => setCatFilter(c)}>{c}</button>
         ))}
       </div>
@@ -158,7 +158,7 @@ const Gallery: React.FC = () => {
           <div className={styles.addSlot} onClick={openAdd}>
             <Plus size={24}/><span>Add Image</span>
           </div>
-          {filtered.map((item,i) => (
+          {filtered?.map((item,i) => (
             <motion.div key={item.id} className={styles.tile}
               initial={{opacity:0,scale:0.93}} animate={{opacity:1,scale:1}} transition={{duration:0.3,delay:i*0.03}}>
               {item.image && <BlurImage src={item.image} blurSrc={item.blur_image||undefined} alt={item.caption} className={styles.tileImg}/>}
@@ -184,10 +184,10 @@ const Gallery: React.FC = () => {
           <Btn variant="secondary" onClick={openAddCat}><Plus size={13}/> Add</Btn>
         </div>
         <div className={styles.catList}>
-          {galleryCategories.map(c => (
+          {galleryCategories?.map(c => (
             <div key={c.id} className={styles.catChip}>
               <span>{c.title}</span>
-              <span className={styles.catCount}>{gallery.filter(g=>g.category===c.title).length}</span>
+              <span className={styles.catCount}>{gallery?.filter(g=>g.category===c.title)?.length}</span>
               <button className={styles.chipBtn} onClick={() => openEditCat(c)}><Pencil size={11}/></button>
               <button className={`${styles.chipBtn} ${styles.danger}`} onClick={() => setDeleteCat(c)}><Trash2 size={11}/></button>
             </div>

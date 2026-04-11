@@ -41,7 +41,7 @@ const EditableList: React.FC<{
     <div className={styles.editableList}>
       <span className={styles.editableListLabel}>{label}</span>
       <div className={styles.listItems}>
-        {items.map((item, i) => (
+        {items?.map((item, i) => (
           <div key={i} className={styles.listRow}>
             {ei === i ? (
               <div className={styles.listEditRow}>
@@ -60,7 +60,7 @@ const EditableList: React.FC<{
                 <span className={styles.listItemText}>{item}</span>
                 <div className={styles.listItemActions}>
                   <button className={styles.listActionBtn} onClick={() => { setEi(i); setEv(item); }}><Pencil size={12} /></button>
-                  <button className={`${styles.listActionBtn} ${styles.danger}`} onClick={() => onChange(items.filter((_, j) => j !== i))}><Trash2 size={12} /></button>
+                  <button className={`${styles.listActionBtn} ${styles.danger}`} onClick={() => onChange(items?.filter((_, j) => j !== i))}><Trash2 size={12} /></button>
                 </div>
               </>
             )}
@@ -108,7 +108,7 @@ const EditableStatList: React.FC<{
     <div className={styles.editableList}>
       <span className={styles.editableListLabel}>Stats</span>
       <div className={styles.listItems}>
-        {stats.map((s, i) => (
+        {stats?.map((s, i) => (
           <div key={i} className={styles.listRow}>
             {ei === i ? (
               <div className={styles.statEditRow}>
@@ -126,7 +126,7 @@ const EditableStatList: React.FC<{
                 </div>
                 <div className={styles.listItemActions}>
                   <button className={styles.listActionBtn} onClick={() => { setEi(i); setEl(s.label); setEv(s.value); }}><Pencil size={12} /></button>
-                  <button className={`${styles.listActionBtn} ${styles.danger}`} onClick={() => onChange(stats.filter((_, j) => j !== i))}><Trash2 size={12} /></button>
+                  <button className={`${styles.listActionBtn} ${styles.danger}`} onClick={() => onChange(stats?.filter((_, j) => j !== i))}><Trash2 size={12} /></button>
                 </div>
               </>
             )}
@@ -178,7 +178,7 @@ const ProgramForm: React.FC<{
 
       {/* Title — dropdown of available (unused) titles */}
       <Field label="Programme Title" required>
-        {availableTitles.length === 0 ? (
+        {availableTitles?.length === 0 ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'rgba(200,16,46,0.05)', border: '1.5px solid rgba(200,16,46,0.2)', borderRadius: 8 }}>
             <AlertCircle size={15} color="#C8102E" />
             <span style={{ fontFamily: 'Inter,sans-serif', fontSize: 13, color: '#C8102E' }}>
@@ -188,7 +188,7 @@ const ProgramForm: React.FC<{
         ) : (
           <Select value={value.title} onChange={e => handleTitleChange(e.target.value)}>
             <option value="">Select a programme title…</option>
-            {availableTitles.map(t => (
+            {availableTitles?.map(t => (
               <option key={t.id} value={t.title}>{t.title}</option>
             ))}
           </Select>
@@ -277,7 +277,7 @@ const TitleManager: React.FC<{
       </div>
 
       <div className={styles.titlesList}>
-        {titles.map(t => (
+        {titles?.map(t => (
           <div key={t.id} className={`${styles.titleChip} ${usedTitles.includes(t.title) ? styles.titleInUse : ''}`}>
             {editId === t.id ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -349,15 +349,15 @@ const Programs: React.FC = () => {
 
   // Titles already assigned to a programme (other than the one being edited)
   const usedTitles = programs
-    .filter(p => !editItem || p.id !== editItem.id)
-    .map(p => p.title)
-    .filter(Boolean);
+    ?.filter(p => !editItem || p.id !== editItem.id)
+    ?.map(p => p.title)
+    ?.filter(Boolean);
 
   // Available titles = all titles minus those in use by OTHER programmes
-  const availableTitles = programTitles.filter(t => !usedTitles.includes(t.title));
+  const availableTitles = programTitles?.filter(t => !usedTitles.includes(t.title));
   // When editing, also include the current programme's own title
   const availableTitlesForEdit = (prog: Program) =>
-    programTitles.filter(t => !usedTitles.includes(t.title) || t.title === prog.title);
+    programTitles?.filter(t => !usedTitles.includes(t.title) || t.title === prog.title);
 
   const openAdd = () => {
     setForm({ ...emptyPF });
@@ -384,7 +384,7 @@ const Programs: React.FC = () => {
       if (editItem) {
         const res = await api.put.program(editItem.id, fd);
         const updated = res.data?.data ?? { ...editItem, ...payload };
-        setPrograms(programs.map(p => p.id === editItem.id ? updated : p));
+        setPrograms(programs?.map(p => p.id === editItem.id ? updated : p));
         success(res.data?.message || 'Programme updated');
         setEditItem(null);
       } else {
@@ -405,7 +405,7 @@ const Programs: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.program(target.id);
-      setPrograms(programs.filter(p => p.id !== target.id));
+      setPrograms(programs?.filter(p => p.id !== target.id));
       success((res as any)?.data?.message || 'Programme deleted');
     } catch { error('Failed to delete'); }
     finally { setDeleting(false); }
@@ -416,7 +416,7 @@ const Programs: React.FC = () => {
       if (id !== null) {
         const res = await api.put.programTitle(id, { title: name });
         const updated = res.data?.data ?? { id, title: name };
-        setProgramTitles(programTitles.map(t => t.id === id ? updated : t));
+        setProgramTitles(programTitles?.map(t => t.id === id ? updated : t));
         success(res.data?.message || 'Title updated');
       } else {
         const res = await api.post.programTitle({ title: name });
@@ -430,7 +430,7 @@ const Programs: React.FC = () => {
   const handleDeleteTitle = async (id: number) => {
     try {
       const res = await api.delete.programTitle(id);
-      setProgramTitles(programTitles.filter(t => t.id !== id));
+      setProgramTitles(programTitles?.filter(t => t.id !== id));
       success((res as any)?.data?.message || 'Title deleted');
     } catch { error('Failed to delete title'); }
   };
@@ -440,15 +440,15 @@ const Programs: React.FC = () => {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Programmes</h1>
-          <p className={styles.pageSub}>{programs.length} community programmes · {programTitles.length} titles</p>
+          <p className={styles.pageSub}>{programs?.length} community programmes · {programTitles?.length} titles</p>
         </div>
-        <Btn onClick={openAdd} disabled={availableTitles.length === 0}>
+        <Btn onClick={openAdd} disabled={availableTitles?.length === 0}>
           <Plus size={14} /> Add Programme
         </Btn>
       </div>
 
       {/* No titles warning */}
-      {programTitles.length === 0 && !loading && (
+      {programTitles?.length === 0 && !loading && (
         <div className={styles.noTitlesWarning}>
           <AlertCircle size={18} />
           <div>
@@ -459,9 +459,9 @@ const Programs: React.FC = () => {
       )}
 
       {/* Programme cards grid */}
-      {!loading && programs.length > 0 && (
+      {!loading && programs?.length > 0 && (
         <div className={styles.grid}>
-          {programs.map((prog, i) => (
+          {programs?.map((prog, i) => (
             <motion.div key={prog.id} className={styles.card}
               style={{ '--prog-color': prog.color } as any}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
@@ -475,9 +475,9 @@ const Programs: React.FC = () => {
                 <span className={styles.tagline}>{prog.tagline}</span>
                 <h3 className={styles.title}>{prog.title}</h3>
                 <p className={styles.desc}>{prog.description}</p>
-                {prog.stats.length > 0 && (
+                {prog.stats?.length > 0 && (
                   <div className={styles.statsRow}>
-                    {prog.stats.slice(0, 2).map(s => (
+                    {prog.stats.slice(0, 2)?.map(s => (
                       <div key={s.label} className={styles.stat}>
                         <span className={styles.statVal} style={{ color: prog.color }}>{s.value}</span>
                         <span className={styles.statLbl}>{s.label}</span>
@@ -495,10 +495,10 @@ const Programs: React.FC = () => {
         </div>
       )}
 
-      {/* Programme Titles manager — always at bottom */}
+      {/* Programme Titles manager   */}
       <TitleManager
         titles={programTitles}
-        usedTitles={programs.map(p => p.title)}
+        usedTitles={programs?.map(p => p.title)}
         onSave={handleSaveTitle}
         onDelete={handleDeleteTitle}
       />
@@ -520,7 +520,7 @@ const Programs: React.FC = () => {
         />
         <div className={styles.modalFooter}>
           <Btn variant="secondary" onClick={() => { setAddOpen(false); setEditItem(null); }}>Cancel</Btn>
-          <Btn loading={saving} onClick={handleSave} disabled={currentAvailable.length === 0 && !form.title}>
+          <Btn loading={saving} onClick={handleSave} disabled={currentAvailable?.length === 0 && !form.title}>
             {editItem ? 'Save Changes' : 'Add Programme'}
           </Btn>
         </div>

@@ -14,7 +14,7 @@
   letter-spacing: -0.02em;
 }
 
-// ── Horizontal tab bar ────────────────────────────────────
+//    Horizontal tab bar    
 .tabBar {
   display: flex;
   flex-wrap: wrap;
@@ -63,7 +63,7 @@
   width: 100%;
 }
 
-// ── Credentials grid ──────────────────────────────────────
+//    Credentials grid      
 .credsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -140,7 +140,7 @@
   border-top: 1px solid rgba($color-primary, 0.07);
 }
 
-// ── Full-width panel ──────────────────────────────────────
+//    Full-width panel      
 .panel {
   background: $color-white;
   border-radius: $radius-xl;
@@ -248,7 +248,7 @@
   }
 }
 
-// Always-visible action buttons (no hover needed)
+
 .alwaysActions {
   display: flex;
   gap: $space-2;
@@ -257,7 +257,6 @@
   margin-top: $space-2;
 }
 
-// List items (mission/vision + milestones)
 .listItems {
   display: flex;
   flex-direction: column;

@@ -215,7 +215,7 @@ export const Table: React.FC<{ headers: string[]; children: ReactNode; }> = ({ h
     <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 500 }}>
       <thead>
         <tr style={{ background: '#F8F9FA', borderBottom: '1px solid rgba(10,20,47,0.08)' }}>
-          {headers.map(h => (
+          {headers?.map(h => (
             <th key={h} style={{ fontFamily: 'Montserrat,sans-serif', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#718096', padding: '12px 16px', textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
           ))}
         </tr>

@@ -68,7 +68,7 @@ const CredentialsPanel: React.FC = () => {
     if (!current) { error('Current password is required'); return; }
     if (!newPass)  { error('New password cannot be empty'); return; }
     if (newPass !== repeat) { error('Passwords do not match'); return; }
-    if (newPass.length < 6) { error('Password must be at least 6 characters'); return; }
+    if (newPass?.length < 6) { error('Password must be at least 6 characters'); return; }
     setSavingPass(true);
     try {
       const res = await api.auth.updatePassword({ current_password: current, new_password: newPass });
@@ -290,12 +290,12 @@ const SocialsPanel: React.FC = () => {
         </div>
       </div>
       <div className={styles.fullGrid}>
-        {leftFields.map(([k,label,ph]) => (
+        {leftFields?.map(([k,label,ph]) => (
           <Field key={k} label={label}>
             <Input value={(form as any)[k]||''} onChange={e=>set(k,e.target.value)} placeholder={ph}/>
           </Field>
         ))}
-        {socialFields.map(([k,label]) => (
+        {socialFields?.map(([k,label]) => (
           <Field key={k} label={label}>
             <Input value={(form as any)[k]||''} onChange={e=>set(k,e.target.value)} placeholder={`https://...`}/>
           </Field>
@@ -325,7 +325,7 @@ const StatsPanel: React.FC = () => {
       if (editItem) {
         const res = await api.put.stat(editItem.id, form);
         const updated = res.data?.data ?? { ...editItem, ...form };
-        setStats(stats.map(s => s.id === editItem.id ? updated : s));
+        setStats(stats?.map(s => s.id === editItem.id ? updated : s));
         success(res.data?.message || 'Stat updated'); setEditItem(null);
       } else {
         const res = await api.post.stat(form);
@@ -341,7 +341,7 @@ const StatsPanel: React.FC = () => {
     setDelTarget(null);
     try {
       const res = await api.delete.stat(delTarget.id);
-      setStats(stats.filter(s => s.id !== delTarget.id));
+      setStats(stats?.filter(s => s.id !== delTarget.id));
       success((res as any)?.data?.message || 'Stat deleted');
     } catch { error('Failed to delete stat'); } finally { setDeleting(false); }
   };
@@ -353,7 +353,7 @@ const StatsPanel: React.FC = () => {
         <Btn variant="secondary" onClick={() => { setForm({ label:'', value:'', icon:'Trophy' }); setAddOpen(true); }}><Plus size={13}/> Add Stat</Btn>
       </div>
       <div className={styles.statsGrid}>
-        {stats.map(s => (
+        {stats?.map(s => (
           <div key={s.id} className={styles.statCard}>
             <span className={styles.statVal}>{s.value}</span>
             <span className={styles.statLbl}>{s.label}</span>
@@ -394,7 +394,7 @@ const MissionPanel: React.FC = () => {
     try {
       const res = await api.put.missionVision(editItem.id, form);
       const updated = res.data?.data ?? { ...editItem, ...form };
-      setMissionVision(missionVision.map(m => m.id === editItem.id ? updated : m));
+      setMissionVision(missionVision?.map(m => m.id === editItem.id ? updated : m));
       success(res.data?.message || 'Updated'); setEditItem(null);
     } catch { error('Failed to save'); } finally { setSaving(false); }
   };
@@ -404,7 +404,7 @@ const MissionPanel: React.FC = () => {
       <div className={styles.panelTitleRow}><BookOpen size={16}/><h3 className={styles.panelTitle}>Mission & Vision</h3></div>
       <p className={styles.panelDesc}>These 2 entries are fixed. You can only edit their content.</p>
       <div className={styles.listItems}>
-        {missionVision.map(m => (
+        {missionVision?.map(m => (
           <div key={m.id} className={styles.listItem}>
             <div className={styles.listBody}>
               <h4 className={styles.listTitle}>{m.title}</h4>
@@ -448,7 +448,7 @@ const MilestonesPanel: React.FC = () => {
       if (editItem) {
         const res = await api.put.milestone(editItem.id, form);
         const updated = res.data?.data ?? { ...editItem, ...form };
-        setMilestones(milestones.map(m => m.id === editItem.id ? updated : m));
+        setMilestones(milestones?.map(m => m.id === editItem.id ? updated : m));
         success(res.data?.message || 'Milestone updated'); setEditItem(null);
       } else {
         const res = await api.post.milestone(form);
@@ -464,7 +464,7 @@ const MilestonesPanel: React.FC = () => {
     setDelTarget(null);
     try {
       const res = await api.delete.milestone(delTarget.id);
-      setMilestones(milestones.filter(m => m.id !== delTarget.id));
+      setMilestones(milestones?.filter(m => m.id !== delTarget.id));
       success((res as any)?.data?.message || 'Deleted');
     } catch { error('Failed to delete'); } finally { setDeleting(false); }
   };
@@ -476,7 +476,7 @@ const MilestonesPanel: React.FC = () => {
         <Btn variant="secondary" onClick={() => { setForm({ year:'', title:'', content:'' }); setAddOpen(true); }}><Plus size={13}/> Add Milestone</Btn>
       </div>
       <div className={styles.listItems}>
-        {milestones.map(m => (
+        {milestones?.map(m => (
           <div key={m.id} className={styles.listItem}>
             <div className={styles.milestoneYear}>{m.year}</div>
             <div className={styles.listBody}>
@@ -527,7 +527,7 @@ const ManagementPanel: React.FC = () => {
       if (editItem) {
         const res = await api.put.management(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...form };
-        setManagement(management.map(m => m.id === editItem.id ? updated : m));
+        setManagement(management?.map(m => m.id === editItem.id ? updated : m));
         success(res.data?.message || 'Updated'); setEditItem(null);
       } else {
         const res = await api.post.management(payload);
@@ -543,7 +543,7 @@ const ManagementPanel: React.FC = () => {
     setDelTarget(null);
     try {
       const res = await api.delete.management(delTarget.id);
-      setManagement(management.filter(m => m.id !== delTarget.id));
+      setManagement(management?.filter(m => m.id !== delTarget.id));
       success((res as any)?.data?.message || 'Deleted');
     } catch { error('Failed to delete'); } finally { setDeleting(false); }
   };
@@ -555,7 +555,7 @@ const ManagementPanel: React.FC = () => {
         <Btn variant="secondary" onClick={() => { setForm({ name:'', role:'', image:'' }); setImageFile(null); setAddOpen(true); }}><Plus size={13}/> Add Person</Btn>
       </div>
       <div className={styles.mgmtGrid}>
-        {management.map(m => (
+        {management?.map(m => (
           <div key={m.id} className={styles.mgmtCard}>
             <div className={styles.mgmtImg}>{m.image && <BlurImage src={m.image} blurSrc={m.blur_image||undefined} alt={m.name}/>}</div>
             <h4 className={styles.mgmtName}>{m.name}</h4>
@@ -603,7 +603,7 @@ const Settings: React.FC = () => {
       <h1 className={styles.pageTitle}>Settings</h1>
       {/* Horizontal tab bar */}
       <div className={styles.tabBar}>
-        {TABS.map(t => (
+        {TABS?.map(t => (
           <button key={t.id} className={`${styles.tab} ${active === t.id ? styles.tabActive : ''}`} onClick={() => setActive(t.id)}>
             {t.icon}<span>{t.label}</span>
           </button>

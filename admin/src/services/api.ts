@@ -1,12 +1,7 @@
 import axios from 'axios';
-import {
-  dummyPlayers, dummyNews, dummyNewsCategories, dummyFixtures,
-  dummyPrograms, dummyProgramTitles, dummyPartners, dummyPartnerTiers,
-  dummyGallery, dummyGalleryCategories, dummyClubStats, dummyMissionVision,
-  dummyMilestones, dummyManagement, dummySocials,
-} from '@/data/dummyData';
 
-export const BASE_URL ="https://api.uncletfootballclub.com/api"
+export const BASE_URL ="https://api.uncletfootballclub.com/api";
+
 
 const http = axios.create({
   baseURL: BASE_URL,
@@ -27,14 +22,6 @@ async function safe<T>(fetcher: () => Promise<any>, fallback: T): Promise<T> {
   try { const r = await fetcher(); return r.data?.data ?? fallback; }
   catch { return fallback; }
 }
-
-const dummyViews = [
-  { id: 1, newsId: 1, views: 1540 }, { id: 2, newsId: 2, views: 892 },
-  { id: 3, newsId: 3, views: 643 },  { id: 4, newsId: 4, views: 412 },
-  { id: 5, newsId: 5, views: 310 },  { id: 6, newsId: 6, views: 198 },
-];
-
-const dummyMessages: any[] = [];
 
 const dummyAdminProfile = { username: 'admin', email: 'admin@Uncle T-fc.com' };
 
@@ -66,24 +53,24 @@ export const api = {
   },
 
   get: {
-    players:           () => safe(() => http.get('/players'), dummyPlayers),
-    news:              () => safe(() => http.get('/news'), dummyNews),
-    newsCategories:    () => safe(() => http.get('/news/categories'), dummyNewsCategories),
-    newsItem:          (title: string) => safe(() => http.get(`/news/title/${encodeURIComponent(title)}`), dummyNews.find(n => n.title === title)),
-    newsViews:         () => safe(() => http.get('/views'), dummyViews),
-    fixtures:          () => safe(() => http.get('/fixtures'), dummyFixtures),
-    programs:          () => safe(() => http.get('/programs'), dummyPrograms),
-    programTitles:     () => safe(() => http.get('/programmes/titles'), dummyProgramTitles),
-    partners:          () => safe(() => http.get('/partners'), dummyPartners),
-    partnerTiers:      () => safe(() => http.get('/partners/tiers'), dummyPartnerTiers),
-    gallery:           () => safe(() => http.get('/gallery'), dummyGallery),
-    galleryCategories: () => safe(() => http.get('/gallery/titles'), dummyGalleryCategories),
-    stats:             () => safe(() => http.get('/club/stats'), dummyClubStats),
-    missionVision:     () => safe(() => http.get('/club/mission'), dummyMissionVision),
-    milestones:        () => safe(() => http.get('/club/milestones'), dummyMilestones),
-    management:        () => safe(() => http.get('/club/management'), dummyManagement),
-    socials:           () => safe(() => http.get('/socials'), dummySocials),
-    messages:          () => safe(() => http.get('/messages'), dummyMessages),
+    players:           () => safe(() => http.get('/players'), []),
+    news:              () => safe(() => http.get('/news'), []),
+    newsCategories:    () => safe(() => http.get('/news/categories'), []),
+    newsItem:          (title: string) => safe(() => http.get(`/news/title/${encodeURIComponent(title)}`), null),
+    newsViews:         () => safe(() => http.get('/views'), []),
+    fixtures:          () => safe(() => http.get('/fixtures'), []),
+    programs:          () => safe(() => http.get('/programs'), []),
+    programTitles:     () => safe(() => http.get('/programmes/titles'), []),
+    partners:          () => safe(() => http.get('/partners'), []),
+    partnerTiers:      () => safe(() => http.get('/partners/tiers'), []),
+    gallery:           () => safe(() => http.get('/gallery'), []),
+    galleryCategories: () => safe(() => http.get('/gallery/titles'), []),
+    stats:             () => safe(() => http.get('/club/stats'), []),
+    missionVision:     () => safe(() => http.get('/club/mission'), []),
+    milestones:        () => safe(() => http.get('/club/milestones'), []),
+    management:        () => safe(() => http.get('/club/management'), []),
+    socials:           () => safe(() => http.get('/socials'), { social_links: [] } as any),
+    messages:          () => safe(() => http.get('/messages'), []),
     teamname:          () => safe(() => http.get('/teamname'), { name: 'Uncle T FC' }),
     logo:              () => safe(() => http.get('/logo'), null),
   },

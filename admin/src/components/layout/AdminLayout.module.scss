@@ -1,8 +1,7 @@
-// AdminLayout.module.scss — fixed sidebar, full-width content on ALL screen sizes
+
 $sidebar-w: 248px;
 $topbar-h: 60px;
 
-// Root must be 100vw so main can fill remaining space after sidebar margin
 .root {
   display: flex;
   min-height: 100vh;
@@ -11,7 +10,6 @@ $topbar-h: 60px;
   background: $color-off-white;
 }
 
-// ── Sidebar (fixed, not in flow) ──────────────────────────
 .sidebar {
   width: $sidebar-w;
   height: 100vh;
@@ -79,7 +77,7 @@ $topbar-h: 60px;
   }
 }
 
-// ── Brand ─────────────────────────────────────────────────
+//    Brand      
 .sidebarBrand {
   display: flex;
   align-items: center;
@@ -142,7 +140,7 @@ $topbar-h: 60px;
   line-height: 1;
 }
 
-// ── Nav ───────────────────────────────────────────────────
+//    Nav      
 .sidebarNav {
   flex: 1;
   padding: $space-4 $space-3;
@@ -200,7 +198,7 @@ $topbar-h: 60px;
   flex: 1;
 }
 
-// ── Footer ────────────────────────────────────────────────
+//    Footer     
 .sidebarFooter {
   padding: $space-4 $space-4 $space-5;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -234,7 +232,7 @@ $topbar-h: 60px;
   color: $color-white;
 }
 
-// Username stacked ABOVE email
+
 .userInfo {
   flex: 1;
   min-width: 0;
@@ -284,11 +282,8 @@ $topbar-h: 60px;
   }
 }
 
-// ── Main — KEY FIX: margin pushes content right of fixed sidebar ──
-// On desktop (> 1024px): sidebar is fixed 248px, main gets margin-left
-// On mobile (≤ 1024px): sidebar hidden, main takes full width with no margin
+
 .main {
-  // Takes full remaining width — margin-left accounts for fixed sidebar
   margin-left: $sidebar-w;
   flex: 1;
   min-width: 0;
@@ -306,7 +301,7 @@ $topbar-h: 60px;
   }
 }
 
-// ── Topbar (sticky) ───────────────────────────────────────
+//    Topbar (sticky)     
 .topbar {
   height: $topbar-h;
   background: $color-white;
@@ -405,7 +400,7 @@ $topbar-h: 60px;
   }
 }
 
-// ── Content area ──────────────────────────────────────────
+//    Content area      
 .content {
   flex: 1;
   width: 100%;

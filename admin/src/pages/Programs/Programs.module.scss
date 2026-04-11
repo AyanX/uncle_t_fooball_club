@@ -58,7 +58,7 @@
   &.danger:hover { background: $color-secondary; color: $color-white; }
 }
 
-// ── Programme Titles section ──────────────────────────────
+//    Programme Titles section     
 .titlesSection {
   background: $color-white; border-radius: $radius-xl; padding: $space-6;
   box-shadow: $shadow-sm; border: 1px solid rgba($color-primary,0.07);
@@ -115,7 +115,7 @@
   &.danger:hover { background: $color-secondary; color: $color-white; }
 }
 
-// ── Editable lists ────────────────────────────────────────
+//    Editable lists      
 .editableList { display: flex; flex-direction: column; gap: $space-3; }
 .editableListLabel { font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; letter-spacing: 0.1em; text-transform: uppercase; color: $color-primary; }
 .listItems { display: flex; flex-direction: column; gap: 0; border: 1.5px solid rgba($color-primary,0.1); border-radius: $radius-lg; overflow: hidden; }

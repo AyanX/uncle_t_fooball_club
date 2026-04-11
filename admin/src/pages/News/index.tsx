@@ -56,7 +56,7 @@ const NewsForm: React.FC<{
       <Field label="Category" required>
         <Select value={value.category} onChange={e=>set('category',e.target.value)}>
           <option value="">Select category…</option>
-          {categories.map(c=><option key={c.id} value={c.category}>{c.category}</option>)}
+          {categories?.map(c=><option key={c.id} value={c.category}>{c.category}</option>)}
         </Select>
       </Field>
       <Field label="Author"><Input value={value.author} onChange={e=>set('author',e.target.value)} placeholder="Author name"/></Field>
@@ -112,24 +112,29 @@ const News: React.FC = () => {
   const [saving, setSaving]       = useState(false);
   const [deleting, setDeleting]   = useState(false);
 
-  const sorted = [...news]
+  const sorted = news ? [...news]
     .sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
-    .filter(n => catFilter === 'All' || n.category === catFilter);
-  const featured  = sorted[0];
-  const rest      = sorted.slice(1);
-  const emptySlots = Math.max(0, 3 - rest.length);
+    ?.filter(n => catFilter === 'All' || n.category === catFilter) : [];
+  const featured  = sorted?.[0] ?? null;
+  const rest      = sorted?.slice(1) ?? [];
+  const emptySlots = Math.max(0, 3 - rest?.length);
 
-  const getViews = (id:number) => newsViews.find(v=>v.newsId===id)?.views ?? 0;
+  const getViews = (id:number) => newsViews?.find(v=>v.newsId===id)?.views ?? 0;
 
   const openAdd  = () => { setNewsForm({...emptyNews, date:new Date().toISOString().slice(0,10)}); setNewsImageFile(null); setAddOpen(true); };
-  const openEdit = (item:NewsItem) => { setNewsForm({...item, date: toDateValue(item.date)}); setNewsImageFile(null); setEditItem(item); };
+  const openEdit = (item:NewsItem) => {
+    if(!item) return;
+    setNewsForm({...item, date: toDateValue(item.date)});
+    setNewsImageFile(null);
+    setEditItem(item); 
+  };
 
   // Featured toggle via POST /news/features/:id
   const toggleFeatured = async (item: NewsItem) => {
     try {
       const res = await api.post.toggleFeatured(item.id);
       const updated = res.data?.data ?? { ...item, featured: !item.featured };
-      setNews(news.map(n => n.id === item.id ? updated : n));
+      setNews(news?.map(n => n.id === item.id ? updated : n));
       success(res.data?.message || (updated.featured ? 'Marked as featured' : 'Removed from featured'));
     } catch { error('Failed to toggle featured'); }
   };
@@ -142,7 +147,7 @@ const News: React.FC = () => {
       if (editItem) {
         const res = await api.put.news(editItem.id, payload);
         const updated = res.data?.data ?? { ...editItem, ...newsForm };
-        setNews(news.map(n => n.id === editItem.id ? updated : n));
+        setNews(news?.map(n => n.id === editItem.id ? updated : n));
         success(res.data?.message || 'Article updated');
         setEditItem(null);
       } else {
@@ -162,7 +167,7 @@ const News: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.news(target.id);
-      setNews(news.filter(n => n.id !== target.id));
+      setNews(news?.filter(n => n.id !== target.id));
       success((res as any)?.data?.message || 'Article deleted');
     } catch { error('Failed to delete article'); } finally { setDeleting(false); }
   };
@@ -178,7 +183,7 @@ const News: React.FC = () => {
       if (editCat) {
         const res = await api.put.newsCategory(editCat.id, payload as any);
         const updated = res.data?.data ?? { ...editCat, ...catForm };
-        setNewsCategories(newsCategories.map(c => c.id === editCat.id ? updated : c));
+        setNewsCategories(newsCategories?.map(c => c.id === editCat.id ? updated : c));
         success(res.data?.message || 'Category updated');
       } else {
         const res = await api.post.newsCategory(payload);
@@ -197,7 +202,7 @@ const News: React.FC = () => {
     setDeleteCat(null);
     try {
       const res = await api.delete.newsCategory(target.id);
-      setNewsCategories(newsCategories.filter(c => c.id !== target.id));
+      setNewsCategories(newsCategories?.filter(c => c.id !== target.id));
       success((res as any)?.data?.message || 'Category deleted');
     } catch { error('Failed to delete category'); } finally { setDeleting(false); }
   };
@@ -208,7 +213,7 @@ const News: React.FC = () => {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>News Management</h1>
-          <p className={styles.pageSub}>{news.length} articles · {newsCategories.length} categories</p>
+          <p className={styles.pageSub}>{news?.length} articles · {newsCategories?.length} categories</p>
         </div>
         <div className={styles.headerBtns}>
           <Btn variant="secondary" onClick={() => setCatOpen(true)}><Tag size={14}/> Categories</Btn>
@@ -217,15 +222,15 @@ const News: React.FC = () => {
       </div>
 
       {/* Views summary */}
-      {newsViews.length > 0 && (
+      {(newsViews?.length ?? 0) > 0 && (news?.length ?? 0) > 0 && (
         <div className={styles.viewsBar}>
           <div className={styles.viewsBarHead}>
             <TrendingUp size={14} className={styles.viewsIcon}/>
             <span className={styles.viewsTitle}>Top Articles by Views</span>
           </div>
           <div className={styles.viewsList}>
-            {[...news].map(n => ({ ...n, v: getViews(n.id) }))
-              .sort((a,b) => b.v - a.v).slice(0,5).map((item,i) => (
+            {(news ?? [])?.map(n => ({ ...n, v: getViews(n.id) }))
+              .sort((a,b) => b.v - a.v).slice(0,5)?.map((item,i) => (
               <Link key={item.id} to={`/news/${encodeURIComponent(item.title)}`} className={styles.viewItem}>
                 <span className={styles.viewRank}>#{i+1}</span>
                 <span className={styles.viewName}>{item.title}</span>
@@ -238,13 +243,13 @@ const News: React.FC = () => {
 
       {/* Category filter */}
       <div className={styles.filters}>
-        {['All', ...newsCategories.map(c=>c.category)].map(cat => (
+        {['All', ...(newsCategories?.map(c=>c.category) ?? [])]?.map(cat => (
           <button key={cat} className={`${styles.filterBtn} ${catFilter===cat ? styles.active:''}`} onClick={() => setCatFilter(cat)}>{cat}</button>
         ))}
       </div>
 
       {/* News grid */}
-      {loading ? <div className={styles.skeleton}/> : (
+      {loading || !news ? <div className={styles.skeleton}/> : (
         <div className={styles.newsGrid}>
           {/* Featured */}
           {featured ? (
@@ -282,7 +287,7 @@ const News: React.FC = () => {
 
           {/* Side list */}
           <div className={styles.sideList}>
-            {rest.map(item => (
+            {rest?.map(item => (
               <div key={item.id} className={styles.sideCard}>
                 <div className={styles.sideImg}>{item.image && <BlurImage src={item.image} blurSrc={item.blur_image||undefined} alt={item.title}/>}</div>
                 <div className={styles.sideBody}>
@@ -302,7 +307,7 @@ const News: React.FC = () => {
                 </div>
               </div>
             ))}
-            {Array.from({length: emptySlots}).map((_,i) => (
+            {Array.from({length: emptySlots})?.map((_,i) => (
               <div key={`e-${i}`} className={styles.emptySlot} onClick={openAdd}>
                 <Plus size={18}/><span>Add Article</span>
               </div>
@@ -318,12 +323,12 @@ const News: React.FC = () => {
           <Btn variant="secondary" onClick={openAddCat}><Plus size={13}/> Add Category</Btn>
         </div>
         <div className={styles.catsGrid}>
-          {newsCategories.map(cat => (
+          {newsCategories?.map(cat => (
             <div key={cat.id} className={styles.catCard}>
               {cat.image && <div className={styles.catImg}><img src={cat.image} alt={cat.category}/></div>}
               <div className={styles.catBody}>
                 <span className={styles.catName}>{cat.category}</span>
-                <span className={styles.catCount}>{news.filter(n=>n.category===cat.category).length} articles</span>
+                <span className={styles.catCount}>{news?.filter(n=>n.category===cat.category)?.length} articles</span>
               </div>
               <div className={styles.catActions}>
                 <button className={styles.iconBtn} onClick={() => openEditCat(cat)}><Pencil size={12}/></button>

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useAdminData } from "@/context/AdminDataContext";
+import blurLogo from "@/assets/uncle-t-soccer-logo-small.png";
 import styles from "./AdminLayout.module.scss";
 
 const navItems = [
@@ -70,17 +71,14 @@ const SidebarInner: React.FC<SidebarInnerProps> = ({ onClose }) => {
       )}
 
       <div className={styles.sidebarBrand}>
-        {logo?.image ? (
-          <div className={styles.logoMark}>
-            <LogoImage
-              image={logo.image}
-              blurImage={logo.blur_image}
-              size={38}
-            />
-          </div>
-        ) : (
-          <div className={styles.logoMarkLetter}>K</div>
-        )}
+        <div className={styles.logoMark}>
+          <LogoImage
+            image={logo?.image}
+            blurImage={logo?.blur_image}
+            fallbackImage={blurLogo}
+            size={38}
+          />
+        </div>
         <div className={styles.brandText}>
           <span className={styles.brandName}>Uncle T</span>
           <span className={styles.brandBadge}>Admin Panel</span>
@@ -89,7 +87,7 @@ const SidebarInner: React.FC<SidebarInnerProps> = ({ onClose }) => {
 
       <nav className={styles.sidebarNav}>
         <span className={styles.navSection}>Navigation</span>
-        {navItems.map((item) => (
+        {navItems?.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
@@ -124,10 +122,11 @@ const SidebarInner: React.FC<SidebarInnerProps> = ({ onClose }) => {
 };
 
 const LogoImage: React.FC<{
-  image: string;
-  blurImage: string;
+  image?: string;
+  blurImage?: string;
+  fallbackImage?: string;
   size: number;
-}> = ({ image, blurImage, size }) => {
+}> = ({ image, blurImage, fallbackImage, size }) => {
   const [loaded, setLoaded] = React.useState(false);
   return (
     <div
@@ -139,7 +138,26 @@ const LogoImage: React.FC<{
         overflow: "hidden",
       }}
     >
-      {blurImage && (
+      {/* Fallback: imported blurLogo shown first */}
+      {fallbackImage && (
+        <img
+          src={fallbackImage}
+          aria-hidden={!!image}
+          alt={image ? "" : "Club logo"}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: loaded ? 0 : 1,
+            transition: "opacity 0.3s ease",
+          }}
+        />
+      )}
+      
+      {/* Fetched blur image (if available) */}
+      {blurImage && image && (
         <img
           src={blurImage}
           aria-hidden
@@ -153,22 +171,26 @@ const LogoImage: React.FC<{
             filter: "blur(8px)",
             transform: "scale(1.1)",
             opacity: loaded ? 0 : 1,
-            transition: "opacity 0.4s",
+            transition: "opacity 0.3s ease",
           }}
         />
       )}
-      <img
-        src={image}
-        alt="Club logo"
-        onLoad={() => setLoaded(true)}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 0.4s",
-        }}
-      />
+      
+      {/* Actual fetched logo */}
+      {image && (
+        <img
+          src={image}
+          alt="Club logo"
+          onLoad={() => setLoaded(true)}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            opacity: loaded ? 1 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -237,10 +259,14 @@ const AdminLayout: React.FC = () => {
                   <LogoImage
                     image={logo.image}
                     blurImage={logo.blur_image}
+                    fallbackImage={blurLogo}
                     size={28}
                   />
                 ) : (
-                  (user?.username || user?.email || "A")[0].toUpperCase()
+                  <LogoImage
+                    fallbackImage={blurLogo}
+                    size={28}
+                  />
                 )}
               </div>
               <span className={styles.topbarName}>

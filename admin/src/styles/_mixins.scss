@@ -1,8 +1,4 @@
-// =============================================================================
-// _mixins.scss — Reusable mixins (updated for new brand palette)
-// =============================================================================
 
-// --- Responsive ---
 @mixin xs    { @media (max-width: #{$bp-xs})  { @content; } }
 @mixin sm    { @media (max-width: #{$bp-sm})  { @content; } }
 @mixin md    { @media (max-width: #{$bp-md})  { @content; } }

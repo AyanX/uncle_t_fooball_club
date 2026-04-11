@@ -37,7 +37,7 @@ const Form: React.FC<{
       <Field label="Slug" required><Input value={value.slug} onChange={e=>set('slug',e.target.value)} placeholder="kofi-mensah"/></Field>
       <Field label="Position" required>
         <Select value={value.position} onChange={e=>set('position',e.target.value)}>
-          {POSITIONS.map(p=><option key={p} value={p}>{p}</option>)}
+          {POSITIONS?.map(p=><option key={p} value={p}>{p}</option>)}
         </Select>
       </Field>
       <Field label="Jersey Number"><Input type="number" value={value.number} onChange={e=>set('number',+e.target.value)} min={1} max={99}/></Field>
@@ -68,7 +68,7 @@ const Team: React.FC = () => {
   const [saving, setSaving]     = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const filtered = players.filter(p => {
+  const filtered = players?.filter(p => {
     if (filter === 'All') return true;
     if (filter === 'First Team') return p.first_team;
     return p.position === filter;
@@ -77,12 +77,12 @@ const Team: React.FC = () => {
   const openAdd  = () => { setForm({...empty}); setImageFile(null); setAddOpen(true); };
   const openEdit = (p:Player) => { setForm({...p}); setImageFile(null); setEditPlayer(p); };
 
-  // Toggle first team via POST /players/first-team/:id
+  // Toggle first team via POST req
   const toggleFirstTeam = async (player: Player) => {
     try {
       const res = await api.post.toggleFirstTeam(player.id);
-      const updated = res.data?.data ?? { ...player, first_team: !player.first_team };
-      setPlayers(players.map(p => p.id === player.id ? updated : p));
+      const updated = res.data?.data ?? { ...player, first_team: !player.first_team, id: player.id };
+      setPlayers(players?.map(p => p.id === player.id ? updated : p));
       success(res.data?.message || (updated.first_team ? 'Added to first team' : 'Removed from first team'));
     } catch { error('Failed to update'); }
   };
@@ -95,7 +95,7 @@ const Team: React.FC = () => {
       if (editPlayer) {
         const res = await api.put.player(editPlayer.id, payload);
         const updated = res.data?.data ?? { ...editPlayer, ...form };
-        setPlayers(players.map(p => p.id === editPlayer.id ? updated : p));
+        setPlayers(players?.map(p => p.id === editPlayer.id ? updated : p));
         success(res.data?.message || 'Player updated');
         setEditPlayer(null);
       } else {
@@ -115,7 +115,7 @@ const Team: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.player(target.id);
-      setPlayers(players.filter(p => p.id !== target.id));
+      setPlayers(players?.filter(p => p.id !== target.id));
       success((res as any)?.data?.message || `${target.name} deleted`);
     } catch { error('Failed to delete player'); } finally { setDeleting(false); }
   };
@@ -125,15 +125,15 @@ const Team: React.FC = () => {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Squad Management</h1>
-          <p className={styles.pageSub}>{players.length} players · {players.filter(p=>p.first_team).length} first team</p>
+          <p className={styles.pageSub}>{players?.length} players · {players?.filter(p=>p.first_team)?.length} first team</p>
         </div>
         <Btn onClick={openAdd}><Plus size={15}/> Add Player</Btn>
       </div>
 
       <div className={styles.filters}>
-        {FILTERS.map(f => (
+        {FILTERS?.map(f => (
           <button key={f} className={`${styles.filterBtn} ${filter===f ? styles.active:''}`} onClick={() => setFilter(f)}>
-            {f} {f==='First Team' && <span className={styles.filterCount}>{players.filter(p=>p.first_team).length}</span>}
+            {f} {f==='First Team' && <span className={styles.filterCount}>{players?.filter(p=>p.first_team)?.length}</span>}
           </button>
         ))}
       </div>
@@ -145,10 +145,10 @@ const Team: React.FC = () => {
       </motion.div>
 
       {loading ? (
-        <div className={styles.grid}>{Array.from({length:6}).map((_,i)=><div key={i} className={styles.skeleton}/>)}</div>
+        <div className={styles.grid}>{Array.from({length:6})?.map((_,i)=><div key={i} className={styles.skeleton}/>)}</div>
       ) : (
         <div className={styles.grid}>
-          {filtered.map((player,i) => (
+          {filtered?.map((player,i) => (
             <motion.div key={player.id} className={styles.card} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.04}}>
               {/* Image */}
               <div className={styles.imgWrap}>

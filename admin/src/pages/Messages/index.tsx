@@ -62,7 +62,7 @@ const Messages: React.FC = () => {
     if (!msg.isRead) {
       try {
         await api.put.messageRead(msg.id);
-        setMessages(prev => prev.map(m => m.id === msg.id ? { ...m, isRead: true } : m));
+        setMessages(prev => prev?.map(m => m.id === msg.id ? { ...m, isRead: true } : m));
       } catch { /* silent fail */ }
     }
   };
@@ -74,24 +74,24 @@ const Messages: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.message(target.id);
-      setMessages(prev => prev.filter(m => m.id !== target.id));
+      setMessages(prev => prev?.filter(m => m.id !== target.id));
       if (selected?.id === target.id) { setSelected(null); setShowDetail(false); }
       success((res as any)?.data?.message || 'Message deleted');
     } catch { error('Failed to delete message'); }
     finally { setDeleting(false); }
   };
 
-  const filtered = messages.filter(m =>
+  const filtered = messages?.filter(m =>
     [m.name, m.email, m.subject, m.message].some(
       v => v?.toLowerCase().includes(search.toLowerCase())
     )
   );
 
-  const unreadCount = messages.filter(m => !m.isRead).length;
+  const unreadCount = messages?.filter(m => !m.isRead)?.length;
 
   return (
     <div className={styles.page}>
-      {/* ── List pane ── */}
+      {/*    List pane    */}
       <div className={`${styles.listPane} ${showDetail ? styles.listHidden : ''}`}>
         {/* Header */}
         <div className={styles.listHeader}>
@@ -117,16 +117,16 @@ const Messages: React.FC = () => {
         <div className={styles.list}>
           {loading && (
             <div className={styles.loadingList}>
-              {Array.from({ length: 5 }).map((_, i) => <div key={i} className={styles.skeletonRow} />)}
+              {Array.from({ length: 5 })?.map((_, i) => <div key={i} className={styles.skeletonRow} />)}
             </div>
           )}
-          {!loading && filtered.length === 0 && (
+          {!loading && filtered?.length === 0 && (
             <div className={styles.emptyList}>
               <MailOpen size={40} className={styles.emptyIcon} />
               <p>{search ? 'No messages match your search' : 'No messages yet'}</p>
             </div>
           )}
-          {!loading && filtered.map(msg => (
+          {!loading && filtered?.map(msg => (
             <motion.div
               key={msg.id}
               className={`${styles.listItem} ${selected?.id === msg.id ? styles.listItemActive : ''} ${!msg.isRead ? styles.listItemUnread : ''}`}
@@ -150,7 +150,7 @@ const Messages: React.FC = () => {
         </div>
       </div>
 
-      {/* ── Detail pane ── */}
+      {/*    Detail pane    */}
       <AnimatePresence>
         {(selected || !showDetail) && (
           <div className={`${styles.detailPane} ${!showDetail ? styles.detailDesktopOnly : ''}`}>

@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const authData = await api.auth.verify();
         if (!authData) { setLoading(false); return; }
 
+
         const profile = await api.auth.getProfile().catch(() => null);
 
         setUser({
@@ -51,7 +52,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // 403 on any request → force logout
     const onForbidden = async () => {
       await api.auth.logout().catch(() => {});
-      localStorage.removeItem('admin_token');
       setUser(null);
     };
     window.addEventListener('admin:forbidden', onForbidden as any);
@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       token:    d.token    || '',
       username: profile?.username || d.username || 'Admin',
     };
-    if (u.token) localStorage.setItem('admin_token', u.token);
     setUser(u);
     return u;
   };

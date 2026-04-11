@@ -29,9 +29,9 @@ function plainToHtml(text: string): string {
   if (!text.trim()) return '';
   return text
     .split(/\n{2,}/)
-    .map(para => para.trim())
-    .filter(Boolean)
-    .map(para => {
+    ?.map(para => para.trim())
+    ?.filter(Boolean)
+    ?.map(para => {
       const lines = para.split('\n').join('<br/>');
       const withBold = lines.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       return `<p>${withBold}</p>`;
@@ -82,7 +82,7 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // When bold is active, wrap typed char or selection in **
-    if (boldActive && e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+    if (boldActive && e.key?.length === 1 && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
       const ta = textareaRef.current!;
       const { selectionStart: ss, selectionEnd: se } = ta;
@@ -171,7 +171,7 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
       ) : (
         <div className={styles.contentPreviewRead} onClick={() => setEditing(true)}>
           {plain ? (
-            <div className={styles.contentText}>{plain.slice(0, 300)}{plain.length > 300 ? '…' : ''}</div>
+            <div className={styles.contentText}>{plain.slice(0, 300)}{plain?.length > 300 ? '…' : ''}</div>
           ) : (
             <span className={styles.empty}>Click to edit content…</span>
           )}
@@ -194,17 +194,18 @@ const NewsEdit: React.FC = () => {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    if (!news || news.length === 0) return;
     const decoded = decodeURIComponent(title || '');
-    const found = news.find(n => n.title === decoded);
+    const found = news?.find(n => n.title === decoded);
     if (found) setArticle({ ...found });
     else navigate('/news', { replace: true });
   }, [title, news, navigate]);
 
   if (!article) return null;
 
-  const viewCount = newsViews.find(v => v.newsId === article.id)?.views ?? 0;
-  const categoryData = newsCategories.find(c => c.category === article.category);
-  const heroImage = categoryData?.image || article.image || '';
+  const viewCount = newsViews?.find(v => v.newsId === article.id)?.views ?? 0;
+  const categoryData = newsCategories?.find(c => c.category === article.category);
+  const heroImage = categoryData?.image || article?.image || '';
 
   const update = (key: keyof NewsItem, val: any) => setArticle(p => p ? { ...p, [key]: val } : p);
 
@@ -216,7 +217,7 @@ const NewsEdit: React.FC = () => {
       const payload = buildFormData(rest, imageFile);
       const res = await api.put.news(article.id, payload);
       const updated = res.data?.data ?? article;
-      setNews(news.map(n => n.id === article.id ? updated : n));
+      setNews(news?.map(n => n.id === article.id ? updated : n));
       setArticle(updated);
       success(res.data?.message || 'Article saved');
     } catch { error('Failed to save'); } finally { setSaving(false); }
@@ -226,7 +227,7 @@ const NewsEdit: React.FC = () => {
     try {
       const res = await api.post.toggleFeatured(article.id);
       const updated = res.data?.data ?? { ...article, featured: !article.featured };
-      setNews(news.map(n => n.id === article.id ? updated : n));
+      setNews(news?.map(n => n.id === article.id ? updated : n));
       setArticle(updated);
       success(res.data?.message || (updated.featured ? 'Marked as featured' : 'Removed from featured'));
     } catch { error('Failed to toggle featured'); }
@@ -236,7 +237,7 @@ const NewsEdit: React.FC = () => {
     setDeleting(true); setDeleteOpen(false);
     try {
       const res = await api.delete.news(article.id);
-      setNews(news.filter(n => n.id !== article.id));
+      setNews(news?.filter(n => n.id !== article.id));
       success((res as any)?.data?.message || 'Article deleted');
       navigate('/news', { replace: true });
     } catch { error('Delete failed'); } finally { setDeleting(false); }
@@ -295,7 +296,7 @@ const NewsEdit: React.FC = () => {
             <Field label="Category">
               <Select value={article.category} onChange={e=>update('category',e.target.value)}>
                 <option value="">Select…</option>
-                {newsCategories.map(c=><option key={c.id} value={c.category}>{c.category}</option>)}
+                {newsCategories?.map(c=><option key={c.id} value={c.category}>{c.category}</option>)}
               </Select>
             </Field>
             <Field label="Author"><Input value={article.author} onChange={e=>update('author',e.target.value)}/></Field>

@@ -3,7 +3,7 @@ import { Upload, Pencil, Trash2 } from 'lucide-react';
 
 interface ImageInputProps {
   currentUrl?: string;
-  blurUrl?: string;           // blur_image for fade-in placeholder
+  blurUrl?: string;    
   onFileChange: (file: File | null) => void;
   label?: string;
   required?: boolean;

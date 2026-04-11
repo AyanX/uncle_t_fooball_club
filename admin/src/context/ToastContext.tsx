@@ -36,10 +36,10 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const toast = useCallback((type: ToastType, message: string) => {
     const id = ++counter + Date.now();
     setToasts(p => [...p, { id, type, message }]);
-    setTimeout(() => setToasts(p => p.filter(t => t.id !== id)), 3500);
+    setTimeout(() => setToasts(p => p?.filter(t => t.id !== id)), 3500);
   }, []);
 
-  const dismiss = (id: number) => setToasts(p => p.filter(t => t.id !== id));
+  const dismiss = (id: number) => setToasts(p => p?.filter(t => t.id !== id));
 
   return (
     <ToastContext.Provider value={{
@@ -56,7 +56,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         zIndex: 9999, maxWidth: 360, width: 'calc(100vw - 48px)',
       }}>
         <AnimatePresence>
-          {toasts.map(t => (
+          {toasts?.map(t => (
             <motion.div
               key={t.id}
               initial={{ opacity: 0, y: 20, scale: 0.95 }}

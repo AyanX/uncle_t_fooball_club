@@ -4,10 +4,6 @@ import {
   Player, NewsItem, NewsCategory, Fixture, Program, ProgramTitle,
   Partner, PartnerTier, GalleryItem, GalleryCategory, ClubStat,
   MissionVisionItem, Milestone, Management, SocialInfo,
-  dummyPlayers, dummyNews, dummyNewsCategories, dummyFixtures,
-  dummyPrograms, dummyProgramTitles, dummyPartners, dummyPartnerTiers,
-  dummyGallery, dummyGalleryCategories, dummyClubStats, dummyMissionVision,
-  dummyMilestones, dummyManagement, dummySocials,
 } from '@/data/dummyData';
 
 export interface NewsView { id: number; newsId: number; views: number; }
@@ -51,12 +47,12 @@ const AdminDataContext = createContext<AdminDataContextType>({} as AdminDataCont
 
 export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<AdminData>({
-    players: dummyPlayers, news: dummyNews, newsCategories: dummyNewsCategories,
-    fixtures: dummyFixtures, programs: dummyPrograms, programTitles: dummyProgramTitles,
-    partners: dummyPartners, partnerTiers: dummyPartnerTiers,
-    gallery: dummyGallery, galleryCategories: dummyGalleryCategories,
-    stats: dummyClubStats, missionVision: dummyMissionVision,
-    milestones: dummyMilestones, management: dummyManagement, socials: dummySocials,
+    players: [], news: [], newsCategories: [],
+    fixtures: [], programs: [], programTitles: [],
+    partners: [], partnerTiers: [],
+    gallery: [], galleryCategories: [],
+    stats: [], missionVision: [],
+    milestones: [], management: [], socials: { social_links: [] } as any,
     newsViews: [], teamname: 'Uncle T FC', logo: null, loading: true,
   });
 

@@ -89,7 +89,7 @@ const FixtureForm: React.FC<{
           value={value.status}
           onChange={(e) => set("status", e.target.value as any)}
         >
-          {STATUS_OPTIONS.map((s) => (
+          {STATUS_OPTIONS?.map((s) => (
             <option key={s} value={s}>
               {s.charAt(0).toUpperCase() + s.slice(1)}
             </option>
@@ -175,7 +175,7 @@ const Fixtures: React.FC = () => {
   const [deleting, setDeleting] = useState(false);
 
   const filtered =
-    tab === "All" ? fixtures : fixtures.filter((f) => f.status === tab);
+    tab === "All" ? fixtures ?? [] : fixtures?.filter((f) => f.status === tab) ?? [];
 
   const openAdd = () => {
     setForm({
@@ -222,7 +222,7 @@ const Fixtures: React.FC = () => {
       if (editItem) {
         const res = await api.put.fixture(editItem.id, form);
         const updated = res.data?.data ?? { ...editItem, ...form };
-        setFixtures(fixtures.map((f) => (f.id === editItem.id ? updated : f)));
+        setFixtures(fixtures?.map((f) => (f.id === editItem.id ? updated : f)));
         success(res.data?.message || "Fixture updated");
         setEditItem(null);
       } else {
@@ -246,7 +246,7 @@ const Fixtures: React.FC = () => {
     setDeleteTarget(null);
     try {
       const res = await api.delete.fixture(target.id);
-      setFixtures(fixtures.filter((f) => f.id !== target.id));
+      setFixtures(fixtures?.filter((f) => f.id !== target.id));
       success((res as any)?.data?.message || "Fixture deleted");
     } catch {
       error("Delete failed");
@@ -262,7 +262,7 @@ const Fixtures: React.FC = () => {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Fixtures & Results</h1>
-          <p className={styles.pageSub}>{fixtures.length} matches total</p>
+          <p className={styles.pageSub}>{fixtures?.length} matches total</p>
         </div>
         <Btn onClick={openAdd}>
           <Plus size={14} /> Add Fixture
@@ -270,7 +270,7 @@ const Fixtures: React.FC = () => {
       </div>
 
       <div className={styles.tabs}>
-        {TABS.map((t) => (
+        {TABS?.map((t) => (
           <button
             key={t}
             className={`${styles.tab} ${tab === t ? styles.active : ""}`}
@@ -279,8 +279,8 @@ const Fixtures: React.FC = () => {
             {t === "All" ? "All" : t.charAt(0).toUpperCase() + t.slice(1)}
             <span className={styles.tabCount}>
               {t === "All"
-                ? fixtures.length
-                : fixtures.filter((f) => f.status === t).length}
+                ? fixtures?.length
+                : fixtures?.filter((f) => f.status === t)?.length}
             </span>
           </button>
         ))}
@@ -289,7 +289,7 @@ const Fixtures: React.FC = () => {
       <div className={styles.list}>
         {loading && <div className={styles.skeleton} />}
         {!loading &&
-          filtered.map((f, i) => {
+          filtered?.map((f, i) => {
             const won =
               (isKFC(f.homeTeam) && (f.homeScore ?? 0) > (f.awayScore ?? 0)) ||
               (isKFC(f.awayTeam) && (f.awayScore ?? 0) > (f.homeScore ?? 0));
@@ -371,7 +371,7 @@ const Fixtures: React.FC = () => {
               </motion.div>
             );
           })}
-        {!loading && filtered.length === 0 && (
+        {!loading && filtered?.length === 0 && (
           <div className={styles.empty} onClick={openAdd}>
             <Plus size={24} />
             <span>No {tab === "All" ? "" : tab} fixtures — add one</span>

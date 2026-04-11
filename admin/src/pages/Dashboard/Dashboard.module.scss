@@ -5,7 +5,7 @@
 .pageTitle { font-family: $font-display; font-size: clamp(#{$font-size-xl}, 3vw, #{$font-size-2xl}); font-weight: $font-weight-black; text-transform: uppercase; color: $color-primary; letter-spacing: -0.02em; }
 .pageSub { font-family: $font-body; font-size: $font-size-sm; color: $color-text-muted; margin-top: $space-1; }
 
-// ── Stat cards ────────────────────────────────────────────
+//    Stat cards      
 .statCards {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -39,7 +39,7 @@
 .statLabel { font-family: $font-body; font-size: $font-size-xs; color: $color-text-muted; letter-spacing: 0.05em; text-transform: uppercase; @include sm { display: none; } }
 .statArrow { color: $color-text-muted; opacity: 0; flex-shrink: 0; transition: opacity $transition-fast, transform $transition-fast; @include md { display: none; } }
 
-// ── Club stats band ───────────────────────────────────────
+//    Club stats band     
 .clubStats {
   background: $color-primary-dark; border-radius: $radius-xl; padding: $space-5 $space-6;
   display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: $space-5;
@@ -50,7 +50,7 @@
 .clubStatVal { display: block; font-family: $font-display; font-size: $font-size-2xl; font-weight: $font-weight-black; color: $color-gold; line-height: 1; }
 .clubStatLbl { font-family: $font-body; font-size: $font-size-xs; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; margin-top: $space-2; }
 
-// ── Section card ──────────────────────────────────────────
+//    Section card      
 .section {
   background: $color-white; border-radius: $radius-xl; padding: $space-6;
   box-shadow: $shadow-sm; border: 1px solid rgba($color-primary, 0.07);
@@ -67,7 +67,7 @@
 .secTitle { font-family: $font-display; font-size: $font-size-sm; font-weight: $font-weight-bold; text-transform: uppercase; color: $color-primary; letter-spacing: 0.06em; }
 .secLink { display: inline-flex; align-items: center; gap: $space-1; font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold; letter-spacing: 0.08em; text-transform: uppercase; color: $color-secondary; text-decoration: none; white-space: nowrap; &:hover { color: $color-secondary-dark; } }
 
-// ── News views list ───────────────────────────────────────
+//    News views list     
 .viewsList { display: flex; flex-direction: column; gap: $space-1; }
 
 .viewRow {
@@ -99,7 +99,7 @@
 .viewBar { width: 80px; height: 6px; background: rgba($color-primary, 0.08); border-radius: $radius-full; overflow: hidden; flex-shrink: 0; @include md { display: none; } }
 .viewBarFill { height: 100%; background: $color-secondary; border-radius: $radius-full; transition: width 0.8s ease; }
 
-// ── Two-col ───────────────────────────────────────────────
+//    Two-col       
 .twoCol { display: grid; grid-template-columns: 1fr 1fr; gap: $space-6; @include lg { grid-template-columns: 1fr; } }
 
 // Recent news list

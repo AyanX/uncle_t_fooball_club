@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { api } from '@/services/api';
 import styles from './Login.module.scss';
-
+import blurLogo from "@/assets/uncle-t-soccer-logo-small.png";
 type LoginMode = 'password' | 'pin';
 
 const useLogo = () => {
@@ -66,26 +66,36 @@ const Login: React.FC = () => {
       <div className={styles.left}>
         <div className={styles.leftContent}>
           <div className={styles.brand}>
-            {/* Logo: show club logo if fetched, else letter  */}
-            {logo?.image ? (
-              <div className={styles.brandLogoWrap}>
-                {logo.blur_image && (
-                  <img src={logo.blur_image} aria-hidden alt=""
-                    className={styles.brandLogoBlur}
-                    style={{ opacity: loaded ? 0 : 1 }}
+            {/* Logo: always show blurLogo as fallback, fade to actual logo when loaded */}
+            <div className={styles.brandLogoWrap}>
+              {/* Imported blurLogo as initial placeholder */}
+              <img
+                src={blurLogo}
+                aria-hidden={!!logo?.image}
+                alt={logo?.image ? "" : "Club logo"}
+                className={styles.brandLogoBlur}
+                style={{ opacity: loaded ? 0 : 1, transition: 'opacity 0.3s ease' }}
+              />
+              
+              {/* Actual fetched logo (if available) */}
+              {logo?.image && (
+                <>
+                  {logo.blur_image && (
+                    <img src={logo.blur_image} aria-hidden alt=""
+                      className={styles.brandLogoBlur}
+                      style={{ opacity: loaded ? 0 : 1, transition: 'opacity 0.3s ease' }}
+                    />
+                  )}
+                  <img
+                    src={logo.image}
+                    alt="Club logo"
+                    className={styles.brandLogoImg}
+                    onLoad={() => setLoaded(true)}
+                    style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
                   />
-                )}
-                <img
-                  src={logo.image}
-                  alt="Club logo"
-                  className={styles.brandLogoImg}
-                  onLoad={() => setLoaded(true)}
-                  style={{ opacity: loaded ? 1 : 0 }}
-                />
-              </div>
-            ) : (
-              <div><span></span></div>
-            )}
+                </>
+              )}
+            </div>
             <div>
               <span className={styles.brandName}>Uncle T FC</span>
               <span className={styles.brandSub}>Admin Dashboard</span>
@@ -94,7 +104,7 @@ const Login: React.FC = () => {
           <h1 className={styles.heroTitle}>Manage Your Club</h1>
           <p className={styles.heroSub}>Full control over news, players, fixtures, gallery, programmes, and more — all in one place.</p>
           <div className={styles.features}>
-            {['News & Media Management','Player & Squad Control','Fixtures & Results','Gallery & Partners','Community Programmes'].map(f => (
+            {['News & Media Management','Player & Squad Control','Fixtures & Results','Gallery & Partners','Community Programmes']?.map(f => (
               <div key={f} className={styles.feature}>
                 <div className={styles.featureDot} />
                 <span>{f}</span>
