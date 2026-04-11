@@ -52,7 +52,7 @@ const Programs: React.FC = () => {
         eyebrow="Beyond the Pitch"
         title="Our Programmes"
         subtitle="Football is our platform. Community is our purpose. Discover how Uncle T FC is transforming lives."
-        image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://ik.imagekit.io/59p9lo9mv/soccer/steptodown.com195808.jpg"
       />
 
       <section className={styles.impactBand}>

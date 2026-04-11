@@ -135,13 +135,13 @@ const Navbar: React.FC = () => {
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 260 }}>
               <div className={styles.mobileHeader}>
-                <Link to="/" className={styles.mobileLogo} onClick={closeMobile}>
-                  <LogoMark image={logo?.image} blurImage={logo?.blur_image} />
-                  <div className={styles.logoText}>
-                    <span className={styles.logoName}>Uncle T</span>
-                    <span className={styles.logoSub}>Football Club</span>
-                  </div>
-                </Link>
+                  <Link to="/" className={styles.logo} onClick={closeMobile}>
+          <LogoMark image={logo?.image} blurImage={blurLogo} />
+          <div className={styles.logoText}>
+            <span className={styles.logoName}>Uncle T</span>
+            <span className={styles.logoSub}>Football Club</span>
+          </div>
+        </Link>
                 <button className={styles.closeBtn} onClick={closeMobile} aria-label="Close menu"><X size={22} /></button>
               </div>
               <ul className={styles.mobileNav}>

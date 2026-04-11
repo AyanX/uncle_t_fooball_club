@@ -8,10 +8,6 @@ import {
   Player, NewsItem, Fixture, Program, Partner, GalleryItem, ClubStat,
   MissionVisionItem, Milestone, Management, SocialInfo,
   NewsCategory, ProgramTitle, PartnerTier, GalleryCategory, TeamName,
-  dummyPlayers, dummyNews, dummyFixtures, dummyPrograms, dummyPartners,
-  dummyGallery, dummyClubStats, dummyMissionVision, dummyMilestones,
-  dummyManagement, dummySocials, dummyNewsCategories,
-  dummyProgramTitles, dummyPartnerTiers, dummyGalleryCategories, dummyTeamName,
 } from '@/data/dummyData';
 
 // Types
@@ -49,14 +45,14 @@ const defaultLoading: LoadingState = {
 };
 
 const AppContext = createContext<AppContextType>({
-  players: dummyPlayers, news: dummyNews, fixtures: dummyFixtures,
-  programs: dummyPrograms, partners: dummyPartners, gallery: dummyGallery,
-  stats: dummyClubStats, missionVision: dummyMissionVision,
-  milestones: dummyMilestones, management: dummyManagement, socials: dummySocials,
-  newsCategories: dummyNewsCategories, programTitles: dummyProgramTitles,
+  players: [], news: [], fixtures: [],
+  programs: [], partners: [], gallery: [],
+  stats: [], missionVision: [],
+  milestones: [], management: [], socials: {} as SocialInfo,
+  newsCategories: [], programTitles: [],
   logo: null,
-  partnerTiers: dummyPartnerTiers, galleryCategories: dummyGalleryCategories,
-  teamName: dummyTeamName,
+  partnerTiers: [], galleryCategories: [],
+  teamName: {} as TeamName,
   loading: defaultLoading,
   refreshData: () => {},
   trackClick: () => {},
@@ -65,14 +61,14 @@ const AppContext = createContext<AppContextType>({
 // Provider
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<AppState>({
-    players: dummyPlayers, news: dummyNews, fixtures: dummyFixtures,
-    programs: dummyPrograms, partners: dummyPartners, gallery: dummyGallery,
-    stats: dummyClubStats, missionVision: dummyMissionVision,
-    milestones: dummyMilestones, management: dummyManagement, socials: dummySocials,
-    newsCategories: dummyNewsCategories, programTitles: dummyProgramTitles,
-  logo: null,
-    partnerTiers: dummyPartnerTiers, galleryCategories: dummyGalleryCategories,
-    teamName: dummyTeamName,
+    players: [], news: [], fixtures: [],
+    programs: [], partners: [], gallery: [],
+    stats: [], missionVision: [],
+    milestones: [], management: [], socials: {} as SocialInfo,
+    newsCategories: [], programTitles: [],
+    logo: null,
+    partnerTiers: [], galleryCategories: [],
+    teamName: {} as TeamName,
     loading: defaultLoading,
   });
 

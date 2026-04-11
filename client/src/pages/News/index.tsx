@@ -27,7 +27,7 @@ const News: React.FC = () => {
         eyebrow="Latest"
         title="News & Updates"
         subtitle="Stay up to date with all the latest from Uncle T FC."
-        image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://ik.imagekit.io/59p9lo9mv/soccer/steptodown.com195808.jpg"
       />
       <section className={styles.section}>
         <div className={styles.container}>

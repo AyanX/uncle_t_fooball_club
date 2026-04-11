@@ -30,7 +30,7 @@ const Team: React.FC = () => {
         eyebrow="First Team"
         title="The Squad"
         subtitle="Meet the players who wear the green and gold with pride every matchday."
-        image="https://images.pexels.com/photos/3622622/pexels-photo-3622622.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://ik.imagekit.io/59p9lo9mv/soccer/steptodown.com195808.jpg"
       />
       <section className={styles.section}>
         <div className={styles.container}>

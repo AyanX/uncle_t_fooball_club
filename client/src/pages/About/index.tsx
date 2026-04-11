@@ -22,7 +22,7 @@ const About: React.FC = () => {
         eyebrow="Our Story"
         title="About Uncle T FC"
         subtitle="Born on the slopes of Africa's greatest mountain. Built on community, ambition, and an unshakeable belief in African football."
-        image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://ik.imagekit.io/59p9lo9mv/soccer/steptodown.com195808.jpg"
       />
 
       <Stats />

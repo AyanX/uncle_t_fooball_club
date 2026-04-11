@@ -31,9 +31,9 @@ const Hero: React.FC = () => {
     fixtures.find((f) => f?.status === "completed") || {
       date: " ",
       time: " ",
-      homeTeam: "  ",
-      awayTeam: "  ",
-      venue: " ",
+      homeTeam: "",
+      awayTeam: "",
+      venue: "",
       competition: " ",
     } : null;
 
@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
 
           {/* Next match strip */}
           <motion.div className={styles.matchStrip} variants={item}>
-            {fixtures && upcomingFixture ? (
+            {upcomingFixture.awayTeam !=="" ? (
               <>
                 <div className={styles.matchLabel}>
                   <Calendar size={13} />
@@ -99,7 +99,13 @@ const Hero: React.FC = () => {
                 </div>
                 <div className={styles.matchInfo}>
                   <span className={styles.matchTeams}>
-                    {upcomingFixture.homeTeam} vs {upcomingFixture.awayTeam}
+                    {
+                      upcomingFixture.homeTeam && upcomingFixture.awayTeam && (
+                        <>
+                          {upcomingFixture.homeTeam} vs {upcomingFixture.awayTeam}
+                        </>
+                      )
+                    }
                   </span>
                   <span className={styles.matchMeta}>
                     <MapPin size={12} /> {upcomingFixture.venue} &bull;{" "}
@@ -108,7 +114,9 @@ const Hero: React.FC = () => {
                 </div>
               </>
             ) : (
-              <PuffLoaderSpinner size={40} />
+             <div style={{width:"160px"}}>
+               <PuffLoaderSpinner size={40} />
+             </div>
             )}
           </motion.div>
 

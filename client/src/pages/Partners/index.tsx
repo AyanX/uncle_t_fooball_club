@@ -19,7 +19,7 @@ const Partners: React.FC = () => {
         eyebrow="Commercial"
         title="Partners & Sponsors"
         subtitle="The organisations who share our values and help us compete at the highest level while serving our communities."
-        image="https://images.pexels.com/photos/3622622/pexels-photo-3622622.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://ik.imagekit.io/59p9lo9mv/soccer/steptodown.com195808.jpg"
       />
 
       <section className={styles.section}>

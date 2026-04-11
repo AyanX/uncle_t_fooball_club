@@ -1,10 +1,6 @@
 
 import axios, { AxiosResponse } from 'axios';
 import {
-  dummyPlayers, dummyNews, dummyNewsCategories, dummyFixtures,
-  dummyPrograms, dummyProgramTitles, dummyPartners, dummyPartnerTiers,
-  dummyGallery, dummyGalleryCategories, dummyClubStats, dummyMissionVision,
-  dummyMilestones, dummyManagement, dummySocials, dummyTeamName,
   Player, NewsItem, NewsCategory, Fixture, Program, ProgramTitle,
   Partner, PartnerTier, GalleryItem, GalleryCategory, ClubStat,
   MissionVisionItem, Milestone, Management, SocialInfo, TeamName,
@@ -16,7 +12,6 @@ interface ApiResponse<T> { data: T; message: string; }
 
 const http = axios.create({
   baseURL: BASE_URL,
-  timeout: 8000,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -36,66 +31,66 @@ export const api = {
   get: {
     // Players: fetch by numeric id for individual profile
     players: (): Promise<Player[]> =>
-      safeFetch(() => http.get<ApiResponse<Player[]>>('/players'), dummyPlayers),
+      safeFetch(() => http.get<ApiResponse<Player[]>>('/players'), []),
     player: (id: number): Promise<Player | undefined> =>
       safeFetch(
         () => http.get<ApiResponse<Player>>(`/players/${id}`),
-        dummyPlayers.find((p) => p.id === id),
+        undefined,
       ),
 
     // News
     news: (): Promise<NewsItem[]> =>
-      safeFetch(() => http.get<ApiResponse<NewsItem[]>>('/news'), dummyNews),
+      safeFetch(() => http.get<ApiResponse<NewsItem[]>>('/news'), []),
     newsItem: (slug: string): Promise<NewsItem | undefined> =>
       safeFetch(
         () => http.get<ApiResponse<NewsItem>>(`/news/${slug}`),
-        dummyNews.find((n) => n.slug === slug),
+        undefined,
       ),
     newsCategories: (): Promise<NewsCategory[]> =>
-      safeFetch(() => http.get<ApiResponse<NewsCategory[]>>('/news/categories'), dummyNewsCategories),
+      safeFetch(() => http.get<ApiResponse<NewsCategory[]>>('/news/categories'), []),
 
     // Fixtures
     fixtures: (): Promise<Fixture[]> =>
-      safeFetch(() => http.get<ApiResponse<Fixture[]>>('/fixtures'), dummyFixtures),
+      safeFetch(() => http.get<ApiResponse<Fixture[]>>('/fixtures'), null),
 
     // Programs
     programs: (): Promise<Program[]> =>
-      safeFetch(() => http.get<ApiResponse<Program[]>>('/programs'), dummyPrograms),
+      safeFetch(() => http.get<ApiResponse<Program[]>>('/programs'), []),
     program: (slug: string): Promise<Program | undefined> =>
       safeFetch(
         () => http.get<ApiResponse<Program>>(`/programs/${slug}`),
-        dummyPrograms.find((pr) => pr.slug === slug),
+        undefined,
       ),
     programTitles: (): Promise<ProgramTitle[]> =>
-      safeFetch(() => http.get<ApiResponse<ProgramTitle[]>>('/programmes/titles/unused'), dummyProgramTitles),
+      safeFetch(() => http.get<ApiResponse<ProgramTitle[]>>('/programmes/titles/unused'), []),
 
     // Partners
     partners: (): Promise<Partner[]> =>
-      safeFetch(() => http.get<ApiResponse<Partner[]>>('/partners'), dummyPartners),
+      safeFetch(() => http.get<ApiResponse<Partner[]>>('/partners'), []),
     partnerTiers: (): Promise<PartnerTier[]> =>
-      safeFetch(() => http.get<ApiResponse<PartnerTier[]>>('/partners/tiers'), dummyPartnerTiers),
+      safeFetch(() => http.get<ApiResponse<PartnerTier[]>>('/partners/tiers'), []),
 
     // Gallery
     gallery: (): Promise<GalleryItem[]> =>
-      safeFetch(() => http.get<ApiResponse<GalleryItem[]>>('/gallery'), dummyGallery),
+      safeFetch(() => http.get<ApiResponse<GalleryItem[]>>('/gallery'), []),
     galleryCategories: (): Promise<GalleryCategory[]> =>
-      safeFetch(() => http.get<ApiResponse<GalleryCategory[]>>('/gallery/titles'), dummyGalleryCategories),
+      safeFetch(() => http.get<ApiResponse<GalleryCategory[]>>('/gallery/titles'), []),
 
     // Club info
     stats: (): Promise<ClubStat[]> =>
-      safeFetch(() => http.get<ApiResponse<ClubStat[]>>('/club/stats'), dummyClubStats),
+      safeFetch(() => http.get<ApiResponse<ClubStat[]>>('/club/stats'), []),
     missionVision: (): Promise<MissionVisionItem[]> =>
-      safeFetch(() => http.get<ApiResponse<MissionVisionItem[]>>('/club/mission'), dummyMissionVision),
+      safeFetch(() => http.get<ApiResponse<MissionVisionItem[]>>('/club/mission'), []),
     milestones: (): Promise<Milestone[]> =>
-      safeFetch(() => http.get<ApiResponse<Milestone[]>>('/club/milestones'), dummyMilestones),
+      safeFetch(() => http.get<ApiResponse<Milestone[]>>('/club/milestones'), []),
     management: (): Promise<Management[]> =>
-      safeFetch(() => http.get<ApiResponse<Management[]>>('/club/management'), dummyManagement),
+      safeFetch(() => http.get<ApiResponse<Management[]>>('/club/management'), []),
     logo:     (): Promise<{ image: string; blur_image: string } | null> =>
       safeFetch(() => http.get('/logo'), null),
     socials: (): Promise<SocialInfo> =>
-      safeFetch(() => http.get<ApiResponse<SocialInfo>>('/socials'), dummySocials),
+      safeFetch(() => http.get<ApiResponse<SocialInfo>>('/socials'), {} as SocialInfo),
     teamName: (): Promise<TeamName> =>
-      safeFetch(() => http.get<ApiResponse<TeamName>>('/teamname'), dummyTeamName),
+      safeFetch(() => http.get<ApiResponse<TeamName>>('/teamname'), {} as TeamName),
   },
 
   post: {
