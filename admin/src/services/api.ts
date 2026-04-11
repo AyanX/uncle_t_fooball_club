@@ -3,9 +3,9 @@ import axios from 'axios';
 export const BASE_URL ="https://api.uncletfootballclub.com/api";
 
 
+
 const http = axios.create({
   baseURL: BASE_URL,
-  timeout: 12000,
   withCredentials: true, // send cookies with requests
 });
 
@@ -81,38 +81,38 @@ export const api = {
     newsCategory:    (data: FormData | Record<string, any>) => http.post('/news/categories', data),
     toggleFeatured:  (id: number) => http.post(`/news/features/${id}`),
     toggleFirstTeam: (id: number) => http.post(`/players/first-team/${id}`),
-    fixture:         (data: Record<string, any>) => http.post('/fixtures', JSON.stringify(data)),
+    fixture:         (data: Record<string, any>) => http.post('/fixtures', data),
     program:         (data: FormData | Record<string, any>) => http.post('/programs', data),
     partner:         (data: FormData | Record<string, any>) => http.post('/partners', data),
     gallery:         (data: FormData | Record<string, any>) => http.post('/gallery', data),
-    stat:            (data: Record<string, any>) => http.post('/club/stats', JSON.stringify(data)),
-    milestone:       (data: Record<string, any>) => http.post('/club/milestones', JSON.stringify(data)),
+    stat:            (data: Record<string, any>) => http.post('/club/stats', data),
+    milestone:       (data: Record<string, any>) => http.post('/club/milestones', data),
     management:      (data: FormData | Record<string, any>) => http.post('/club/management', data),
-    partnerTier:     (data: Record<string, any>) => http.post('/partners/tiers', JSON.stringify(data)),
-    galleryCat:      (data: Record<string, any>) => http.post('/gallery/titles', JSON.stringify(data)),
-    programTitle:    (data: Record<string, any>) => http.post('/programmes/titles', JSON.stringify(data)),
-    missionVision:   (data: Record<string, any>) => http.post('/club/mission', JSON.stringify(data)),
+    partnerTier:     (data: Record<string, any>) => http.post('/partners/tiers', data),
+    galleryCat:      (data: Record<string, any>) => http.post('/gallery/titles', data),
+    programTitle:    (data: Record<string, any>) => http.post('/programmes/titles', data),
+    missionVision:   (data: Record<string, any>) => http.post('/club/mission', data),
   },
 
   put: {
     player:        (id: number, data: FormData | Record<string, any>) => http.put(`/players/${id}`, data),
     news:          (id: number, data: FormData | Record<string, any>) => http.put(`/news/${id}`, data),
     newsCategory:  (id: number, data: any) => http.put(`/news/categories/${id}`, data),
-    fixture:       (id: number, data: Record<string, any>) => http.put(`/fixtures/${id}`, JSON.stringify(data)),
+    fixture:       (id: number, data: Record<string, any>) => http.put(`/fixtures/${id}`, data),
     program:       (id: number, data: FormData | Record<string, any>) => http.put(`/programs/${id}`, data),
     partner:       (id: number, data: FormData | Record<string, any>) => http.put(`/partners/${id}`, data),
-    partnerTier:   (id: number, data: Record<string, any>) => http.put(`/partners/tiers/${id}`, JSON.stringify(data)),
+    partnerTier:   (id: number, data: Record<string, any>) => http.put(`/partners/tiers/${id}`, data),
     gallery:       (id: number, data: FormData | Record<string, any>) => http.put(`/gallery/${id}`, data),
-    galleryCat:    (id: number, data: Record<string, any>) => http.put(`/gallery/titles/${id}`, JSON.stringify(data)),
-    stat:          (id: number, data: Record<string, any>) => http.put(`/club/stats/${id}`, JSON.stringify(data)),
-    milestone:     (id: number, data: Record<string, any>) => http.put(`/club/milestones/${id}`, JSON.stringify(data)),
-    missionVision: (id: number, data: Record<string, any>) => http.put(`/club/mission/${id}`, JSON.stringify(data)),
+    galleryCat:    (id: number, data: Record<string, any>) => http.put(`/gallery/titles/${id}`, data),
+    stat:          (id: number, data: Record<string, any>) => http.put(`/club/stats/${id}`, data),
+    milestone:     (id: number, data: Record<string, any>) => http.put(`/club/milestones/${id}`,data),
+    missionVision: (id: number, data: Record<string, any>) => http.put(`/club/mission/${id}`, data),
     management:    (id: number, data: FormData | Record<string, any>) => http.put(`/club/management/${id}`, data),
-    socials:       (data: Record<string, any>) => http.put('/socials', JSON.stringify(data)),
-    teamname:      (data: { name: string }) => http.put('/teamname', JSON.stringify(data)),
+    socials:       (data: Record<string, any>) => http.put('/socials', data),
+    teamname:      (data: { name: string }) => http.put('/teamname',data),
     logo:          (formData: FormData) => http.put('/logo', formData),
     messageRead:   (id: number) => http.put(`/messages/read/${id}`, {}),
-    programTitle:  (id: number, data: Record<string, any>) => http.put(`/programmes/titles/${id}`, JSON.stringify(data)),
+    programTitle:  (id: number, data: Record<string, any>) => http.put(`/programmes/titles/${id}`, data),
   },
 
   delete: {
