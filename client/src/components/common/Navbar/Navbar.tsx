@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
 import styles from './Navbar.module.scss';
+import blurLogo from '@/assets/uncle-t-soccer-logo-small.png';
+
 
 interface NavItem { label: string; path: string; children?: { label: string; path: string }[]; }
 
@@ -25,7 +27,7 @@ const navItems: NavItem[] = [
 const LogoMark: React.FC<{ image?: string; blurImage?: string }> = ({ image, blurImage }) => {
   const [loaded, setLoaded] = useState(false);
 
-  if (!image) {
+  if (!blurImage && !image) {
     return <div className={styles.logoMark}><span className={styles.logoK}>K</span></div>;
   }
 
@@ -70,10 +72,10 @@ const Navbar: React.FC = () => {
 
   // Build programmes children dynamically from fetched programTitles
   const navWithPrograms = navItems.map(item => {
-    if (item.path === '/programs' && programTitles.length > 0) {
+    if (item.path === '/programs' && programTitles?.length > 0) {
       return {
         ...item,
-        children: programTitles.map(t => ({
+        children: programTitles && programTitles?.map(t => ({
           label: t.title,
           path:  `/programs/${t.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`,
         })),
@@ -86,7 +88,7 @@ const Navbar: React.FC = () => {
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
         <Link to="/" className={styles.logo} onClick={closeMobile}>
-          <LogoMark image={logo?.image} blurImage={logo?.blur_image} />
+          <LogoMark image={logo?.image} blurImage={blurLogo} />
           <div className={styles.logoText}>
             <span className={styles.logoName}>Uncle T</span>
             <span className={styles.logoSub}>Football Club</span>
@@ -96,14 +98,14 @@ const Navbar: React.FC = () => {
         <ul className={styles.desktopNav}>
           {navWithPrograms.map((item) => (
             <li key={item.path} className={styles.navItem}
-              onMouseEnter={() => item.children && item.children.length > 0 && setDropdown(item.label)}
+              onMouseEnter={() => item?.children && item.children?.length > 0 && setDropdown(item.label)}
               onMouseLeave={() => setDropdown(null)}>
               <NavLink to={item.path} end={item.path === '/'} className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}>
                 {item.label}
-                {item.children && item.children.length > 0 && <ChevronDown size={13} className={styles.chevron} />}
+                {item.children && item.children?.length > 0 && <ChevronDown size={13} className={styles.chevron} />}
               </NavLink>
               <AnimatePresence>
-                {item.children && item.children.length > 0 && dropdown === item.label && (
+                {item?.children && item.children?.length > 0 && dropdown === item.label && (
                   <motion.ul className={styles.dropdown}
                     initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.18 }}>
@@ -145,7 +147,7 @@ const Navbar: React.FC = () => {
               <ul className={styles.mobileNav}>
                 {navWithPrograms.map(item => (
                   <li key={item.path} className={styles.mobileNavItem}>
-                    {item.children && item.children.length > 0 ? (
+                    {item.children && item.children?.length > 0 ? (
                       <>
                         <button className={styles.mobileLinkBtn} onClick={() => setOpenSub(openSub === item.label ? null : item.label)}>
                           {item.label} <ChevronDown size={14} className={`${styles.chevron} ${openSub === item.label ? styles.chevronOpen : ''}`} />

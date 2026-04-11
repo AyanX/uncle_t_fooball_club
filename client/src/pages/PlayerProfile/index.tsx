@@ -9,8 +9,7 @@ import { Helmets } from '@/helmet';
 import BlurImage from '@/components/common/BlurImage/BlurImage';
 import Loader from '@/components/common/Loader/Loader';
 import styles from './PlayerProfile.module.scss';
-
-// Small card shown in the "Other Players" strip at the bottom
+ 
 const RelatedPlayerCard: React.FC<{ player: Player }> = ({ player }) => (
   <motion.div
     whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.18)' }}
@@ -34,7 +33,7 @@ const RelatedPlayerCard: React.FC<{ player: Player }> = ({ player }) => (
 const PlayerProfile: React.FC = () => {
   const { player_name } = useParams<{ player_name: string }>();
   const navigate = useNavigate();
-  const { players } = useAppContext();           // full list from context
+  const { players } = useAppContext();        
   const [player, setPlayer] = useState<Player | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +46,7 @@ const PlayerProfile: React.FC = () => {
     if (found) {
       // Fetch by numeric id
       api.get.player(found.id).then((p) => {
-        setPlayer(p ?? found);   // fallback to context data if API fails
+        setPlayer(p ?? found); 
         setLoading(false);
       });
     } else {
@@ -58,13 +57,13 @@ const PlayerProfile: React.FC = () => {
     }
   }, [player_name, players, navigate]);
 
-  // 3 related players: different position or random, excluding current
+  // 3 related players: just different positions or random, excluding current
   const related = players
-    .filter((p) => p.slug !== player_name)
+    ?.filter((p) => p.slug !== player_name)
     .sort(() => Math.random() - 0.5)
     .slice(0, 3);
 
-  if (loading) return <Loader fullHeight />;
+  if (loading || !player) return <Loader fullHeight />;
   if (!player) return null;
 
   const statItems = [
@@ -120,7 +119,7 @@ const PlayerProfile: React.FC = () => {
               </div>
 
               <div className={styles.statsRow}>
-                {statItems.map((s) => (
+                {statItems?.map((s) => (
                   <div key={s.label} className={styles.statBox}>
                     <span className={styles.statValue}>{s.value}</span>
                     <span className={styles.statLabel}>{s.label}</span>
@@ -186,7 +185,7 @@ const PlayerProfile: React.FC = () => {
       </section>
 
       {/* Related players strip */}
-      {related.length > 0 && (
+      {related?.length > 0 && (
         <section className={styles.relatedSection}>
           <div className={styles.container}>
             <h3 className={styles.relatedHeading}>More Players</h3>

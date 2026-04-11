@@ -67,8 +67,7 @@
 .ctaText { font-family: $font-body; font-size: $font-size-base; color: rgba(255,255,255,0.6); line-height: $line-height-loose; max-width: 560px; margin: 0 auto $space-8; }
 
 .ctaBtn { @include btn-primary; }
-
-// Conditional external link (only shown if partner.website exists)
+ 
 .extLink {
   display: flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: $radius-md;

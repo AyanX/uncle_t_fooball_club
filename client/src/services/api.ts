@@ -1,6 +1,4 @@
-// api.ts: Centralised Axios API service for Uncle T FC
-// Every API response shape: { data: T, message: string }
-// Player fetched by numeric :id, not by slug/name
+
 import axios, { AxiosResponse } from 'axios';
 import {
   dummyPlayers, dummyNews, dummyNewsCategories, dummyFixtures,
@@ -12,7 +10,7 @@ import {
   MissionVisionItem, Milestone, Management, SocialInfo, TeamName,
 } from '@/data/dummyData';
 
-const BASE_URL ="https://api.uncletfootballclub.com/api"
+const BASE_URL ="https://api.uncletfootballclub.com/api";
 
 interface ApiResponse<T> { data: T; message: string; }
 
@@ -30,7 +28,7 @@ async function safeFetch<T>(
     const res = await fetcher();
     return res.data?.data ?? fallback;
   } catch {
-    return fallback;
+    return null;
   }
 }
 

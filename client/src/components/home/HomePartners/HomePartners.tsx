@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Partner } from '@/data/dummyData';
 import styles from './HomePartners.module.scss';
+import PuffLoaderSpinner from '@/components/common/puffLoader/PuffLoader';
 
 interface Props { partners: Partner[]; loading: boolean; }
 
@@ -19,7 +20,7 @@ const HomePartners: React.FC<Props> = ({ partners }) => (
       </div>
 
       <div className={styles.logoGrid}>
-        {partners.map((p, i) => (
+        {partners ? (  partners.map((p, i) => (
           <motion.a
             key={p.id}
             href={p.website}
@@ -36,7 +37,7 @@ const HomePartners: React.FC<Props> = ({ partners }) => (
             <span className={styles.logoName}>{p.name}</span>
             <span className={styles.tierBadge}>{p.tier}</span>
           </motion.a>
-        ))}
+        ))     ) :( <PuffLoaderSpinner />)}
       </div>
     </div>
   </section>

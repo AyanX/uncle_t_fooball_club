@@ -15,12 +15,12 @@ const iconMap: Record<string, React.ReactNode> = {
 const Stats: React.FC = () => {
   const { stats, loading } = useAppContext();
 
-  if (loading.clubInfo) return <Loader />;
+  if (loading.clubInfo || !stats) return <Loader />;
 
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        {stats.map((stat, i) => (
+        { stats.map((stat, i) => (
           <motion.div key={stat.id} className={styles.card} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} whileHover={{ y: -4 }}>
             <div className={styles.icon}>{iconMap[stat.icon] ?? <Trophy size={28} />}</div>
             <span className={styles.value}>{stat.value}</span>

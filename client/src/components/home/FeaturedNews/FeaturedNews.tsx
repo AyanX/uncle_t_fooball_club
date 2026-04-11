@@ -14,9 +14,9 @@ interface Props { news: NewsItem[]; loading: boolean; }
 const FeaturedNews: React.FC<Props> = ({ news, loading }) => {
   const { trackClick } = useAppContext();
 
-  const sorted = [...news].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  const sorted =  news ? [...news].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)) : [];
   const featured = sorted[0];
-  const rest = sorted.slice(1, 4);
+  const rest = sorted?.slice(1, 4);
 
   return (
     <section className={styles.section}>
@@ -26,7 +26,7 @@ const FeaturedNews: React.FC<Props> = ({ news, loading }) => {
           <Link to="/news" className={styles.seeAll}>All News <ArrowRight size={16} /></Link>
         </div>
 
-        {loading ? <Loader /> : (
+        {loading ||  !news ? <Loader /> : (
           <div className={styles.grid}>
             {featured && (
               <motion.div className={styles.featured}

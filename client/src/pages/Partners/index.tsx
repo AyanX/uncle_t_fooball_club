@@ -24,11 +24,11 @@ const Partners: React.FC = () => {
 
       <section className={styles.section}>
         <div className={styles.container}>
-          {loading.partners || loading.meta ? <Loader /> : (
+          {loading.partners || loading.meta || !partners || !partnerTiers ? <Loader /> : (
             <>
               {partnerTiers.map((tier) => {
-                const tierPartners = partners.filter((p) => p.tier === tier.name);
-                if (!tierPartners.length) return null;
+                const tierPartners = partners?.filter((p) => p.tier === tier.name);
+                if (!tierPartners?.length) return null;
                 return (
                   <div key={tier.id} className={styles.tierGroup}>
                     <div className={styles.tierHeader}>

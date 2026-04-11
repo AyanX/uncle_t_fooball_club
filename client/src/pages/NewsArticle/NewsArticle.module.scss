@@ -15,8 +15,7 @@
   transition: color $transition-fast;
   &:hover { color: $color-gold; }
 }
-
-// Category hero: full-width background image with title
+ 
 .heroImg {
   position: relative;
   height: 480px;
@@ -94,8 +93,7 @@
   padding-left: $space-6; margin-bottom: $space-8;
   font-style: italic;
 }
-
-// Article's own image placed before the content body
+ 
 .articleImg {
   position: relative;
   @include aspect-ratio(16, 9);

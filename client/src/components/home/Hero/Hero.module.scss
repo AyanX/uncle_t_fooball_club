@@ -57,10 +57,10 @@
 .container {
   @include container;
   position: relative; z-index: $z-above;
-  padding-top: calc(#{$navbar-height} + #{$space-20});
+  padding-top: calc(#{$navbar-height} + #{$space-5});
   padding-bottom: $space-20;
   @include md {
-    padding-top: calc(#{$navbar-height} + #{$space-12});
+    padding-top: calc(#{$navbar-height} + #{$space-5});
     padding-bottom: $space-12;
   }
 }

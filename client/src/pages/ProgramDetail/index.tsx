@@ -30,14 +30,15 @@ const ProgramDetail: React.FC = () => {
     api.get.program(slug).then((p) => {
       setProgram(p);
       setLoading(false);
-      if (!p) navigate('/404', { replace: true });
+      if (!p) navigate('/programs', { replace: true });
     });
   }, [slug, navigate]);
 
 
 
 
-  if (loading) return <Loader fullHeight />;
+
+  if (loading || !program) return <Loader fullHeight />;
   if (!program)  return null;
 
   const getIcon = (iconName?: string) => {
@@ -47,7 +48,7 @@ const ProgramDetail: React.FC = () => {
 
   // fallback random icon
   const icons = Object.values(iconMap);
-  const randomIndex = Math.floor(Math.random() * icons.length);
+  const randomIndex = Math.floor(Math.random() * icons?.length);
 
   return icons[randomIndex];
 };
@@ -96,7 +97,7 @@ const ProgramDetail: React.FC = () => {
       >
         <div className={styles.container}>
           <div className={styles.statsGrid}>
-            {program.stats.map((stat, i) => (
+            {program?.stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 className={styles.statBox}

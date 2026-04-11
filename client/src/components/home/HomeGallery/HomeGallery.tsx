@@ -13,9 +13,9 @@ interface Props { gallery: GalleryItem[]; loading: boolean; }
 const HomeGallery: React.FC<Props> = ({ gallery, loading }) => {
   const { trackClick } = useAppContext();
 
-  const sorted = [...gallery].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  const sorted =gallery ? [...gallery].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)) : [];
   const featured = sorted[0];
-  const rest = sorted.slice(1, 5);
+  const rest = sorted?.slice(1, 5);
 
   return (
     <section className={styles.section}>
@@ -28,7 +28,7 @@ const HomeGallery: React.FC<Props> = ({ gallery, loading }) => {
           <Link to="/gallery" className={styles.seeAll}>View All Photos <ArrowRight size={16} /></Link>
         </div>
 
-        {loading ? <Loader /> : (
+        {loading || !gallery ? <Loader /> : (
           <div className={styles.grid}>
             {featured && (
               <motion.div className={styles.featured}

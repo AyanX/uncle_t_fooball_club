@@ -36,7 +36,7 @@ const Gallery: React.FC = () => {
 
   const computeAll = useCallback(async (rawItems: GalleryItem[]) => {
     setSpansReady(false);
-    const results = await Promise.all(rawItems.map(async (item) => {
+    const results = await Promise.all(rawItems?.map(async (item) => {
       const dims = await loadDims(item.image);
       return { ...item, ...computeSpans(dims.width, dims.height) };
     }));
@@ -45,15 +45,15 @@ const Gallery: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!loading.gallery && gallery.length > 0) computeAll(gallery);
-  }, [loading.gallery, gallery, computeAll]);
+    if (!loading.gallery && gallery?.length > 0 && galleryCategories &&gallery) computeAll(gallery);
+  }, [loading.gallery, gallery, galleryCategories, computeAll]);
 
-  const filtered = catFilter === 'All' ? items : items.filter((g) => g.category === catFilter);
+  const filtered = catFilter === 'All' ? items : items?.filter((g) => g.category === catFilter);
   const current = lightbox !== null ? filtered[lightbox] : undefined;
-  const prev = () => setLightbox((l) => l !== null ? (l - 1 + filtered.length) % filtered.length : null);
-  const next = () => setLightbox((l) => l !== null ? (l + 1) % filtered.length : null);
+  const prev = () => setLightbox((l) => l !== null ? (l - 1 + filtered?.length) % filtered?.length : null);
+  const next = () => setLightbox((l) => l !== null ? (l + 1) % filtered?.length : null);
 
-  const allCats = ['All', ...galleryCategories.map((c) => c.title)];
+  const allCats =galleryCategories ? ['All', ...galleryCategories.map((c) => c.title)] : ['All'];
 
   return (
     <main>
@@ -66,15 +66,15 @@ const Gallery: React.FC = () => {
       <section className={styles.section}>
         <div className={styles.container}>
           <div className={styles.filters}>
-            {allCats.map((c) => (
+            {allCats?.map((c) => (
               <button key={c} className={`${styles.filterBtn} ${catFilter === c ? styles.active : ''}`} onClick={() => setCatFilter(c)}>{c}</button>
             ))}
           </div>
 
-          {(loading.gallery || !spansReady) ? <Loader /> : (
+          {(loading.gallery || !spansReady || !gallery || !galleryCategories) ? <Loader /> : (
             <motion.div layout className={styles.grid}>
               <AnimatePresence>
-                {filtered.map((item, i) => (
+                {filtered?.map((item, i) => (
                   <motion.div
                     key={item.id} layout
                     className={styles.item}
@@ -107,7 +107,7 @@ const Gallery: React.FC = () => {
               <div className={styles.lightboxCaption}>
                 <span className={styles.lightboxCat}>{current.category}</span>
                 <p>{current.caption}</p>
-                <span className={styles.lightboxCounter}>{lightbox + 1} / {filtered.length}</span>
+                <span className={styles.lightboxCounter}>{lightbox + 1} / {filtered?.length}</span>
               </div>
               <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={prev} aria-label="Previous"><ChevronLeft size={24} /></button>
               <button className={`${styles.navBtn} ${styles.nextBtn}`} onClick={next} aria-label="Next"><ChevronRight size={24} /></button>

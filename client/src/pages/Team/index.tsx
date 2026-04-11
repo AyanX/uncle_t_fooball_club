@@ -17,7 +17,7 @@ const Team: React.FC = () => {
   const { players, loading } = useAppContext();
   const [filter, setFilter] = useState<Filter>('All');
 
-  const filtered = players.filter((p) => {
+  const filtered = players?.filter((p) => {
     if (filter === 'All') return true;
     if (filter === 'First Team') return p.first_team;
     return p.position === filter;
@@ -45,7 +45,7 @@ const Team: React.FC = () => {
             </div>
           </div>
 
-          {loading.players ? <Loader /> : (
+          {loading.players || !players ? <Loader /> : (
             <motion.div layout className={styles.grid}>
               <AnimatePresence>
                 {filtered.map((player, i) => (

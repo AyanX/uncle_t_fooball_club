@@ -29,7 +29,7 @@ const NewsArticle: React.FC = () => {
     });
   }, [slug, navigate, trackClick]);
 
-  const related = news.filter((n) => n.slug !== slug).slice(0, 3);
+  const related = news?.filter((n) => n.slug !== slug).slice(0, 3);
   const categoryData = newsCategories.find((c) => c.category === article?.category);
   const heroImage = categoryData?.image || article?.image || '';
 
@@ -80,7 +80,7 @@ const NewsArticle: React.FC = () => {
             <aside className={styles.sidebar}>
               <h3 className={styles.sidebarTitle}>More Stories</h3>
               <div className={styles.relatedList}>
-                {related.map((item) => (
+                {related?.map((item) => (
                   <Link key={item.id} to={`/news/${item.slug}`} onClick={() => trackClick(item.id)} className={styles.relatedCard}>
                     <div className={styles.relatedImg}><BlurImage src={item.image} blur_image={item.blur_image} alt={item.title} /></div>
                     <div className={styles.relatedBody}>

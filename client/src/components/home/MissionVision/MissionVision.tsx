@@ -22,11 +22,11 @@ const MissionVision: React.FC = () => {
           <span className={styles.eyebrow}>Who We Are</span>
           <h2 className={styles.title}>Our Mission &amp; Vision</h2>
           <div className={styles.accent} />
-          {loading.clubInfo ? <Loader size={40} /> : (
+          {loading.clubInfo || !missionVision ? <Loader size={40} /> : (
             <div className={styles.pillars}>
               {missionVision.map((item, i) => (
                 <motion.div key={item.id} className={styles.pillar} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.15 + i * 0.12 }}>
-                  <div className={styles.pillarIcon}>{iconList[i % iconList.length]}</div>
+                  <div className={styles.pillarIcon}>{iconList[i % iconList?.length]}</div>
                   <div className={styles.pillarText}>
                     <h4 className={styles.pillarTitle}>{item.title}</h4>
                     <p className={styles.pillarDesc}>{item.content}</p>

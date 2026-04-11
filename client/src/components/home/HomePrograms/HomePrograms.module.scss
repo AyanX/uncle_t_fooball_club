@@ -77,9 +77,7 @@
   grid-template-columns: 1.35fr 1fr;          // col 1 = big card | col 2 = right stack
   grid-template-rows: auto auto auto;
   gap: $space-4;
-
-  // Below big card: arts + leadership + libraries
-  // right col: env + health stacked
+ 
 
   @include lg {
     grid-template-columns: 1fr 1fr;

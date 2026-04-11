@@ -1,6 +1,4 @@
-// Includes: players, news, fixtures, programs, partners, gallery, clubInfo,
-//           newsCategories, programTitles, partnerTiers, galleryCategories
-// Click tracking: idempotent per-id for 10s + permanent session set
+
 import React, {
   createContext, useContext, useEffect, useState,
   useCallback, useRef, ReactNode,

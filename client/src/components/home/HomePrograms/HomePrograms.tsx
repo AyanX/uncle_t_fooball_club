@@ -1,4 +1,4 @@
-// Large card (sports), 2 medium right cards, wide bottom-left, red leadership, small libraries
+ 
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -32,12 +32,12 @@ const iconMap: Record<string, React.ReactNode> = {
 
 const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
   // Ordered: sports(0), environment(1), health(2), arts(3), leadership(4), libraries(5)/// this is just fake data for categorization...
-  const sports = programs[0];
-  const enviro = programs[1];
-  const health = programs[2];
-  const arts = programs[3];
-  const leadership = programs[4];
-  const libraries = programs[5];
+  const sports = programs?.[0];
+  const enviro = programs?.[1];
+  const health = programs?.[2];
+  const arts = programs?.[3];
+  const leadership = programs?.[4];
+  const libraries = programs?.[5];
 
   return (
     <section className={styles.section}>
@@ -56,11 +56,11 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
           </Link>
         </div>
 
-        {loading ? (
+        {loading || !programs ? (
           <Loader />
         ) : (
           <div className={styles.bento}>
-            {/* ── Large featured card: Sports Academy ─────────────── */}
+            {/*    Large featured card: Sports Academy    */}
             {sports && (
               <motion.div
                 className={`${styles.card} ${styles.cardFeatured}`}
@@ -103,7 +103,7 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               </motion.div>
             )}
 
-            {/* ── Right column: Environment + Health ──────────────── */}
+            {/*    Right column: Environment + Health     */}
             <div className={styles.rightCol}>
               {[enviro, health].map((prog, i) =>
                 prog ? (
@@ -134,7 +134,7 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               )}
             </div>
 
-            {/* ── Arts & Creativity — light card ──────────────────── */}
+            {/*    Arts & Creativity — light card     */}
             {arts && (
               <motion.div
                 className={`${styles.card} ${styles.cardLight}`}
@@ -154,7 +154,7 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               </motion.div>
             )}
 
-            {/* ── Leadership — wide red card ───────────────────────── */}
+            {/*    Leadership — wide red card     */}
             {leadership && (
               <motion.div
                 className={`${styles.card} ${styles.cardRed}`}
@@ -179,7 +179,7 @@ const HomePrograms: React.FC<Props> = ({ programs, loading }) => {
               </motion.div>
             )}
 
-            {/* ── Libraries — small light card ────────────────────── */}
+            {/*    Libraries — small light card     */}
             {libraries && (
               <motion.div
                style={{backgroundColor: libraries.color}}

@@ -25,13 +25,11 @@ const About: React.FC = () => {
         image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
-      {/* Stats band (fetched) */}
       <Stats />
 
-      {/* Mission & Vision (fetched) */}
       <section className={styles.missionSection}>
         <div className={styles.container}>
-          {loading.clubInfo ? <Loader /> : (
+          {loading.clubInfo || !missionVision ? <Loader /> : (
             <div className={styles.missionGrid}>
               {missionVision.map((item, i) => (
                 <motion.div
@@ -42,7 +40,7 @@ const About: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.12 }}
                 >
-                  <div className={styles.missionIcon}>{iconList[i % iconList.length]}</div>
+                  <div className={styles.missionIcon}>{iconList[i % iconList?.length]}</div>
                   <h3 className={styles.missionCardTitle}>{item.title}</h3>
                   <p className={styles.missionCardText}>{item.content}</p>
                 </motion.div>
@@ -52,11 +50,10 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Club Milestones (fetched) */}
       <section className={styles.timelineSection}>
         <div className={styles.container}>
           <SectionTitle eyebrow="History" title="Club Milestones" />
-          {loading.clubInfo ? <Loader /> : (
+          {loading.clubInfo || !milestones ? <Loader /> : (
             <div className={styles.timeline}>
               {milestones.map((m, i) => (
                 <motion.div
@@ -81,11 +78,10 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Management (fetched) */}
       <section className={styles.managementSection}>
         <div className={styles.container}>
           <SectionTitle eyebrow="Leadership" title="Club Management" align="center" />
-          {loading.clubInfo ? <Loader /> : (
+          {loading.clubInfo || !management ? <Loader /> : (
             <div className={styles.managementGrid}>
               {management.map((person, i) => (
                 <motion.div

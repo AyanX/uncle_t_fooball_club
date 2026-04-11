@@ -86,8 +86,7 @@
   font-family: $font-display; font-size: $font-size-xs; font-weight: $font-weight-bold;
   letter-spacing: 0.1em; text-transform: uppercase; color: $color-secondary;
 }
-
-// Caption always visible (no hover needed)
+ 
 .sideCaption {
   font-family: $font-body; font-size: $font-size-sm; color: $color-text-secondary;
   line-height: $line-height-snug; @include truncate(2);

@@ -31,20 +31,19 @@ const Programs: React.FC = () => {
   const { programs, programTitles, loading } = useAppContext();
   const [selectedTitle, setSelectedTitle] = useState<string>("");
 
-
   const getIcon = (iconName?: string) => {
-  if (iconName && iconMap[iconName]) {
-    return iconMap[iconName];
-  }
-//fallback icon
-  const icons = Object.values(iconMap);
-  const randomIndex = Math.floor(Math.random() * icons.length);
+    if (iconName && iconMap[iconName]) {
+      return iconMap[iconName];
+    }
+    //fallback icon
+    const icons = Object.values(iconMap);
+    const randomIndex = Math.floor(Math.random() * icons?.length);
 
-  return icons[randomIndex];
-};
+    return icons[randomIndex];
+  };
 
   const displayed = selectedTitle
-    ? programs.filter((p) => p.title === selectedTitle)
+    ? programs?.filter((p) => p.title === selectedTitle)
     : programs;
 
   return (
@@ -53,7 +52,7 @@ const Programs: React.FC = () => {
         eyebrow="Beyond the Pitch"
         title="Our Programmes"
         subtitle="Football is our platform. Community is our purpose. Discover how Uncle T FC is transforming lives."
-        image="https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=1400"
+        image="https://images.pexels.com/photos/1366913/pexels-photo-1366913.jpeg?auto=compress&cs=tinysrgb&w=1400"
       />
 
       <section className={styles.impactBand}>
@@ -87,7 +86,7 @@ const Programs: React.FC = () => {
               title="Community Programmes"
               subtitle="Each programme creates lasting, measurable change."
             />
-            {programTitles.length > 0 && (
+            {programTitles?.length > 0 && (
               <div className={styles.filterWrap}>
                 <select
                   className={styles.filterSelect}
@@ -105,7 +104,7 @@ const Programs: React.FC = () => {
             )}
           </div>
 
-          {loading.programs ? (
+          {loading.programs || !programs || !programTitles ? (
             <Loader />
           ) : (
             <div className={styles.grid}>

@@ -12,9 +12,9 @@ interface Props { fixtures: Fixture[]; loading: boolean; teamName: {
     name: string;
 }; }
 
-const UpcomingFixtures: React.FC<Props> = ({ fixtures, loading, teamName }) => {
-  const upcoming = fixtures.filter((f) => f.status === 'upcoming').slice(0, 3);
-  const recent   = fixtures.filter((f) => f.status === 'completed').slice(0, 2);
+const UpcomingFixtures: React.FC<Props> = ({ fixtures, loading, teamName = { id: 0, name: 'Uncle T FC' } }) => {
+  const upcoming = fixtures?.filter((f) => f.status === 'upcoming').slice(0, 3);
+  const recent   = fixtures?.filter((f) => f.status === 'completed').slice(0, 2);
 
   return (
     <section className={styles.section}>
@@ -30,7 +30,7 @@ const UpcomingFixtures: React.FC<Props> = ({ fixtures, loading, teamName }) => {
           </Link>
         </div>
 
-        {loading ? (
+        {loading || !fixtures ? (
           <Loader color="#C9A84C" />
         ) : (
           <div className={styles.grid}>
