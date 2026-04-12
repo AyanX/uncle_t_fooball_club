@@ -26,9 +26,9 @@ const Hero: React.FC = () => {
   const { fixtures } = useAppContext();
 
   // Find the next upcoming fixture, or use fallback
-  const upcomingFixture =  fixtures ?  fixtures.find((f) => f?.status === "upcoming") ||
-    fixtures.find((f) => f?.status === "live") ||
-    fixtures.find((f) => f?.status === "completed") || {
+  const upcomingFixture =  fixtures ?  fixtures?.find((f) => f?.status === "upcoming") ||
+    fixtures?.find((f) => f?.status === "live") ||
+    fixtures?.find((f) => f?.status === "completed") || {
       date: " ",
       time: " ",
       homeTeam: "",
@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
 
           {/* Next match strip */}
           <motion.div className={styles.matchStrip} variants={item}>
-            {upcomingFixture.awayTeam !=="" ? (
+            {upcomingFixture?.awayTeam !=="" ? (
               <>
                 <div className={styles.matchLabel}>
                   <Calendar size={13} />
@@ -100,16 +100,16 @@ const Hero: React.FC = () => {
                 <div className={styles.matchInfo}>
                   <span className={styles.matchTeams}>
                     {
-                      upcomingFixture.homeTeam && upcomingFixture.awayTeam && (
+                      upcomingFixture?.homeTeam && upcomingFixture?.awayTeam && (
                         <>
-                          {upcomingFixture.homeTeam} vs {upcomingFixture.awayTeam}
+                          {upcomingFixture?.homeTeam} vs {upcomingFixture?.awayTeam}
                         </>
                       )
                     }
                   </span>
                   <span className={styles.matchMeta}>
-                    <MapPin size={12} /> {upcomingFixture.venue} &bull;{" "}
-                    {upcomingFixture.competition}
+                    <MapPin size={12} /> {upcomingFixture?.venue} &bull;{" "}
+                    {upcomingFixture?.competition}
                   </span>
                 </div>
               </>
