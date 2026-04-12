@@ -7,7 +7,6 @@ import {
 } from '@/data/dummyData';
 
 const BASE_URL ="https://api.uncletfootballclub.com/api";
-
 interface ApiResponse<T> { data: T; message: string; }
 
 const http = axios.create({

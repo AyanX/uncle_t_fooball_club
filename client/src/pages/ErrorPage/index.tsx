@@ -5,14 +5,8 @@ import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
 import styles from './ErrorPage.module.scss';
 
 const ErrorPage: React.FC = () => {
-  const error = useRouteError();
-
   let message = 'An unexpected error occurred. Please try again.';
-  if (isRouteErrorResponse(error)) {
-    message = error.statusText || error.data?.message || message;
-  } else if (error instanceof Error) {
-    message = error.message;
-  }
+
 
   return (
     <main className={styles.page}>
