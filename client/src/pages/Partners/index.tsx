@@ -46,7 +46,7 @@ const Partners: React.FC = () => {
                           <div className={styles.cardBody}>
                             <div className={styles.nameRow}>
                               <div className={styles.logoArea}>
-                                <span className={styles.logoText}>{partner.name.slice(0, 2).toUpperCase()}</span>
+                                <img src={partner.logo} alt={`${partner.name} logo`} className={styles.partnerLogo} />
                               </div>
                               <div style={{ flex: 1 }}>
                                 <h4 className={styles.partnerName}>{partner.name}</h4>
