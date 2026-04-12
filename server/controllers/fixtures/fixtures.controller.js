@@ -32,6 +32,7 @@ class FixturesController {
   }
 
   static async updateFixture(req, res) {
+    console.log("Update Fixture Request Body:", req.body);
     try {
       if (!req.params.id) {
         return res
@@ -71,6 +72,7 @@ class FixturesController {
     } catch (error) {
         console.error("Error updating fixture:", error);
       return   res.status(500).json({
+
         data: [],
         message: "An error occurred while updating the fixture",
       });

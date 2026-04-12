@@ -5,7 +5,7 @@ const useAuth = require('../../utils/useAuth');
 const newsRouter = express.Router();
 
 newsRouter.get("/", NewsController.getNews);
-newsRouter.post("/", useAuth, upload, NewsController.addNews);
+newsRouter.post("/", useAuth,upload, NewsController.addNews);
 newsRouter.put("/:id", useAuth, upload, NewsController.updateNews);
 newsRouter.delete("/:id", useAuth, NewsController.deleteNews);
 

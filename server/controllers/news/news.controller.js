@@ -6,6 +6,8 @@ const {
   validNewsToClient,
   validNews,
   singleNewsToClient,
+  normalizeDate,
+  normalizeBoolean,
 } = require("./news.utils");
 
 const {generateBlurImage}= require("ayan-pkg")
@@ -96,7 +98,6 @@ class NewsController {
         if(existingCategory.length === 0){
             return res.status(404).json({data: [], message: "News category not found"});
         }
-
         await db.update(newsCategory).set({category, image: imageUrl}).where(eq(newsCategory.id, parseInt(id)));
 
         //fetch the updated category to return to client
@@ -108,7 +109,7 @@ class NewsController {
         return res.status(200).json({data: {id: updatedCategory[0].id, category: updatedCategory[0].category, image: updatedCategory[0].image}, message: "News category updated successfully"});
 
     } catch (error) {
-  
+        console.error("Error updating news category:", error);
         return res.status(500).json({ data: [], message: "Error updating news category" });
     }
   }
@@ -214,18 +215,14 @@ featured: news[0].featured === 1 ? true : false
           return res.status(400).json({data: [], message: "Invalid news data"});
       }
 
-      const image = req.fileUrl
+      const image = req.fileUrl;
       if(!image){
           return res.status(400).json({data: [], message: "News image is required"});
       }
 
-      req.body.featured = req.body.featured === true ? 1 : 0;
-
       const {slug, title, excerpt, content, category, author, date, readTime, featured} = req.body;
 
-
-
-      await db.insert(newsTable).values({slug, title, excerpt, content, image, blur_image:image , category, author, date: new Date(date), readTime, featured: featured === "true"});
+      await db.insert(newsTable).values({slug, title, excerpt, content, image, blur_image:image , category, author, date: new Date(date), readTime, featured: normalizeBoolean(featured)});
 
       //its the last entry, fetch and return it
       const insertedNews = await db.select().from(newsTable).orderBy(desc(newsTable.created_at)).limit(1);
@@ -278,14 +275,14 @@ featured: news[0].featured === 1 ? true : false
         blur_image: image,
         category,
         author,
-        date,
+        date :normalizeDate(date),
         readTime,
-        featured:featured === true ? 1 : 0,
+        featured:normalizeBoolean(featured)
        }).where(eq(newsTable.id, parseInt(id)));
 
        //return req.body  news 
 
-      res.status(200).json({data: {id: parseInt(id), slug, title, excerpt, content, image, blur_image: image, category, author, date, readTime, featured:featured === true ? 1 : 0}, message: "News updated successfully"});
+      res.status(200).json({data: {id: parseInt(id), slug, title, excerpt, content, image, blur_image: image, category, author, date, readTime, featured:normalizeBoolean(featured)}, message: "News updated successfully"});
 
       if(!req.fileUrl)return
 
@@ -298,6 +295,7 @@ featured: news[0].featured === 1 ? true : false
       return
 
     } catch (error) {
+      console.error("err updating news" , error)
       return res.status(500).json({ data: [], message: "Error updating news" });
     }
   }

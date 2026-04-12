@@ -138,7 +138,7 @@ class ProgramsController {
           .status(400)
           .json({ message: "Invalid program data", data: [] });
 
-      const image = req.fileUrl;
+      const image = req.fileUrl || req.body.image || "";
 
       req.body.image = image || "";
       req.body.blur_image = image || "";

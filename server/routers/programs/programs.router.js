@@ -6,7 +6,7 @@ const programsRouter = express.Router();
 
 
 programsRouter.get("/", ProgramsController.getAllPrograms);
-programsRouter.post("/", useAuth, upload, ProgramsController.createProgram);
+programsRouter.post("/",useAuth, upload, ProgramsController.createProgram);
 programsRouter.put("/:id", useAuth, upload, ProgramsController.updateProgram);
 programsRouter.delete("/:id", useAuth, ProgramsController.deleteProgram);
 

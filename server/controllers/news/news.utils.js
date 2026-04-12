@@ -1,6 +1,6 @@
 
 const validNewsCategory= (news)=>{
-    return news && news.category && typeof news.category === 'string' && news.category.trim() !== '';
+    return news && news.category
 }
 
 const validNewsCategoryToClient = (news) => {
@@ -13,23 +13,35 @@ const validNewsCategoryToClient = (news) => {
     })
 }
 
-// const newsTable = mysqlTable("news", {
-//     id: int("id").primaryKey().autoincrement(),
-//     slug: varchar("slug", { length: 255 }).notNull(),
-//     title: varchar("title", { length: 255 }).notNull(),
-//     excerpt: text("excerpt").notNull(),
-//     content: longtext("content").notNull(),
-//     image: varchar("image", { length: 255 }).notNull(),
-//     blur_image: varchar("blur_image", { length: 255 }).notNull(),
-//     category: int("category_id").notNull(),
-//     author: varchar("author", { length: 255 }).notNull(),
-//     date: date("date").notNull(),
-//     readTime: int("read_time").notNull(),
-//     featured: boolean("featured").default(false),
-//     isDeleted: boolean("is_deleted").default(false),
-//     created_at: timestamp("created_at").defaultNow(),
-//     modified_at: timestamp("modified_at").defaultNow().onUpdateNow(),
-// })
+const normalizeDate = (input) => {
+  if (!input) return null;
+
+  // If it's already a Date object
+  if (input instanceof Date) {
+    return input.toISOString().split("T")[0];
+  }
+
+  // If it's a string
+  if (typeof input === "string") {
+    // Case 1: already YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+      return input;
+    }
+
+    //  ISO string with time
+    if (input.includes("T")) {
+      return input.split("T")[0];
+    }
+  }
+
+  // Fallback (handles weird formats)// just break here..
+  const parsed = new Date(input);
+  if (!isNaN(parsed)) {
+    return parsed.toISOString().split("T")[0];
+  }
+
+  throw new Error("Invalid date format");
+};
 
 const validNewsToClient = (news) => {
     return news.map((item) => {
@@ -74,7 +86,10 @@ const validNews = (news) => {
     news.date && news.readTime
 }
 
-
+const normalizeBoolean = (value) => {
+  if (value === true || value === "true" || value === 1 || value === "1") return true;
+  return false;
+};
 
 
 module.exports = {
@@ -82,5 +97,5 @@ module.exports = {
     validNewsCategoryToClient,
     validNews,
     validNewsToClient,
-    singleNewsToClient
+    singleNewsToClient, normalizeDate, normalizeBoolean
 }
