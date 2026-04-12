@@ -164,8 +164,8 @@ const ContentEditor: React.FC<{ value: string; onSave: (htmlVal: string) => void
             <div className={styles.previewContent} dangerouslySetInnerHTML={{ __html: plainToHtml(plain) }}/>
           </div>
           <div className={styles.inlineActions}>
-            <button className={styles.saveBtn} onClick={handleSave}><Check size={14}/> Save Content</button>
-            <button className={styles.cancelBtn} onClick={handleCancel}><X size={14}/> Cancel</button>
+            <button className={styles.saveBtn} onClick={handleSave} style={{width:"75px"}}><Check size={14}/> Save </button>
+            <button className={styles.cancelBtn} onClick={handleCancel} style={{width:"75px"}}><X size={14}/> Cancel</button>
           </div>
         </div>
       ) : (
