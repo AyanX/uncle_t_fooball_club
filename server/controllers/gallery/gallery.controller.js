@@ -1,8 +1,8 @@
-const { eq, desc } = require("drizzle-orm");
+const { eq, desc, and } = require("drizzle-orm");
 const {db, galleryCategoryTable,galleryTable} = require("../tables");
 const {generateBlurImage} = require("ayan-pkg")
 
-const { galleriesToClient, validGallery, categoriesToClient, validGalleryCategory } = require("./gallery.utils");
+const { galleriesToClient, validGallery, categoriesToClient, validGalleryCategory,normalizeBoolean } = require("./gallery.utils");
 
 class GalleryController {
     static async getAllGalleries(req, res) {
@@ -55,12 +55,12 @@ class GalleryController {
                 image: image,
                 caption,
                 category,
-                featured : featured === true ? 1 : 0,
+                featured : normalizeBoolean(featured),
                 blur_image: image
             }).where(eq(galleryTable.id, galleryId));
 
             // send the data with the response, and then update blur in background
-            res.status(200).json({ message: 'Gallery updated successfully', data:{image, caption, category, featured: featured === true ? 1 : 0 , blur_image: image, id: galleryId} });
+            res.status(200).json({ message: 'Gallery updated successfully', data:{image, caption, category, featured: normalizeBoolean(featured) , blur_image: image, id: galleryId} });
 
             if(!req.fileUrl)return
 
@@ -109,7 +109,7 @@ class GalleryController {
         try {    if(!validGallery(req.body)){
                 return res.status(400).json({ error: 'Invalid gallery data', data: null });
             }
-            const image = req.fileUrl 
+            const image = req.fileUrl
 
             if(!image){
                 return res.status(400).json({ error: 'Image is required', data: null });
@@ -123,14 +123,14 @@ class GalleryController {
                 caption,
                 category,
                 blur_image: image,
-                featured: featured === true ? 1 : 0
+                featured:normalizeBoolean(featured)
             })
 
             // fetch it for response, last entry
 
             const newGallery = await db.select().from(galleryTable).where(eq(galleryTable.isDeleted, false)).orderBy(desc(galleryTable.created_at)).limit(1);
             // give res and generate blur
-            res.status(201).json({ message: 'Gallery created successfully', data:{image, caption, category, featured:  featured === "true" ? 1 : 0 , blur_image: image, id: newGallery[0].id} });
+            res.status(201).json({ message: 'Gallery created successfully', data:{image, caption, category, featured: normalizeBoolean(featured) , blur_image: image, id: newGallery[0].id} });
             
             //update blur in background
             const blur = await generateBlurImage(image);
@@ -238,8 +238,8 @@ class GalleryController {
 
             const { title } = req.body;
 
-            //check if an entry exists with same title, if yes, return error
-            const existingCategory = await db.select().from(galleryCategoryTable).where(eq(galleryCategoryTable.title, title)).limit(1);
+            //check if an entry exists with same title, if yes, return error // if deleted, skip it , it can still be created
+            const existingCategory = await db.select().from(galleryCategoryTable).where(and(eq(galleryCategoryTable.title, title), eq(galleryCategoryTable.isDeleted, false))).limit(1);
             if(existingCategory && existingCategory.length > 0){
                 return res.status(400).json({ error: 'Gallery category with this title already exists', data: null });
             }

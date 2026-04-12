@@ -8,11 +8,10 @@ const {
 } = require("./players.utils");
 const { generateBlurImage } = require("ayan-pkg");
 
-// TODO : add validation for player data, add pagination for get all players, add get player by id, add search players by name or position
 class PlayerController {
   static async getAllPlayers(req, res) {
     try {
-      const players = await db.select().from(player);
+      const players = await db.select().from(player).where(eq(player.isDeleted, false)).orderBy(desc(player.created_at));
 
       if (!players || players.length === 0) {
         return res.status(404).json({ data: [], message: "No players found" });
@@ -37,11 +36,11 @@ class PlayerController {
           .status(400)
           .json({ data: null, message: "Player ID is required" });
       }
-
+      //fetch player, and checck isDEleted, if deleted, return not found
       const existingPlayer = await db
         .select()
         .from(player)
-        .where(eq(player.id, parseInt(req.params.id)));
+        .where(and(eq(player.id, parseInt(req.params.id)), eq(player.isDeleted, false)));
 
       if (!existingPlayer || existingPlayer.length === 0) {
         return res

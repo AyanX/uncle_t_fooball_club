@@ -23,13 +23,19 @@ const validGalleryCategory = (category) => {
 const categoriesToClient = (categories) => {
     return categories.map(category => ({
         id: category.id,
-        title: category.title
+        title: category.title.toUpperCase()
     }))
 }
+const normalizeBoolean = (value) => {
+  if (value === true || value === "true" || value === 1 || value === "1") return true;
+  return false;
+};
+
 
 module.exports= {
     galleriesToClient,
     validGallery,
+    normalizeBoolean,
     validGalleryCategory,
     categoriesToClient
 }
